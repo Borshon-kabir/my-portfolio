@@ -3,27 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Check } from 'lucide-react';
-
-// Exact Framer logo SVG geometry extracted from Sevora
-function FramerIcon({ className = 'w-4 h-4' }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path
-        d="M 6 6 L 12 6 L 12 0 L 0 0 Z M 6 6 L 0 6 L 0 12 L 6 18 L 6 12 L 12 12 Z"
-        transform="translate(6 3)"
-      />
-    </svg>
-  );
-}
+import { Check, Sparkles } from 'lucide-react';
 
 // Exact Crown SVG geometry extracted from Sevora
 function CrownIcon({ className = 'w-4 h-4' }: { className?: string }) {
@@ -46,7 +26,7 @@ function CrownIcon({ className = 'w-4 h-4' }: { className?: string }) {
 }
 
 const card1Features = [
-  'Framer website development',
+  'Website development',
   'Responsive page setup',
   'CMS structure setup',
   'Basic interactions',
@@ -244,7 +224,7 @@ export default function Pricing() {
           </h2>
 
           <p className="pricing-header-elem mx-auto mt-3.5 max-w-md text-sm sm:text-base text-[#6c6e79] will-change-transform will-change-opacity">
-            Focused packages for design, Framer, and launch.
+            Focused packages for design, development, and launch.
           </p>
         </div>
 
@@ -254,7 +234,7 @@ export default function Pricing() {
           style={{ perspective: '1200px' }}
           className="mx-auto mt-14 grid max-w-[820px] grid-cols-1 gap-6 md:grid-cols-2 md:gap-6 items-stretch"
         >
-          {/* CARD 1: LIGHT CARD (Framer) */}
+          {/* CARD 1: LIGHT CARD (Basic Plan) */}
           <div
             ref={card1Ref}
             onMouseMove={(e) => handleMouseMove(e, card1Ref.current)}
@@ -264,15 +244,15 @@ export default function Pricing() {
             <div>
               {/* Squircle Icon */}
               <div className="grid h-11 w-11 place-items-center rounded-xl border border-[#e0e2e6] bg-gradient-to-b from-[#f7f7f8] to-[#e8eaed] text-[#121218] shadow-[0_4px_8px_-4px_rgba(201,205,210,0.8),0_12px_18px_-2px_rgba(201,205,210,0.5),inset_0_1px_0_white,inset_0_-1px_0_#c9cdd2]">
-                <FramerIcon className="h-5 w-5" />
+                <Sparkles className="h-5 w-5 text-[#121218]" strokeWidth={1.8} />
               </div>
 
               {/* Title & Description */}
               <h3 className="mt-5 text-lg font-semibold text-[#121218] tracking-tight">
-                Framer
+                Basic Plan
               </h3>
               <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6c6e79]">
-                A focused Framer build for brands that need a clean, responsive, and launch-ready website.
+                A focused build for brands that need a clean, responsive, and launch-ready website.
               </p>
 
               {/* Price */}
