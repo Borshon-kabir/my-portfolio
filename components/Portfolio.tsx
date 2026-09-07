@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowDown, ArrowUpRight, Check, Copy, Instagram, Linkedin, Menu, Play, X, Youtube } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Check, Copy, Instagram, Linkedin, Loader2, Menu, Play, X, Youtube } from 'lucide-react';
 import { projects, testimonials, type Project } from '../data/content';
 import Hero from './Hero';
 import HomeIntro from './HomeIntro';
@@ -23,6 +23,45 @@ export default function Portfolio() {
   const [sent, setSent] = useState(false);
   const [quote, setQuote] = useState(0);
   const [cursorHover, setCursorHover] = useState(false);
+
+  // Contact Form State
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    projectType: 'Brand Film',
+    message: '',
+  });
+  const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [formError, setFormError] = useState('');
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formStatus === 'loading') return;
+
+    setFormStatus('loading');
+    setFormError('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send message. Please try again.');
+      }
+
+      setFormStatus('success');
+      setSent(true);
+      setFormData({ name: '', email: '', projectType: 'Brand Film', message: '' });
+    } catch (err: any) {
+      setFormStatus('error');
+      setFormError(err.message || 'Failed to send message. Please try again.');
+    }
+  };
 
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
@@ -755,10 +794,7 @@ export default function Portfolio() {
           </div>
 
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSent(true);
-            }}
+            onSubmit={handleContactSubmit}
             className="contact-form-anim self-end rounded-3xl border border-black/10 bg-[#e5e5e7] p-6 backdrop-blur-xl md:p-8 shadow-xl hover:shadow-2xl transition-shadow duration-500 will-change-transform will-change-opacity"
           >
             <p className="display text-2xl text-[#15151a]">Start a project</p>
@@ -767,7 +803,10 @@ export default function Portfolio() {
                 Name
                 <input
                   required
-                  className="mt-2 w-full border-b border-black/20 bg-transparent py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] placeholder:text-[#8e8f96] transition-colors"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  disabled={formStatus === 'loading'}
+                  className="mt-2 w-full border-b border-black/20 bg-transparent py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] placeholder:text-[#8e8f96] transition-colors disabled:opacity-60"
                   placeholder="Your name"
                 />
               </label>
@@ -776,13 +815,21 @@ export default function Portfolio() {
                 <input
                   required
                   type="email"
-                  className="mt-2 w-full border-b border-black/20 bg-transparent py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] placeholder:text-[#8e8f96] transition-colors"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  disabled={formStatus === 'loading'}
+                  className="mt-2 w-full border-b border-black/20 bg-transparent py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] placeholder:text-[#8e8f96] transition-colors disabled:opacity-60"
                   placeholder="hello@studio.com"
                 />
               </label>
               <label className="text-[10px] font-bold uppercase tracking-wider text-[#53545d]">
                 Project type
-                <select className="mt-2 w-full border-b border-black/20 bg-[#e5e5e7] py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] transition-colors">
+                <select
+                  value={formData.projectType}
+                  onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
+                  disabled={formStatus === 'loading'}
+                  className="mt-2 w-full border-b border-black/20 bg-[#e5e5e7] py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] transition-colors disabled:opacity-60"
+                >
                   <option>Brand Film</option>
                   <option>Music Video</option>
                   <option>Motion Design</option>
@@ -793,18 +840,48 @@ export default function Portfolio() {
                 Tell me more
                 <textarea
                   required
-                  className="mt-2 h-20 w-full border-b border-black/20 bg-transparent py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] placeholder:text-[#8e8f96] transition-colors"
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  disabled={formStatus === 'loading'}
+                  className="mt-2 h-20 w-full border-b border-black/20 bg-transparent py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] placeholder:text-[#8e8f96] transition-colors disabled:opacity-60 resize-none"
                   placeholder="A few details about the work..."
                 />
               </label>
-              {sent ? (
-                <p className="flex items-center gap-2 text-sm text-[#15151a]">
-                  <Check size={16} /> Thanks — your note is on its way.
-                </p>
+
+              {formStatus === 'error' && (
+                <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-xs text-red-700">
+                  {formError}
+                </div>
+              )}
+
+              {sent || formStatus === 'success' ? (
+                <div className="flex flex-col gap-2">
+                  <p className="flex items-center gap-2 text-sm text-[#15151a]">
+                    <Check size={16} className="text-emerald-600" /> Thanks — your note is on its way.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSent(false);
+                      setFormStatus('idle');
+                    }}
+                    className="text-left text-xs text-[#53545d] underline hover:text-[#15151a] transition-colors"
+                  >
+                    Send another message
+                  </button>
+                </div>
               ) : (
-                <button className="dark-cta group mt-2 flex w-full items-center justify-between rounded-xl bg-[#17171d] px-5 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-all duration-300 hover:bg-[#34343a] hover:scale-[1.01] active:scale-[0.99]">
-                  <span>Send enquiry</span>
-                  <ArrowUpRight size={17} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                <button
+                  type="submit"
+                  disabled={formStatus === 'loading'}
+                  className="dark-cta group mt-2 flex w-full items-center justify-between rounded-xl bg-[#17171d] px-5 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-all duration-300 hover:bg-[#34343a] hover:scale-[1.01] active:scale-[0.99] disabled:opacity-75 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  <span>{formStatus === 'loading' ? 'Sending enquiry...' : 'Send enquiry'}</span>
+                  {formStatus === 'loading' ? (
+                    <Loader2 size={17} className="animate-spin text-white" />
+                  ) : (
+                    <ArrowUpRight size={17} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  )}
                 </button>
               )}
             </div>
