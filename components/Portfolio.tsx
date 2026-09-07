@@ -1,27 +1,864 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
-import { ArrowDown, ArrowUpRight, Check, ChevronUp, Copy, Instagram, Linkedin, Menu, Play, X, Youtube } from 'lucide-react';
-import { projects, services, testimonials, type Project } from '../data/content';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ArrowDown, ArrowUpRight, Check, Copy, Instagram, Linkedin, Menu, Play, X, Youtube } from 'lucide-react';
+import { projects, testimonials, type Project } from '../data/content';
 import Hero from './Hero';
-import Reels from './Reels';
 import HomeIntro from './HomeIntro';
-const nav=['Home','About','Work','Services','Testimonials','Contact']; const filters=['All','Commercial','Music Video','Short Film','Motion Graphics','Color Grading','Social Content'];
-export default function Portfolio(){const [load,setLoad]=useState(true),[menu,setMenu]=useState(false),[filter,setFilter]=useState('All'),[active,setActive]=useState<Project|null>(null),[copied,setCopied]=useState(false),[sent,setSent]=useState(false),[quote,setQuote]=useState(0),[cursor,setCursor]=useState({x:-100,y:-100});useEffect(()=>{const l=new Lenis({lerp:.08});let f=0;const r=(t:number)=>{l.raf(t);f=requestAnimationFrame(r)};f=requestAnimationFrame(r);const t=setTimeout(()=>setLoad(false),1300);return()=>{cancelAnimationFrame(f);clearTimeout(t);l.destroy()}},[]);useEffect(()=>{const i=setInterval(()=>setQuote(x=>(x+1)%testimonials.length),5000);return()=>clearInterval(i)},[]);const go=(x:string)=>{setMenu(false);document.getElementById(x.toLowerCase())?.scrollIntoView({behavior:'smooth'})};const shown=filter==='All'?projects:projects.filter(x=>x.category===filter);return <main onPointerMove={e=>setCursor({x:e.clientX,y:e.clientY})}><div className="grain"/><div className="pointer-events-none fixed z-[85] hidden h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-amber mix-blend-screen transition-transform duration-100 md:block" style={{left:cursor.x,top:cursor.y}}/>
-<AnimatePresence>{load&&<motion.div exit={{y:'-100%'}} transition={{duration:.7}} className="fixed inset-0 z-[100] grid place-items-center bg-amber text-ink"><div className="text-center"><motion.b initial={{scale:.5,opacity:0}} animate={{scale:1,opacity:1}} className="display text-8xl">BK.</motion.b><p className="mt-4 text-[10px] font-bold tracking-[.35em]">LOADING THE REEL — 100%</p></div></motion.div>}</AnimatePresence>
-<header className="fixed inset-x-0 top-0 z-40 p-4 md:p-6"><nav className="mx-auto flex max-w-[1500px] items-center justify-between rounded-full border border-white/10 bg-ink/70 px-5 py-3 backdrop-blur-xl"><button onClick={()=>go('Home')} className="display text-lg font-bold">BK<span className="text-amber">.</span></button><div className="hidden gap-6 lg:flex">{nav.map(x=><button key={x} onClick={()=>go(x)} className="text-[10px] font-semibold uppercase tracking-[.16em] text-cream/70 hover:text-amber">{x}</button>)}</div><button onClick={()=>go('Contact')} className="hidden rounded-full bg-amber px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-ink sm:block">Let&apos;s Talk <ArrowUpRight className="inline" size={13}/></button><button aria-label="Open menu" onClick={()=>setMenu(true)} className="grid h-9 w-9 place-items-center rounded-full border border-white/15 lg:hidden"><Menu size={16}/></button></nav></header>
-<AnimatePresence>{menu&&<motion.div initial={{clipPath:'circle(0% at 92% 6%)'}} animate={{clipPath:'circle(150% at 92% 6%)'}} exit={{clipPath:'circle(0% at 92% 6%)'}} className="fixed inset-0 z-50 flex flex-col bg-amber p-6 text-ink"><button onClick={()=>setMenu(false)} className="ml-auto"><X size={30}/></button><div className="my-auto">{nav.map(x=><button onClick={()=>go(x)} key={x} className="display block text-6xl font-bold leading-tight">{x}</button>)}</div><p className="text-xs uppercase tracking-[.2em]">Sylhet, Bangladesh — available worldwide</p></motion.div>}</AnimatePresence>
-<Hero/>
-<HomeIntro/>
-<Reels/>
-<div className="overflow-hidden border-y border-white/10 bg-[#111113] py-5"><div className="marquee flex gap-8"><p className="display whitespace-nowrap text-3xl font-bold">EDIT • COLOR • MOTION • SOUND • STORY • EDIT • COLOR • MOTION • SOUND • STORY • </p><p className="display whitespace-nowrap text-3xl font-bold text-amber">EDIT • COLOR • MOTION • SOUND • STORY • EDIT • COLOR • MOTION • SOUND • STORY • </p></div></div>
-<section id="about" className="mx-auto grid max-w-[1500px] gap-12 px-5 py-28 md:grid-cols-2 md:px-10 md:py-40"><div className="relative aspect-[4/5] max-w-[550px] overflow-hidden bg-gradient-to-br from-[#4b3829] via-[#191617] to-ink"><div className="absolute inset-x-[18%] top-[14%] h-[70%] rounded-t-[50%] bg-gradient-to-b from-[#ad7e50] via-[#52331f] to-[#181313]"/><small className="absolute bottom-5 left-5 tracking-[.2em] text-cream/50">ABOUT PHOTO PLACEHOLDER</small></div><div className="flex flex-col justify-center"><p className="eyebrow">( 01 — About )</p><h2 className="display mt-6 text-5xl font-semibold leading-[.9] tracking-[-.06em] md:text-7xl">Every frame<br/>should <i className="font-light text-amber">matter.</i></h2><p className="mt-8 max-w-lg leading-8 text-muted">I&apos;m Borshon, a video editor from Sylhet. I make films with a strong point of view — marrying pacing, texture and color to give brands and artists a story worth staying for.</p><div className="mt-9 flex flex-wrap gap-2">{['Premiere Pro','After Effects','DaVinci Resolve','Color Grading','Motion Graphics','Sound Design','VFX'].map(x=><span key={x} className="rounded-full border border-white/15 px-3 py-2 text-[10px] uppercase tracking-wider">{x}</span>)}</div><div className="mt-10 grid grid-cols-2 border-t border-white/10 pt-7"><div><b className="display text-4xl text-amber">05+</b><p className="mt-1 text-xs text-muted">Years shaping stories</p></div><div><b className="display text-4xl text-amber">150+</b><p className="mt-1 text-xs text-muted">Projects delivered</p></div></div></div></section>
-<section id="work" className="mx-auto max-w-[1500px] px-5 py-20 md:px-10"><div className="flex flex-wrap items-end justify-between gap-8"><div><p className="eyebrow">( 02 — Selected Work )</p><h2 className="display mt-4 text-5xl tracking-[-.06em] md:text-7xl">The <i className="font-light text-amber">reel.</i></h2></div><p className="max-w-xs text-sm leading-6 text-muted">A selection of brand stories, music films and visual worlds.</p></div><div className="mt-12 flex gap-2 overflow-x-auto pb-3">{filters.map(x=><button onClick={()=>setFilter(x)} className={`whitespace-nowrap rounded-full border px-4 py-2 text-[10px] font-bold uppercase tracking-wider ${filter===x?'border-amber bg-amber text-ink':'border-white/15 text-muted'}`} key={x}>{x}</button>)}</div><motion.div layout className="mt-8 grid gap-4 md:grid-cols-12">{shown.map(p=><motion.button layout onClick={()=>setActive(p)} key={p.title} className={`${p.size} group relative h-[350px] overflow-hidden text-left md:h-[470px]`}><div className={`absolute inset-0 bg-gradient-to-br ${p.tone} transition duration-700 group-hover:scale-110`}/><div className="absolute inset-0 opacity-30" style={{backgroundImage:'repeating-linear-gradient(115deg,transparent 0 26px,rgba(255,255,255,.13) 27px 28px)'}}/><p className="absolute left-6 top-6 text-[9px] font-bold tracking-[.2em] text-amber">{p.category.toUpperCase()} / {p.year}</p><span className="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-cream/60 opacity-0 transition group-hover:opacity-100"><Play size={18} fill="currentColor"/></span><div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-ink p-6 pt-20"><p className="text-[10px] tracking-[.16em] text-muted">{p.client}</p><h3 className="display mt-1 text-3xl">{p.title}</h3></div></motion.button>)}</motion.div></section>
-<section id="services" className="border-y border-white/10 bg-[#101012] py-28"><div className="mx-auto max-w-[1500px] px-5 md:px-10"><p className="eyebrow">( 03 — Services )</p><div className="mt-5 flex flex-wrap items-end justify-between gap-6"><h2 className="display text-5xl tracking-[-.06em] md:text-7xl">The craft,<br/><i className="font-light text-amber">considered.</i></h2><p className="max-w-xs text-sm leading-6 text-muted">A full post-production toolkit with one creative point of view.</p></div><div className="mt-16 grid border-l border-t border-white/10 md:grid-cols-3">{services.map((s,i)=>{const Icon=s.icon;return <motion.div initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.06}} key={s.title} className="group min-h-56 border-b border-r border-white/10 p-7 transition hover:bg-amber hover:text-ink"><Icon className="text-amber group-hover:text-ink" size={24}/><p className="display mt-14 text-2xl">{s.title}</p><p className="mt-3 max-w-xs text-sm leading-6 text-muted group-hover:text-ink/70">{s.copy}</p></motion.div>})}</div></div></section>
-<section className="mx-auto max-w-[1500px] px-5 py-28 md:px-10"><p className="eyebrow">( 04 — Process )</p><h2 className="display mt-5 text-5xl tracking-[-.06em] md:text-7xl">From first <i className="font-light text-amber">spark</i><br/>to final frame.</h2><div className="mt-16 grid gap-0 md:grid-cols-5">{['Discovery','Story / Script','Edit','Color & Sound','Delivery'].map((x,i)=><div key={x} className="relative border-t border-white/15 py-6 pr-6"><b className="display text-3xl text-amber">0{i+1}</b><h3 className="mt-12 text-base">{x}</h3><p className="mt-3 text-sm leading-6 text-muted">{['A focused conversation to find the visual north star.','A clear treatment and a working rhythm for the story.','A crafted first cut where the real film emerges.','Texture, tone and a world you can feel.','Every deliverable prepared for its moment.'][i]}</p></div>)}</div></section>
-<section id="testimonials" className="overflow-hidden bg-amber py-28 text-ink"><div className="mx-auto max-w-[1100px] px-5 text-center"><p className="text-[10px] font-bold tracking-[.22em]">( 05 — KIND WORDS )</p><div className="relative mt-12 min-h-[280px]"><span className="display text-9xl leading-none opacity-20">“</span><AnimatePresence mode="wait"><motion.div key={quote} initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}} className="absolute inset-x-0 top-10"><p className="display text-3xl leading-tight tracking-[-.04em] md:text-5xl">{testimonials[quote].quote}</p><p className="mt-9 text-xs font-bold uppercase tracking-[.15em]">{testimonials[quote].name}</p><p className="mt-2 text-xs opacity-60">{testimonials[quote].role}</p></motion.div></AnimatePresence></div><div className="flex justify-center gap-2">{testimonials.map((_,i)=><button aria-label={`Show testimonial ${i+1}`} onClick={()=>setQuote(i)} key={i} className={`h-2 w-2 rounded-full ${i===quote?'bg-ink':'bg-ink/25'}`}/>)}</div></div></section>
-<section id="contact" className="relative overflow-hidden px-5 py-28 md:px-10 md:py-40"><div className="orb absolute -left-60 bottom-0 h-[600px] w-[600px]"/><div className="relative mx-auto grid max-w-[1500px] gap-16 md:grid-cols-[1.1fr_.9fr]"><div><p className="eyebrow">( 06 — Contact )</p><h2 className="display mt-6 text-6xl leading-[.85] tracking-[-.07em] md:text-9xl">Let&apos;s make<br/>something <i className="font-light text-amber">felt.</i></h2><button onClick={()=>{navigator.clipboard.writeText('hello@borshonkabir.com');setCopied(true);setTimeout(()=>setCopied(false),1800)}} className="mt-12 flex items-center gap-2 border-b border-amber pb-2 text-lg text-amber">{copied?<><Check size={17}/> Email copied!</>:<><Copy size={17}/> hello@borshonkabir.com</>}</button><p className="mt-4 text-sm text-muted">Sylhet, Bangladesh · +880 1XXX-XXXXXX</p><div className="mt-8 flex gap-3">{[Instagram,Youtube,Linkedin].map((Icon,i)=><a aria-label="Social profile" key={i} href="#" className="grid h-10 w-10 place-items-center rounded-full border border-white/15 hover:bg-amber hover:text-ink"><Icon size={16}/></a>)}</div></div><form onSubmit={e=>{e.preventDefault();setSent(true)}} className="self-end border border-white/10 bg-white/[.03] p-6 backdrop-blur md:p-8"><p className="display text-2xl">Start a project</p><div className="mt-7 grid gap-5"><label className="text-[10px] font-bold uppercase tracking-wider text-muted">Name<input required className="mt-2 w-full border-b border-white/20 bg-transparent py-3 text-base outline-none focus:border-amber" placeholder="Your name"/></label><label className="text-[10px] font-bold uppercase tracking-wider text-muted">Email<input required type="email" className="mt-2 w-full border-b border-white/20 bg-transparent py-3 text-base outline-none focus:border-amber" placeholder="hello@studio.com"/></label><label className="text-[10px] font-bold uppercase tracking-wider text-muted">Project type<select className="mt-2 w-full border-b border-white/20 bg-ink py-3 text-base outline-none focus:border-amber"><option>Brand Film</option><option>Music Video</option><option>Motion Design</option><option>Other</option></select></label><label className="text-[10px] font-bold uppercase tracking-wider text-muted">Tell me more<textarea required className="mt-2 h-20 w-full border-b border-white/20 bg-transparent py-3 text-base outline-none focus:border-amber" placeholder="A few details about the work..."/></label>{sent?<p className="flex items-center gap-2 text-sm text-amber"><Check size={16}/> Thanks — your note is on its way.</p>:<button className="mt-2 flex w-full items-center justify-between bg-amber px-5 py-4 text-xs font-bold uppercase tracking-wider text-ink">Send enquiry <ArrowUpRight size={17}/></button>}</div></form></div></section>
-<footer className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 px-5 py-7 text-[10px] uppercase tracking-[.15em] text-muted md:px-10"><p>© 2026 Borshon Kabir. Made with intention.</p><button onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} className="flex items-center gap-2 hover:text-amber">Back to top <ChevronUp size={15}/></button></footer>
-<AnimatePresence>{active&&<motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={()=>setActive(null)} className="fixed inset-0 z-[90] grid place-items-center bg-ink/90 p-5 backdrop-blur"><motion.div initial={{scale:.94,y:20}} animate={{scale:1,y:0}} onClick={e=>e.stopPropagation()} className="relative w-full max-w-3xl overflow-hidden bg-[#181819] p-7 md:p-10"><button onClick={()=>setActive(null)} className="absolute right-5 top-5"><X/></button><p className="eyebrow">{active.category} / {active.year}</p><h2 className="display mt-4 text-5xl">{active.title}</h2><div className={`mt-8 grid h-64 place-items-center bg-gradient-to-br ${active.tone}`}><Play size={34} fill="currentColor"/></div><div className="mt-7 grid gap-6 text-sm leading-6 text-muted md:grid-cols-2"><p>Placeholder case study. Replace this area with the project&apos;s hosted embed or <code>/videos/project.mp4</code> when your reel is ready.</p><p><b className="text-cream">Role:</b> Editing, Color, Motion<br/><b className="text-cream">Tools:</b> Premiere Pro, After Effects, Resolve</p></div></motion.div></motion.div>}</AnimatePresence>
-</main>}
+import WhyChooseMe from './WhyChooseMe';
+import Process from './Process';
+import Pricing from './Pricing';
+import FAQ from './FAQ';
+import Footer from './Footer';
+
+const nav = ['Home', 'Projects', 'Services', 'Process', 'Pricing', 'FAQ', 'Contact'];
+
+export default function Portfolio() {
+  const [menu, setMenu] = useState(false);
+  const [active, setActive] = useState<Project | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [quote, setQuote] = useState(0);
+  const [cursorHover, setCursorHover] = useState(false);
+
+  const cursorDotRef = useRef<HTMLDivElement>(null);
+  const cursorRingRef = useRef<HTMLDivElement>(null);
+
+  // High-performance 120fps GSAP lerped cursor
+  useEffect(() => {
+    if (!cursorDotRef.current || !cursorRingRef.current) return;
+    const dot = cursorDotRef.current;
+    const ring = cursorRingRef.current;
+
+    const setDotX = gsap.quickTo(dot, 'x', { duration: 0.08, ease: 'power3' });
+    const setDotY = gsap.quickTo(dot, 'y', { duration: 0.08, ease: 'power3' });
+    const setRingX = gsap.quickTo(ring, 'x', { duration: 0.32, ease: 'power3.out' });
+    const setRingY = gsap.quickTo(ring, 'y', { duration: 0.32, ease: 'power3.out' });
+
+    let hasMoved = false;
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!hasMoved) {
+        hasMoved = true;
+        gsap.to([dot, ring], { opacity: 1, duration: 0.3 });
+      }
+      setDotX(e.clientX);
+      setDotY(e.clientY);
+      setRingX(e.clientX);
+      setRingY(e.clientY);
+
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        target.closest(
+          'a, button, [role="button"], input, textarea, select, .work-card-anim, .intro-card, .process-card-anim, .pricing-card-anim, .faq-item-anim, .dark-cta'
+        )
+      ) {
+        setCursorHover(true);
+      } else {
+        setCursorHover(false);
+      }
+    };
+
+    const onMouseLeave = () => {
+      gsap.to([dot, ring], { opacity: 0, duration: 0.25 });
+      hasMoved = false;
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseleave', onMouseLeave);
+
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseleave', onMouseLeave);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
+      window.scrollTo(0, 0);
+    }
+
+    const onBeforeUnload = () => {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener('beforeunload', onBeforeUnload);
+
+    gsap.registerPlugin(ScrollTrigger);
+    if (typeof ScrollTrigger.clearScrollMemory === 'function') {
+      ScrollTrigger.clearScrollMemory('manual');
+    }
+
+    const l = new Lenis({
+      lerp: 0.08,
+      duration: 1.2,
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+    });
+    l.scrollTo(0, { immediate: true });
+
+    l.on('scroll', ScrollTrigger.update);
+    const updateRaf = (time: number) => {
+      l.raf(time * 1000);
+    };
+    gsap.ticker.add(updateRaf);
+    gsap.ticker.lagSmoothing(0);
+
+    const ctx = gsap.context(() => {
+      // Projects Section Reveal (Projects with clarity)
+      gsap.fromTo(
+        '.project-header-anim',
+        { y: 25, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#work',
+            start: 'top 92%',
+            once: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '.project-card-anim',
+        { y: 35, opacity: 0, scale: 0.97 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.75,
+          stagger: 0.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.projects-grid-container',
+            start: 'top 92%',
+            once: true,
+          },
+        }
+      );
+
+      // Testimonials reveal
+      gsap.fromTo(
+        '.testimonial-anim',
+        { y: 35, opacity: 0, scale: 0.97 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#testimonials',
+            start: 'top 92%',
+            once: true,
+          },
+        }
+      );
+
+      // Contact reveal
+      gsap.fromTo(
+        '.contact-text-anim',
+        { y: 25, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#contact',
+            start: 'top 92%',
+            once: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '.contact-form-anim',
+        { y: 35, opacity: 0, scale: 0.97 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.75,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#contact',
+            start: 'top 90%',
+            once: true,
+          },
+        }
+      );
+
+      const timer1 = setTimeout(() => ScrollTrigger.refresh(), 200);
+      const timer2 = setTimeout(() => ScrollTrigger.refresh(), 800);
+
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
+    });
+
+    return () => {
+      window.removeEventListener('beforeunload', onBeforeUnload);
+      gsap.ticker.remove(updateRaf);
+      l.destroy();
+      ctx.revert();
+    };
+  }, []);
+
+  useEffect(() => {
+    const i = setInterval(() => setQuote((x) => (x + 1) % testimonials.length), 5000);
+    return () => clearInterval(i);
+  }, []);
+
+  const go = (x: string) => {
+    setMenu(false);
+    document.getElementById(x.toLowerCase())?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <main className="text-[#15151a] min-h-screen selection:bg-[#17171d] selection:text-white">
+      <div className="grain" />
+
+      {/* 120fps Dual-Element Magnetic Cursor */}
+      <div
+        ref={cursorDotRef}
+        className="pointer-events-none fixed top-0 left-0 z-[95] hidden -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#15151a] opacity-0 transition-transform duration-150 ease-out md:block will-change-transform h-1.5 w-1.5"
+      />
+      <div
+        ref={cursorRingRef}
+        className={`pointer-events-none fixed top-0 left-0 z-[90] hidden -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#15151a]/30 opacity-0 transition-all duration-300 ease-out md:block will-change-transform ${
+          cursorHover
+            ? 'h-12 w-12 border-[#15151a]/60 bg-[#15151a]/10 backdrop-blur-[1px] scale-110'
+            : 'h-8 w-8 bg-transparent'
+        }`}
+      />
+
+      <header className="fixed inset-x-0 top-0 z-40 p-4 md:p-6">
+        <nav className="mx-auto flex max-w-[1500px] items-center justify-between rounded-full border border-black/10 bg-[#f4f4f6]/80 px-5 py-3 backdrop-blur-xl">
+          <button onClick={() => go('Home')} className="display text-lg font-bold text-[#15151a]">
+            BK<span className="text-[#15151a]">.</span>
+          </button>
+          <div className="hidden gap-6 lg:flex">
+            {nav.map((x) => (
+              <button
+                key={x}
+                onClick={() => go(x)}
+                className="text-[10px] font-semibold uppercase tracking-[.16em] text-[#53545d] hover:text-[#15151a] transition-colors"
+              >
+                {x}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => go('Contact')}
+            className="hidden rounded-full bg-[#17171d] px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition hover:bg-[#34343a] sm:block"
+          >
+            Let&apos;s Talk <ArrowUpRight className="inline" size={13} />
+          </button>
+          <button
+            aria-label="Open menu"
+            onClick={() => setMenu(true)}
+            className="grid h-9 w-9 place-items-center rounded-full border border-black/15 text-[#17171d] lg:hidden"
+          >
+            <Menu size={16} />
+          </button>
+        </nav>
+      </header>
+
+      <AnimatePresence>
+        {menu && (
+          <motion.div
+            initial={{ clipPath: 'circle(0% at 92% 6%)' }}
+            animate={{ clipPath: 'circle(150% at 92% 6%)' }}
+            exit={{ clipPath: 'circle(0% at 92% 6%)' }}
+            className="fixed inset-0 z-50 flex flex-col bg-[#f4f4f6] p-6 text-[#15151a] border-b border-black/10"
+          >
+            <button onClick={() => setMenu(false)} className="ml-auto text-[#15151a]">
+              <X size={30} />
+            </button>
+            <div className="my-auto">
+              {nav.map((x) => (
+                <button
+                  onClick={() => go(x)}
+                  key={x}
+                  className="display block text-6xl font-bold leading-tight text-[#15151a] hover:text-[#53545d] transition-colors"
+                >
+                  {x}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs uppercase tracking-[.2em] text-[#7a7b83]">
+              Sylhet, Bangladesh — available worldwide
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <Hero />
+      <HomeIntro />
+
+      <div className="overflow-hidden py-5">
+        <div className="marquee flex gap-8">
+          <p className="display whitespace-nowrap text-3xl font-bold text-[#15151a]">
+            EDIT • COLOR • MOTION • SOUND • STORY • EDIT • COLOR • MOTION • SOUND • STORY •{' '}
+          </p>
+          <p className="display whitespace-nowrap text-3xl font-bold text-[#a8a9b0]">
+            EDIT • COLOR • MOTION • SOUND • STORY • EDIT • COLOR • MOTION • SOUND • STORY •{' '}
+          </p>
+        </div>
+      </div>
+
+      {/* Selected Work Section (Projects with Clarity) */}
+      <section id="work" className="px-5 py-24 md:px-10 md:py-32">
+        <span id="about" className="sr-only">About Borshon Kabir</span>
+        <span id="projects" className="sr-only">Projects with clarity</span>
+
+        <div className="mx-auto max-w-[1160px]">
+          {/* Header */}
+          <div className="text-center">
+            <p className="project-header-anim inline-flex items-center gap-2 rounded-full border border-black/10 bg-[#e5e5e7] px-3.5 py-1.5 text-xs font-mono tracking-wider uppercase text-[#53545d] backdrop-blur-md will-change-transform will-change-opacity">
+              Selected work
+            </p>
+            <h2 className="project-header-anim mt-5 font-serif text-[clamp(2.75rem,5.5vw,5.5rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-[#15151a] will-change-transform will-change-opacity">
+              Projects with clarity
+            </h2>
+            <p className="project-header-anim mx-auto mt-4 max-w-xl text-base text-[#53545d] will-change-transform will-change-opacity">
+              A curated collection of brand, web, and product design work created for modern teams.
+            </p>
+          </div>
+
+          {/* 2-Column Grid */}
+          <div className="projects-grid-container mt-16 grid gap-8 md:grid-cols-2">
+            {/* Card 1: Brandora */}
+            <div
+              onClick={() => setActive(projects[0])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#fceee9] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl border border-black/5 bg-white shadow-xl flex flex-col justify-between">
+                  <div className="flex items-center justify-between border-b border-black/5 bg-neutral-50/80 px-4 py-2.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="h-2 w-2 rounded-full bg-black/20" />
+                      <span className="h-2 w-2 rounded-full bg-black/20" />
+                      <span className="h-2 w-2 rounded-full bg-black/20" />
+                    </div>
+                    <span className="rounded-full bg-white px-3 py-0.5 text-[9px] font-mono text-neutral-400 border border-black/5">
+                      brandorastudio.com
+                    </span>
+                    <span className="rounded-full bg-black px-2 py-0.5 text-[9px] font-medium text-white">
+                      New launch
+                    </span>
+                  </div>
+                  <div className="p-5 pb-2">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-medium text-neutral-400 mb-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
+                      Creative Studio
+                    </span>
+                    <h4 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-[#15151a] leading-tight">
+                      Design Better,<br />Faster, Smarter
+                    </h4>
+                  </div>
+                  <div className="relative mt-auto h-[55%] w-full overflow-hidden bg-neutral-900 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-700/30 via-neutral-900 to-black" />
+                    <div className="relative z-10 flex items-center gap-3 opacity-90 scale-90">
+                      <div className="w-28 h-20 rounded-lg bg-neutral-800 border border-white/20 p-2 shadow-2xl flex flex-col justify-between">
+                        <div className="h-1.5 w-10 bg-amber-400 rounded-full" />
+                        <div className="space-y-1">
+                          <div className="h-1 w-full bg-white/20 rounded" />
+                          <div className="h-1 w-3/4 bg-white/20 rounded" />
+                        </div>
+                        <div className="h-2 w-full bg-neutral-700 rounded flex gap-0.5 p-0.5">
+                          <div className="h-full w-1/3 bg-amber-500 rounded-sm" />
+                          <div className="h-full w-1/4 bg-indigo-500 rounded-sm" />
+                        </div>
+                      </div>
+                      <div className="w-24 h-16 rounded-lg bg-neutral-800 border border-white/20 p-1.5 flex flex-col justify-between">
+                        <div className="h-1 w-8 bg-emerald-400 rounded-full" />
+                        <div className="grid grid-cols-2 gap-1 h-8">
+                          <div className="bg-white/10 rounded" />
+                          <div className="bg-white/10 rounded" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  Brandora
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+
+            {/* Card 2: Nivora */}
+            <div
+              onClick={() => setActive(projects[1])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#a2e701] flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)] p-6 sm:p-7">
+                <div className="relative h-full w-full flex flex-col justify-between">
+                  <div className="flex items-center justify-between text-[#0d2900] text-xs font-mono font-bold tracking-wider">
+                    <span>NIVORA</span>
+                    <span>SATURDAY, 09:52 AM</span>
+                  </div>
+                  <div className="relative my-auto flex flex-col items-center justify-center text-center">
+                    <div className="relative w-full max-w-[280px] h-[160px] flex items-center justify-center overflow-hidden">
+                      <svg viewBox="0 0 200 200" className="w-full h-full text-[#0d2900] opacity-85">
+                        <path d="M100,30 C75,30 55,50 55,80 C55,105 70,120 75,140 C80,160 70,180 60,195 L140,195 C130,180 120,160 125,140 C130,120 145,105 145,80 C145,50 125,30 100,30 Z" fill="currentColor" opacity="0.35" />
+                        <circle cx="85" cy="75" r="14" fill="none" stroke="currentColor" strokeWidth="4" />
+                        <circle cx="115" cy="75" r="14" fill="none" stroke="currentColor" strokeWidth="4" />
+                        <line x1="99" y1="75" x2="101" y2="75" stroke="currentColor" strokeWidth="4" />
+                      </svg>
+                    </div>
+                    <h3 className="font-sans text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter text-[#0d2900] leading-[0.85] -mt-10 z-10">
+                      DESIGN<br />FOR<br />EVERYONE
+                    </h3>
+                  </div>
+                  <p className="text-[9px] font-mono tracking-widest text-[#0d2900]/70 uppercase text-center">
+                    THOUGHTFUL DESIGN ACROSS BRANDS, PRODUCTS, AND DIGITAL EXPERIENCES
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  Nivora
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+
+            {/* Card 3: Codify */}
+            <div
+              onClick={() => setActive(projects[2])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#18392b] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white p-5 shadow-xl flex flex-col justify-between border border-black/5">
+                  <div className="flex items-center justify-between border-b border-black/5 pb-2.5">
+                    <span className="font-bold tracking-tight text-[#15151a] text-xs">Codify.</span>
+                    <div className="flex items-center gap-3 text-[9px] text-neutral-400">
+                      <span>Services</span>
+                      <span>Our work</span>
+                      <span>About</span>
+                    </div>
+                    <span className="rounded-full bg-black px-2 py-0.5 text-[8px] text-white">Book</span>
+                  </div>
+                  <div className="my-1.5">
+                    <span className="text-[8px] font-mono uppercase tracking-widest text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
+                      Creative Agency
+                    </span>
+                    <h4 className="font-serif text-base sm:text-lg font-bold tracking-tight text-[#15151a] mt-1 leading-snug">
+                      Elevating Your Brand with Innovative Design
+                    </h4>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2 h-20 sm:h-24">
+                    <div className="rounded-lg bg-[#a2e701] p-1.5 flex flex-col justify-between">
+                      <span className="text-[7px] font-black uppercase">Brand</span>
+                      <div className="h-1 w-full bg-black/30 rounded" />
+                    </div>
+                    <div className="rounded-lg bg-[#fed8aa] p-1.5 flex flex-col justify-between">
+                      <span className="text-[7px] font-bold">Packaging</span>
+                      <div className="h-6 w-full rounded bg-white/60" />
+                    </div>
+                    <div className="rounded-lg bg-[#15151a] p-1.5 flex flex-col justify-between text-white">
+                      <span className="text-[7px] font-mono">Mobile</span>
+                      <div className="h-6 w-full rounded bg-neutral-800 border border-white/10" />
+                    </div>
+                    <div className="rounded-lg bg-[#a5f2fb] p-1.5 flex flex-col justify-between">
+                      <span className="text-[7px] font-bold">Identity</span>
+                      <div className="h-1 w-full bg-black/30 rounded" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  Codify
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+
+            {/* Card 4: Neutra */}
+            <div
+              onClick={() => setActive(projects[3])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#191920] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl bg-[#111116] p-5 sm:p-6 shadow-xl flex flex-col justify-between border border-white/10 text-white">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-sm bg-white" />
+                      <span className="text-xs font-bold tracking-tight">Neutra</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-[9px] text-neutral-400">
+                      <span>Docs</span>
+                      <span>Features</span>
+                      <span>Pricing</span>
+                    </div>
+                  </div>
+                  <div className="relative my-auto grid grid-cols-2 items-center gap-4 py-2">
+                    <div>
+                      <h4 className="font-serif text-base sm:text-lg font-semibold leading-tight text-white">
+                        Design for ambitious software companies
+                      </h4>
+                      <p className="mt-1.5 text-[9px] text-neutral-400 leading-normal">
+                        Uncover distinct features engineered for clarity.
+                      </p>
+                    </div>
+                    <div className="relative flex items-center justify-center">
+                      <svg viewBox="0 0 120 120" className="w-20 h-20 sm:w-24 sm:h-24">
+                        <defs>
+                          <linearGradient id="chromeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#ffffff" />
+                            <stop offset="30%" stopColor="#d1d5db" />
+                            <stop offset="50%" stopColor="#4b5563" />
+                            <stop offset="70%" stopColor="#f3f4f6" />
+                            <stop offset="100%" stopColor="#1f2937" />
+                          </linearGradient>
+                        </defs>
+                        <circle cx="60" cy="60" r="34" fill="none" stroke="url(#chromeGrad)" strokeWidth="10" />
+                        <polygon points="60,25 90,85 30,85" fill="url(#chromeGrad)" opacity="0.9" />
+                        <circle cx="60" cy="60" r="12" fill="#ffffff" opacity="0.9" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-[8px] text-neutral-500 pt-2 border-t border-white/5">
+                    <span>Enterprise Grade</span>
+                    <span>Explore Features ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  Neutra
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+
+            {/* Card 5: Snapkit */}
+            <div
+              onClick={() => setActive(projects[4])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#16161b] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white p-5 sm:p-6 shadow-xl flex flex-col justify-between border border-black/5 text-[#15151a]">
+                  <div className="flex items-center justify-between border-b border-black/5 pb-2.5">
+                    <span className="font-bold text-xs tracking-tight">Snapkit.</span>
+                    <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[8px] font-mono text-neutral-600">v2.4 Released</span>
+                  </div>
+                  <div className="my-auto text-center py-2">
+                    <span className="inline-block rounded-full bg-black/5 px-2 py-0.5 text-[8px] font-mono text-neutral-500 mb-1.5">
+                      Components & Wireframes
+                    </span>
+                    <h4 className="font-serif text-lg sm:text-xl font-bold tracking-tight text-[#15151a] leading-tight">
+                      Premium Templates for Nuxt, Framer & Figma
+                    </h4>
+                    <div className="mt-3 flex justify-center gap-2">
+                      <span className="rounded-lg bg-[#15151a] px-3 py-1 text-[9px] font-semibold text-white">Get template</span>
+                      <span className="rounded-lg border border-black/10 px-3 py-1 text-[9px] text-neutral-600">Preview</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center gap-3 text-[8px] text-neutral-400 pt-2 border-t border-black/5">
+                    <span>Framer</span>
+                    <span>•</span>
+                    <span>Figma</span>
+                    <span>•</span>
+                    <span>Nuxt</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  Snapkit
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+
+            {/* Card 6: TodoFusion */}
+            <div
+              onClick={() => setActive(projects[5])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#ede8ff] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white p-5 sm:p-6 shadow-xl flex flex-col justify-between border border-black/5 text-[#15151a]">
+                  <div className="flex items-center justify-between border-b border-black/5 pb-2.5">
+                    <div className="flex items-center gap-1.5">
+                      <div className="h-2.5 w-2.5 rounded-full bg-indigo-600" />
+                      <span className="font-bold text-xs">TodoFusion</span>
+                    </div>
+                    <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-[8px] font-medium text-indigo-600">AI Powered</span>
+                  </div>
+                  <div className="my-1.5">
+                    <h4 className="font-serif text-base sm:text-lg font-bold tracking-tight text-[#15151a] leading-tight">
+                      Boost Your Productivity with TodoFusion
+                    </h4>
+                  </div>
+                  <div className="rounded-xl border border-black/5 bg-[#faf5ff] p-2.5 space-y-1.5">
+                    <div className="flex items-center justify-between text-[8px] text-neutral-500">
+                      <span className="font-semibold text-neutral-700">Sprint Roadmap</span>
+                      <span className="text-indigo-600 font-bold">84% Done</span>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-indigo-100 overflow-hidden">
+                      <div className="h-full w-[84%] rounded-full bg-gradient-to-r from-indigo-500 to-purple-500" />
+                    </div>
+                    <div className="grid grid-cols-3 gap-1 pt-1">
+                      <div className="rounded bg-white p-1 shadow-sm border border-black/5 text-center">
+                        <span className="text-[6px] text-neutral-400 block">Tasks</span>
+                        <b className="text-[9px] text-[#15151a]">42/50</b>
+                      </div>
+                      <div className="rounded bg-white p-1 shadow-sm border border-black/5 text-center">
+                        <span className="text-[6px] text-neutral-400 block">Efficiency</span>
+                        <b className="text-[9px] text-emerald-600">+28%</b>
+                      </div>
+                      <div className="rounded bg-white p-1 shadow-sm border border-black/5 text-center">
+                        <span className="text-[6px] text-neutral-400 block">Velocity</span>
+                        <b className="text-[9px] text-purple-600">9.8x</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  TodoFusion
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Me / Design built around lasting clarity (Replaces 'The craft, considered.') */}
+      <WhyChooseMe />
+
+      {/* Structured 6-Step Process */}
+      <Process />
+
+      {/* Pricing & Packages */}
+      <Pricing />
+
+      {/* FAQs */}
+      <FAQ />
+
+      {/* Testimonials */}
+      <section id="testimonials" className="overflow-hidden py-28 text-[#15151a]">
+        <div className="mx-auto max-w-[1100px] px-5 text-center">
+          <p className="eyebrow inline-block text-[#7a7b83]">( 05 — KIND WORDS )</p>
+          <div className="testimonial-anim relative mt-12 min-h-[300px] rounded-3xl border border-black/10 bg-[#e5e5e7] p-8 md:p-14 backdrop-blur-xl shadow-lg will-change-transform will-change-opacity">
+            <span className="display text-9xl leading-none opacity-10 text-[#15151a] select-none">“</span>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={quote}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="absolute inset-x-0 top-12 px-6 md:px-12"
+              >
+                <p className="display text-2xl leading-tight tracking-[-.03em] text-[#15151a] md:text-4xl">
+                  {testimonials[quote].quote}
+                </p>
+                <p className="mt-8 text-xs font-bold uppercase tracking-[.15em] text-[#15151a]">
+                  {testimonials[quote].name}
+                </p>
+                <p className="mt-1 text-xs text-[#53545d]">{testimonials[quote].role}</p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <div className="mt-8 flex justify-center gap-2">
+            {testimonials.map((_, i) => (
+              <button
+                aria-label={`Show testimonial ${i + 1}`}
+                onClick={() => setQuote(i)}
+                key={i}
+                className={`h-2 rounded-full transition-all duration-300 hover:scale-110 ${
+                  i === quote ? 'w-6 bg-[#15151a]' : 'w-2 bg-black/20'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="relative overflow-hidden px-5 py-28 md:px-10 md:py-40">
+        <div className="orb absolute -left-60 bottom-0 h-[600px] w-[600px]" />
+        <div className="relative mx-auto grid max-w-[1500px] gap-16 md:grid-cols-[1.1fr_.9fr]">
+          <div>
+            <p className="contact-text-anim eyebrow text-[#7a7b83] will-change-transform will-change-opacity">( 06 — Contact )</p>
+            <h2 className="contact-text-anim display mt-6 text-6xl leading-[.85] tracking-[-.07em] text-[#15151a] md:text-9xl will-change-transform will-change-opacity">
+              Let&apos;s make<br />
+              something <i className="font-light text-[#7a7b83]">felt.</i>
+            </h2>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText('hello@borshonkabir.com');
+                setCopied(true);
+                setTimeout(() => setCopied(false), 1800);
+              }}
+              className="contact-text-anim mt-12 flex items-center gap-2 border-b border-black/30 pb-2 text-lg text-[#15151a] hover:border-[#15151a] transition-all hover:scale-[1.01] will-change-transform will-change-opacity"
+            >
+              {copied ? (
+                <>
+                  <Check size={17} className="text-[#15151a]" /> Email copied!
+                </>
+              ) : (
+                <>
+                  <Copy size={17} /> hello@borshonkabir.com
+                </>
+              )}
+            </button>
+            <p className="contact-text-anim mt-4 text-sm text-[#53545d] will-change-transform will-change-opacity">Sylhet, Bangladesh · +880 1XXX-XXXXXX</p>
+            <div className="contact-text-anim mt-8 flex gap-3 will-change-transform will-change-opacity">
+              {[Instagram, Youtube, Linkedin].map((Icon, i) => (
+                <a
+                  aria-label="Social profile"
+                  key={i}
+                  href="#"
+                  className="grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-[#e5e5e7] text-[#15151a] transition-all duration-300 hover:bg-[#17171d] hover:text-white hover:scale-110 hover:-translate-y-1 hover:shadow-md"
+                >
+                  <Icon size={16} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSent(true);
+            }}
+            className="contact-form-anim self-end rounded-3xl border border-black/10 bg-[#e5e5e7] p-6 backdrop-blur-xl md:p-8 shadow-xl hover:shadow-2xl transition-shadow duration-500 will-change-transform will-change-opacity"
+          >
+            <p className="display text-2xl text-[#15151a]">Start a project</p>
+            <div className="mt-7 grid gap-5">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-[#53545d]">
+                Name
+                <input
+                  required
+                  className="mt-2 w-full border-b border-black/20 bg-transparent py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] placeholder:text-[#8e8f96] transition-colors"
+                  placeholder="Your name"
+                />
+              </label>
+              <label className="text-[10px] font-bold uppercase tracking-wider text-[#53545d]">
+                Email
+                <input
+                  required
+                  type="email"
+                  className="mt-2 w-full border-b border-black/20 bg-transparent py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] placeholder:text-[#8e8f96] transition-colors"
+                  placeholder="hello@studio.com"
+                />
+              </label>
+              <label className="text-[10px] font-bold uppercase tracking-wider text-[#53545d]">
+                Project type
+                <select className="mt-2 w-full border-b border-black/20 bg-[#e5e5e7] py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] transition-colors">
+                  <option>Brand Film</option>
+                  <option>Music Video</option>
+                  <option>Motion Design</option>
+                  <option>Other</option>
+                </select>
+              </label>
+              <label className="text-[10px] font-bold uppercase tracking-wider text-[#53545d]">
+                Tell me more
+                <textarea
+                  required
+                  className="mt-2 h-20 w-full border-b border-black/20 bg-transparent py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] placeholder:text-[#8e8f96] transition-colors"
+                  placeholder="A few details about the work..."
+                />
+              </label>
+              {sent ? (
+                <p className="flex items-center gap-2 text-sm text-[#15151a]">
+                  <Check size={16} /> Thanks — your note is on its way.
+                </p>
+              ) : (
+                <button className="dark-cta group mt-2 flex w-full items-center justify-between rounded-xl bg-[#17171d] px-5 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-all duration-300 hover:bg-[#34343a] hover:scale-[1.01] active:scale-[0.99]">
+                  <span>Send enquiry</span>
+                  <ArrowUpRight size={17} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </button>
+              )}
+            </div>
+          </form>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <Footer />
+
+      {/* Project Lightbox */}
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActive(null)}
+            className="fixed inset-0 z-[90] grid place-items-center bg-neutral-950/90 p-5 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.94, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 p-7 md:p-10 text-white shadow-2xl"
+            >
+              <button
+                onClick={() => setActive(null)}
+                className="absolute right-5 top-5 text-neutral-400 hover:text-white transition-colors"
+              >
+                <X />
+              </button>
+              <p className="eyebrow text-neutral-400">
+                {active.category} / {active.year}
+              </p>
+              <h2 className="display mt-4 text-5xl text-white">{active.title}</h2>
+              <div className="mt-8 grid h-64 place-items-center rounded-2xl border border-white/10 bg-neutral-950">
+                <Play size={34} fill="currentColor" className="text-white" />
+              </div>
+              <div className="mt-7 grid gap-6 text-sm leading-6 text-neutral-400 md:grid-cols-2">
+                <p>
+                  Placeholder case study. Replace this area with the project&apos;s hosted embed or{' '}
+                  <code>/videos/project.mp4</code> when your reel is ready.
+                </p>
+                <p>
+                  <b className="text-white">Role:</b> Editing, Color, Motion
+                  <br />
+                  <b className="text-white">Tools:</b> Premiere Pro, After Effects, Resolve
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </main>
+  );
+}
