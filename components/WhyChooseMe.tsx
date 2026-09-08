@@ -94,10 +94,6 @@ export default function WhyChooseMe() {
             scale: 1,
             filter: 'blur(0px)',
             duration: 1.0,
-            stagger: {
-              amount: 0.36,
-              ease: 'power2.out',
-            },
             ease: 'expo.out',
             scrollTrigger: {
               trigger: sectionRef.current,
@@ -168,7 +164,6 @@ export default function WhyChooseMe() {
             y: 0,
             duration: 1.1,
             ease: 'expo.out',
-            delay: 0.12,
             scrollTrigger: {
               trigger: col2Ref.current,
               start: 'top 85%',
@@ -181,7 +176,6 @@ export default function WhyChooseMe() {
           val: 56,
           duration: 1.8,
           ease: 'expo.out',
-          delay: 0.12,
           scrollTrigger: {
             trigger: col2Ref.current,
             start: 'top 85%',
@@ -205,7 +199,6 @@ export default function WhyChooseMe() {
             y: 0,
             duration: 1.1,
             ease: 'expo.out',
-            delay: 0.24,
             scrollTrigger: {
               trigger: col3Ref.current,
               start: 'top 85%',
@@ -218,7 +211,6 @@ export default function WhyChooseMe() {
           val: 4.9,
           duration: 1.8,
           ease: 'expo.out',
-          delay: 0.24,
           scrollTrigger: {
             trigger: col3Ref.current,
             start: 'top 85%',
