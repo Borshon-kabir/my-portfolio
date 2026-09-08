@@ -499,7 +499,7 @@ export default function Portfolio() {
 
       {/* Selected Work Section (Projects with Clarity) */}
       <section id="work" className="px-5 py-24 md:px-10 md:py-32">
-        <span id="projects" className="sr-only">Projects with clarity</span>
+        <span id="projects" className="sr-only">Featured Edits & Stories</span>
 
         <div className="mx-auto max-w-[1160px]">
           {/* Header */}
@@ -508,7 +508,7 @@ export default function Portfolio() {
               Selected work
             </p>
             <h2 className="project-header-anim mt-5 font-serif text-[clamp(2.75rem,5.5vw,5.5rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-[#15151a] will-change-transform will-change-opacity">
-              Projects with clarity
+              Featured Edits & Stories
             </h2>
             <p className="project-header-anim mx-auto mt-4 max-w-xl text-base text-[#53545d] will-change-transform will-change-opacity">
               A curated collection of brand, web, and product design work created for modern teams.
