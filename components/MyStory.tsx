@@ -1,0 +1,436 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// ============================================================================
+// CUSTOMIZABLE STORY CONFIGURATION
+// Easily replace the two images, text, and details here:
+// ============================================================================
+export const STORY_CONFIG = {
+  // Section name / title (exactly as requested: "My Story")
+  sectionTitle: 'My Story',
+
+  // Main story statement (matching the reference image wording exactly)
+  storyText:
+    "I'm Masum, A Strategic And User-Focused Product Designer With 10+ Years Of Experience. Passionate About Solving User And Product Challenges, I Leverage Design To Help Companies Meet Their Business Goals. Analytical, Results-Driven, And Highly Collaborative, I Excel At Crafting Intuitive Experiences That Drive Success.",
+
+  // First photo (Left Polaroid with pin) - easily replace or update image path
+  image1: {
+    src: '/images/my-story-1.jpg',
+    alt: 'My Story portrait left',
+  },
+
+  // Second photo (Right Polaroid with pin) - easily replace or update image path
+  image2: {
+    src: '/images/my-story-2.jpg',
+    alt: 'My Story portrait right',
+  },
+};
+
+// Hyper-realistic 3D metallic pushpin / thumbtack component
+function PushPin({ className = 'w-7 h-7' }: { className?: string }) {
+  return (
+    <div className={`relative flex items-center justify-center select-none pointer-events-none ${className}`}>
+      {/* Soft cast shadow on the polaroid paper */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 w-4 h-2 rounded-full bg-black/45 blur-[2px] transform scale-y-75" />
+
+      {/* 3D Glossy Black Thumbtack Head */}
+      <svg
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-full h-full drop-shadow-md z-10"
+      >
+        <defs>
+          <radialGradient
+            id="pinSpecular"
+            cx="32%"
+            cy="28%"
+            r="68%"
+            fx="28%"
+            fy="24%"
+          >
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+            <stop offset="22%" stopColor="#9a9ba4" stopOpacity="0.8" />
+            <stop offset="55%" stopColor="#1e1f26" stopOpacity="1" />
+            <stop offset="100%" stopColor="#08080c" stopOpacity="1" />
+          </radialGradient>
+          <linearGradient id="pinCollar" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#434450" />
+            <stop offset="50%" stopColor="#181920" />
+            <stop offset="100%" stopColor="#0a0a0d" />
+          </linearGradient>
+          <filter id="pinDropShadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#000000" floodOpacity="0.55" />
+          </filter>
+        </defs>
+
+        {/* Pin base rim */}
+        <ellipse cx="16" cy="21" rx="7" ry="3.5" fill="url(#pinCollar)" />
+
+        {/* Pin spherical head */}
+        <circle cx="16" cy="14" r="8.5" fill="url(#pinSpecular)" filter="url(#pinDropShadow)" />
+
+        {/* Primary specular highlight point */}
+        <circle cx="13.5" cy="11.5" r="2.2" fill="#ffffff" opacity="0.8" />
+        <circle cx="15.2" cy="13.2" r="1.1" fill="#ffffff" opacity="0.4" />
+      </svg>
+    </div>
+  );
+}
+
+export default function MyStory() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardContainerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const textRef = useRef<HTMLParagraphElement>(null);
+  const photo1Ref = useRef<HTMLDivElement>(null);
+  const photo2Ref = useRef<HTMLDivElement>(null);
+  const cropMarksRef = useRef<HTMLDivElement>(null);
+
+  // Mouse tilt states for interactive 3D feel
+  const [photo1Loaded, setPhoto1Loaded] = useState(true);
+  const [photo2Loaded, setPhoto2Loaded] = useState(true);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // 1. Ultra-luxury entrance for the main paper canvas
+      if (cardContainerRef.current) {
+        gsap.fromTo(
+          cardContainerRef.current,
+          {
+            y: 80,
+            opacity: 0,
+            scale: 0.96,
+            transformPerspective: 1200,
+            rotateX: 3,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            rotateX: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 85%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // 2. Corner crop marks delicate mechanical reveal
+      if (cropMarksRef.current) {
+        gsap.fromTo(
+          cropMarksRef.current.children,
+          { opacity: 0, scale: 0.7 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.9,
+            stagger: 0.08,
+            delay: 0.2,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 85%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // 3. Title reveal with blur-to-clear precision
+      if (titleRef.current) {
+        gsap.fromTo(
+          titleRef.current,
+          { y: 35, opacity: 0, filter: 'blur(8px)' },
+          {
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            duration: 0.95,
+            delay: 0.15,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 82%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // 4. Story paragraph text reveal
+      if (textRef.current) {
+        gsap.fromTo(
+          textRef.current,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.05,
+            delay: 0.25,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // 5. High-end multi-plane scroll parallax for the two pinned polaroids
+      if (photo1Ref.current && photo2Ref.current) {
+        // Initial entrance for polaroids (fly & settle onto the canvas)
+        gsap.fromTo(
+          photo1Ref.current,
+          { y: 70, opacity: 0, rotate: -14 },
+          {
+            y: 0,
+            opacity: 1,
+            rotate: -7,
+            duration: 1.2,
+            delay: 0.35,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 78%',
+              once: true,
+            },
+          }
+        );
+
+        gsap.fromTo(
+          photo2Ref.current,
+          { y: 90, opacity: 0, rotate: 10 },
+          {
+            y: 0,
+            opacity: 1,
+            rotate: 4,
+            duration: 1.3,
+            delay: 0.45,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 78%',
+              once: true,
+            },
+          }
+        );
+
+        // Continuous smooth parallax scrub tied to scroll
+        gsap.to(photo1Ref.current, {
+          yPercent: -14,
+          rotate: -9,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.8,
+          },
+        });
+
+        gsap.to(photo2Ref.current, {
+          yPercent: -24,
+          rotate: 6,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.6,
+          },
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // 3D Magnetic hover physics for Polaroid 1
+  const handlePhoto1Move = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = photo1Ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    gsap.to(el, {
+      rotateY: x * 12,
+      rotateX: -y * 12,
+      scale: 1.04,
+      duration: 0.4,
+      ease: 'power2.out',
+    });
+  };
+
+  const handlePhoto1Leave = () => {
+    const el = photo1Ref.current;
+    if (!el) return;
+    gsap.to(el, {
+      rotateY: 0,
+      rotateX: 0,
+      scale: 1,
+      duration: 0.8,
+      ease: 'elastic.out(1, 0.6)',
+    });
+  };
+
+  // 3D Magnetic hover physics for Polaroid 2
+  const handlePhoto2Move = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = photo2Ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    gsap.to(el, {
+      rotateY: x * 12,
+      rotateX: -y * 12,
+      scale: 1.05,
+      duration: 0.4,
+      ease: 'power2.out',
+    });
+  };
+
+  const handlePhoto2Leave = () => {
+    const el = photo2Ref.current;
+    if (!el) return;
+    gsap.to(el, {
+      rotateY: 0,
+      rotateX: 0,
+      scale: 1,
+      duration: 0.8,
+      ease: 'elastic.out(1, 0.6)',
+    });
+  };
+
+  return (
+    <section
+      ref={sectionRef}
+      id="my-story"
+      className="relative px-5 py-20 md:px-10 md:py-32 overflow-hidden selection:bg-[#121218] selection:text-white"
+    >
+      <div className="mx-auto max-w-[1240px]">
+        {/* Editorial Presentation Canvas / Sheet */}
+        <div
+          ref={cardContainerRef}
+          className="relative rounded-[28px] sm:rounded-[36px] md:rounded-[44px] bg-[#fbfbfc] border border-black/[0.08] p-8 sm:p-12 md:p-16 lg:p-20 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.07),0_2px_6px_rgba(0,0,0,0.02)] will-change-transform will-change-opacity overflow-hidden"
+        >
+          {/* Subtle paper grain & ambient backlight glow */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white via-[#fbfbfc] to-[#f4f4f7] opacity-90" />
+          <div className="pointer-events-none absolute top-0 right-1/4 w-[450px] h-[450px] rounded-full bg-black/[0.015] blur-[120px]" />
+
+          {/* Minimalist Printer Registration & Crop Marks (Matching reference image) */}
+          <div ref={cropMarksRef} className="pointer-events-none absolute inset-0 z-20">
+            {/* Top-Left Crop Mark (L-shape) */}
+            <div className="absolute top-6 left-6 sm:top-8 sm:left-8 w-4 h-4 border-t-2 border-l-2 border-black/35" />
+            {/* Top-Right Crop Mark */}
+            <div className="absolute top-6 right-6 sm:top-8 sm:right-8 w-4 h-4 border-t-2 border-r-2 border-black/35" />
+            {/* Bottom-Left Crop Mark */}
+            <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 w-4 h-4 border-b-2 border-l-2 border-black/35" />
+            {/* Bottom-Right Crop Mark */}
+            <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 w-4 h-4 border-b-2 border-r-2 border-black/35" />
+
+            {/* Subtle Editorial Header Margin Rule */}
+            <div className="absolute top-8 left-16 right-16 h-[1px] bg-black/[0.05] hidden sm:block" />
+          </div>
+
+          {/* Section Header: "My Story" (Centered exactly as in reference) */}
+          <div className="relative z-10 text-center mb-10 sm:mb-14 md:mb-16">
+            <h2
+              ref={titleRef}
+              className="font-serif text-[clamp(2.5rem,5.5vw,4.5rem)] font-semibold leading-[1.05] tracking-[-0.035em] text-[#121218] will-change-transform will-change-opacity"
+            >
+              {STORY_CONFIG.sectionTitle}
+            </h2>
+          </div>
+
+          {/* Main Layout: Editorial Narrative & Floating Pinned Polaroids */}
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+            {/* Story Paragraph Column */}
+            <div className="lg:col-span-7 xl:col-span-8 max-w-2xl">
+              <p
+                ref={textRef}
+                className="font-sans text-[1.125rem] sm:text-[1.35rem] md:text-[1.55rem] lg:text-[1.65rem] font-normal leading-[1.55] tracking-[-0.018em] text-[#1e1f26] will-change-transform will-change-opacity"
+              >
+                {STORY_CONFIG.storyText}
+              </p>
+            </div>
+
+            {/* Pinned Polaroids Composition (Bottom Right Corner as in Reference) */}
+            <div className="lg:col-span-5 xl:col-span-4 relative flex justify-center lg:justify-end pt-4 pb-8 lg:pb-0">
+              <div className="relative w-[300px] sm:w-[340px] md:w-[380px] h-[340px] sm:h-[380px] md:h-[420px]">
+                {/* ------------------------------------------------------------- */}
+                {/* PHOTO 1: LEFT POLAROID (Underneath, tilted counter-clockwise) */}
+                {/* ------------------------------------------------------------- */}
+                <div
+                  ref={photo1Ref}
+                  onMouseMove={handlePhoto1Move}
+                  onMouseLeave={handlePhoto1Leave}
+                  style={{ transform: 'rotate(-7deg)' }}
+                  className="absolute left-0 bottom-2 sm:bottom-4 z-10 w-[200px] sm:w-[230px] md:w-[255px] p-3 pb-8 sm:p-3.5 sm:pb-9 md:p-4 md:pb-11 bg-white rounded-[2px] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.22),0_10px_20px_-5px_rgba(0,0,0,0.1)] border border-black/[0.06] cursor-pointer will-change-transform transition-shadow duration-300 hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.32)]"
+                >
+                  {/* Pinned Thumbtack on top center */}
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-30">
+                    <PushPin className="w-7 h-7" />
+                  </div>
+
+                  {/* Photo Frame */}
+                  <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#e8e9ec] rounded-[1px]">
+                    <Image
+                      src={STORY_CONFIG.image1.src}
+                      alt={STORY_CONFIG.image1.alt}
+                      fill
+                      sizes="(max-width: 768px) 240px, 300px"
+                      className="object-cover transition-transform duration-700 ease-out hover:scale-105"
+                      priority
+                      onLoad={() => setPhoto1Loaded(true)}
+                    />
+                  </div>
+                </div>
+
+                {/* ------------------------------------------------------------- */}
+                {/* PHOTO 2: RIGHT POLAROID (Foreground, tilted clockwise)        */}
+                {/* ------------------------------------------------------------- */}
+                <div
+                  ref={photo2Ref}
+                  onMouseMove={handlePhoto2Move}
+                  onMouseLeave={handlePhoto2Leave}
+                  style={{ transform: 'rotate(4deg)' }}
+                  className="absolute right-0 top-0 sm:top-2 z-20 w-[210px] sm:w-[240px] md:w-[265px] p-3 pb-8 sm:p-3.5 sm:pb-9 md:p-4 md:pb-11 bg-white rounded-[2px] shadow-[0_28px_65px_-12px_rgba(0,0,0,0.28),0_12px_24px_-6px_rgba(0,0,0,0.12)] border border-black/[0.06] cursor-pointer will-change-transform transition-shadow duration-300 hover:shadow-[0_38px_85px_-18px_rgba(0,0,0,0.36)]"
+                >
+                  {/* Pinned Thumbtack on top center */}
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-30">
+                    <PushPin className="w-7 h-7" />
+                  </div>
+
+                  {/* Photo Frame */}
+                  <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#e8e9ec] rounded-[1px]">
+                    <Image
+                      src={STORY_CONFIG.image2.src}
+                      alt={STORY_CONFIG.image2.alt}
+                      fill
+                      sizes="(max-width: 768px) 240px, 300px"
+                      className="object-cover transition-transform duration-700 ease-out hover:scale-105"
+                      priority
+                      onLoad={() => setPhoto2Loaded(true)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

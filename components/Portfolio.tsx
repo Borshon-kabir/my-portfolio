@@ -9,6 +9,7 @@ import { projects, testimonials, type Project } from '../data/content';
 import Hero from './Hero';
 import HomeIntro from './HomeIntro';
 import WhyChooseMe from './WhyChooseMe';
+import MyStory from './MyStory';
 import Process from './Process';
 import Pricing from './Pricing';
 import FAQ from './FAQ';
@@ -295,6 +296,8 @@ export default function Portfolio() {
         else if (targetId === 'about-intro') targetEl = document.getElementById('about');
         else if (targetId === 'services' || targetId === 'why-me' || targetId === 'why-choose-me') {
           targetEl = document.getElementById('services');
+        } else if (targetId === 'story' || targetId === 'my-story') {
+          targetEl = document.getElementById('my-story');
         }
       }
 
@@ -353,6 +356,8 @@ export default function Portfolio() {
       else if (id === 'about') target = document.getElementById('about') || document.getElementById('about-intro');
       else if (id === 'services' || id === 'why-me' || id === 'why-choose-me') {
         target = document.getElementById('services');
+      } else if (id === 'story' || id === 'my-story') {
+        target = document.getElementById('my-story');
       }
     }
 
@@ -818,6 +823,9 @@ export default function Portfolio() {
           </div>
         </div>
       </section>
+
+      {/* My Story Section */}
+      <MyStory />
 
       {/* Why Choose Me / Design built around lasting clarity (Replaces 'The craft, considered.') */}
       <WhyChooseMe />
