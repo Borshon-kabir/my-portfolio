@@ -532,70 +532,50 @@ export default function Portfolio() {
 
           {/* 2-Column Grid */}
           <div className="projects-grid-container mt-16 grid gap-8 md:grid-cols-2">
-            {/* Card 1: Brandora */}
+            {/* Card 1: Map Animation */}
             <div
               onClick={() => setActive(projects[0])}
               className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
             >
-              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#fceee9] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
-                <div className="relative h-full w-full overflow-hidden rounded-2xl border border-black/5 bg-white shadow-xl flex flex-col justify-between">
-                  <div className="flex items-center justify-between border-b border-black/5 bg-neutral-50/80 px-4 py-2.5">
-                    <div className="flex items-center gap-1.5">
-                      <span className="h-2 w-2 rounded-full bg-black/20" />
-                      <span className="h-2 w-2 rounded-full bg-black/20" />
-                      <span className="h-2 w-2 rounded-full bg-black/20" />
-                    </div>
-                    <span className="rounded-full bg-white px-3 py-0.5 text-[9px] font-mono text-neutral-400 border border-black/5">
-                      brandorastudio.com
-                    </span>
-                    <span className="rounded-full bg-black px-2 py-0.5 text-[9px] font-medium text-white">
-                      New launch
-                    </span>
-                  </div>
-                  <div className="p-5 pb-2">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-medium text-neutral-400 mb-1">
-                      <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
-                      Creative Studio
-                    </span>
-                    <h4 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-[#15151a] leading-tight">
-                      Design Better,<br />Faster, Smarter
-                    </h4>
-                  </div>
-                  <div className="relative mt-auto h-[55%] w-full overflow-hidden bg-neutral-900 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-700/30 via-neutral-900 to-black" />
-                    <div className="relative z-10 flex items-center gap-3 opacity-90 scale-90">
-                      <div className="w-28 h-20 rounded-lg bg-neutral-800 border border-white/20 p-2 shadow-2xl flex flex-col justify-between">
-                        <div className="h-1.5 w-10 bg-amber-400 rounded-full" />
-                        <div className="space-y-1">
-                          <div className="h-1 w-full bg-white/20 rounded" />
-                          <div className="h-1 w-3/4 bg-white/20 rounded" />
-                        </div>
-                        <div className="h-2 w-full bg-neutral-700 rounded flex gap-0.5 p-0.5">
-                          <div className="h-full w-1/3 bg-amber-500 rounded-sm" />
-                          <div className="h-full w-1/4 bg-indigo-500 rounded-sm" />
-                        </div>
-                      </div>
-                      <div className="w-24 h-16 rounded-lg bg-neutral-800 border border-white/20 p-1.5 flex flex-col justify-between">
-                        <div className="h-1 w-8 bg-emerald-400 rounded-full" />
-                        <div className="grid grid-cols-2 gap-1 h-8">
-                          <div className="bg-white/10 rounded" />
-                          <div className="bg-white/10 rounded" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#0d1117] shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.18)]">
+                {/* Thumbnail */}
+                <img
+                  src="/thumbnails/map-animation.jpg"
+                  alt="Map Animation"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {/* Dark gradient scrim */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                {/* Category badge — top left */}
+                <span className="absolute left-4 top-4 rounded-full border border-amber-400/30 bg-black/50 px-3 py-1 text-[10px] font-mono tracking-wider uppercase text-amber-300 backdrop-blur-sm">
+                  Documentary Video
+                </span>
+                {/* REC dot — top right */}
+                <span className="absolute right-4 top-4 flex items-center gap-1.5 rounded-full bg-black/50 px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest text-red-400 backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
+                  REC
+                </span>
+                {/* Bottom title overlay */}
+                <div className="absolute bottom-4 left-4 right-4">
+                  <p className="text-[9px] font-mono tracking-widest text-white/50 uppercase mb-1">Real Stories. Real Impact.</p>
+                  <h4 className="font-serif text-2xl font-bold text-white leading-tight tracking-tight drop-shadow-lg">
+                    Map Animation
+                  </h4>
                 </div>
-                {/* Play overlay */}
+                {/* Play overlay on hover */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-black/40 backdrop-blur-md shadow-lg">
-                    <Play size={20} className="translate-x-0.5 fill-white text-white" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-black/50 backdrop-blur-md shadow-[0_0_40px_rgba(255,255,255,0.15)] group-hover:scale-110 transition-transform duration-300">
+                    <Play size={24} className="translate-x-0.5 fill-white text-white" />
                   </div>
                 </div>
               </div>
               <div className="mt-4 flex items-center justify-between px-1">
-                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
-                  Brandora
-                </h3>
+                <div>
+                  <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                    Map Animation
+                  </h3>
+                  <p className="text-xs text-[#7a7b83] mt-0.5">Documentary Video · 2024</p>
+                </div>
                 <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
                   <ArrowUpRight size={22} />
                 </span>

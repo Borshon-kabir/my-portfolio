@@ -18,19 +18,18 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: 'project-01',
-    title: 'Brandora',
-    client: 'Brandora Creative',
-    category: 'Commercial & Brand Film',
+    title: 'Map Animation',
+    client: 'Personal Project',
+    category: 'Documentary Video',
     year: '2024',
     tone: 'from-[#fceee9] to-[#fed6c8]',
     themeColor: '#fed6c8',
     accentText: '#7a2a10',
-    tagline: 'Design Better, Faster, Smarter',
-    description: 'A rhythmic brand film and interactive launch campaign showcasing creative digital operations for modern teams.',
-    // 🔁 Replace with your actual Google Drive share link or YouTube URL
-    thumbnail: 'https://images.unsplash.com/photo-1574717024453-354056afd6fc?w=800&q=80',
-    videoUrl: 'https://drive.google.com/file/d/YOUR_DRIVE_FILE_ID_1/view?usp=sharing',
-    tags: ['Brand Film', 'Commercial', 'Motion Graphics'],
+    tagline: 'Real Stories. Real Impact.',
+    description: 'A cinematic documentary-style map animation video crafted with dynamic motion graphics, archival visuals, and compelling storytelling.',
+    thumbnail: '/thumbnails/map-animation.jpg',
+    videoUrl: 'https://drive.google.com/file/d/1J2pzygfxyluF_Lk2_8yYdK1Hmi-NRNZy/view?usp=sharing',
+    tags: ['Documentary', 'Map Animation', 'Motion Graphics'],
   },
   {
     id: 'project-02',
