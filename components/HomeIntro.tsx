@@ -79,7 +79,7 @@ export default function HomeIntro() {
       id="benefits"
       className="relative min-h-[620px] overflow-hidden px-6 pb-28 pt-24 text-center md:px-10 md:pt-36"
     >
-      <span id="benefits-intro" className="sr-only">Discover Why We Stand Out</span>
+      <span id="benefits-intro" className="sr-only">Discover Why I Stand Out</span>
       {/* Subtle ambient background glow */}
       <div className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[640px] rounded-full bg-black/[0.015] blur-[130px]" />
 
@@ -90,7 +90,7 @@ export default function HomeIntro() {
         </p>
 
         <h2 className="intro-anim-header mt-6 font-serif text-[clamp(2.75rem,5.5vw,5.5rem)] font-semibold leading-[0.95] tracking-[-.045em] text-[#15151a] will-change-transform will-change-opacity">
-          Discover why we <span className="italic font-light text-[#7a7b83]">stand out</span>
+          Discover why I <span className="italic font-light text-[#7a7b83]">stand out</span>
         </h2>
 
         <p className="intro-anim-header mx-auto mt-6 max-w-2xl text-base md:text-lg leading-relaxed text-[#53545d] will-change-transform will-change-opacity">

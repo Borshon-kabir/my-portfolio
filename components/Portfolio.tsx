@@ -122,21 +122,33 @@ export default function Portfolio() {
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'manual';
       }
-      if (!window.location.hash) {
-        window.scrollTo(0, 0);
+      // Always scroll to top on load
+      window.scrollTo(0, 0);
+      // Remove any hash from URL for a clean Home state
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
       }
     }
 
     const onBeforeUnload = () => {
-      if ('scrollRestoration' in window.history) {
-        window.history.scrollRestoration = 'manual';
-      }
-      if (!window.location.hash) {
+      if (typeof window !== 'undefined') {
+        if ('scrollRestoration' in window.history) {
+          window.history.scrollRestoration = 'manual';
+        }
         window.scrollTo(0, 0);
+        if (window.location.hash) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
       }
     };
     window.addEventListener('beforeunload', onBeforeUnload);
 
+    return () => {
+
+    };
+  }, []);
+
+  useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     if (typeof ScrollTrigger.clearScrollMemory === 'function') {
       ScrollTrigger.clearScrollMemory('manual');
@@ -265,7 +277,7 @@ export default function Portfolio() {
       if (typeof window !== 'undefined') {
         delete (window as any).__lenis;
       }
-      window.removeEventListener('beforeunload', onBeforeUnload);
+
       gsap.ticker.remove(updateRaf);
       l.destroy();
       ctx.revert();
