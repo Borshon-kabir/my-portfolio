@@ -13,9 +13,9 @@ export const STORY_CONFIG = {
   // Section name / title (exactly as requested: "My Story")
   sectionTitle: 'My Story',
 
-  // Main story statement (matching the reference image wording exactly)
+  // Main story statement
   storyText:
-    "I'm Masum, A Strategic And User-Focused Product Designer With 10+ Years Of Experience. Passionate About Solving User And Product Challenges, I Leverage Design To Help Companies Meet Their Business Goals. Analytical, Results-Driven, And Highly Collaborative, I Excel At Crafting Intuitive Experiences That Drive Success.",
+    "I'm Borshon Kabir, a passionate Video Editor with 1+ year of hands-on experience in turning raw footage into compelling visual stories. Focused on precise pacing, engaging motion graphics, and clean sound design, I help creators and brands elevate their content and capture their audience's attention. Creative, detail-oriented, and results-driven, I excel at crafting seamless edits that leave a lasting impression.",
 
   // First photo (Left Polaroid with pin) - easily replace or update image path
   image1: {
