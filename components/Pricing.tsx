@@ -239,7 +239,7 @@ export default function Pricing() {
               <div className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-white/5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
                 <CrownIcon className="h-5 w-5" />
               </div>
-              <span className="rounded-full border border-amber-400/25 bg-amber-400/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-amber-300">
+              <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">
                 Most Popular
               </span>
             </div>
