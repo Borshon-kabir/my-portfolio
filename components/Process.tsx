@@ -4,13 +4,12 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
-  Users,
-  Lightbulb,
-  AppWindow,
-  Award,
-  MessagesSquare,
-  Search,
+  Film,
+  Scissors,
+  Sliders,
   Sparkles,
+  Award,
+  Search,
   Check,
   ArrowUpRight,
 } from 'lucide-react';
@@ -21,70 +20,70 @@ interface ProcessStep {
   title: string;
   tagline: string;
   description: string;
-  icon: typeof Users;
+  icon: any;
   deliverable: string;
 }
 
 const processSteps: ProcessStep[] = [
   {
-    id: 'discovery',
+    id: 'brief-discovery',
     stepNumber: '01',
-    title: 'Discovery',
-    tagline: 'Alignment & Scope',
+    title: 'PHASE 01 — Brief & Discovery',
+    tagline: 'Discovery & Scope',
     description:
-      'We start by understanding your goals, audience, brand needs, and the direction your project should take.',
-    icon: Users,
-    deliverable: 'Creative brief, references & scope alignment',
-  },
-  {
-    id: 'strategy',
-    stepNumber: '02',
-    title: 'Strategy',
-    tagline: 'Structure & Narrative',
-    description:
-      'I define the structure, message, and creative approach before moving into the visual design stage.',
-    icon: Lightbulb,
-    deliverable: 'Pacing outline, narrative arc & content blueprint',
-  },
-  {
-    id: 'direction',
-    stepNumber: '03',
-    title: 'Direction',
-    tagline: 'Mood & Aesthetics',
-    description:
-      'A clear visual direction is shaped through mood, layout ideas, typography, and overall design language.',
-    icon: AppWindow,
-    deliverable: 'Visual moodboard, tone exploration & aesthetic guides',
-  },
-  {
-    id: 'design',
-    stepNumber: '04',
-    title: 'Design',
-    tagline: 'Craft & Composition',
-    description:
-      'The main layouts, brand elements, and digital experiences are crafted with careful attention to detail.',
-    icon: Award,
-    deliverable: 'Pixel-perfect compositions & refined visual systems',
-  },
-  {
-    id: 'development',
-    stepNumber: '05',
-    title: 'Development',
-    tagline: 'Execution & Motion',
-    description:
-      'Designs are turned into responsive, polished pages with smooth interactions and clean structure.',
-    icon: MessagesSquare,
-    deliverable: 'Fluid 120fps motion, responsive code & interactions',
-  },
-  {
-    id: 'delivery',
-    stepNumber: '06',
-    title: 'Delivery',
-    tagline: 'Launch & Handoff',
-    description:
-      'Final assets, pages, and guidelines are prepared clearly so everything is ready to launch.',
+      'I understand your goals, audience, content style, references, and editing requirements.',
     icon: Search,
-    deliverable: 'Master production export, documentation & handoff',
+    deliverable: 'Creative brief, references & editing direction',
+  },
+  {
+    id: 'story-structure',
+    stepNumber: '02',
+    title: 'PHASE 02 — Story & Structure',
+    tagline: 'Story & Narrative Arc',
+    description:
+      'I shape the footage into a clear story with the right pacing, structure, and visual flow.',
+    icon: Film,
+    deliverable: 'Story structure, pacing & edit plan',
+  },
+  {
+    id: 'rough-cut',
+    stepNumber: '03',
+    title: 'PHASE 03 — Rough Cut',
+    tagline: 'Assembly & First Edit',
+    description:
+      'The first edit comes together with carefully selected footage, music, timing, and transitions.',
+    icon: Scissors,
+    deliverable: 'Rough cut & initial edit',
+  },
+  {
+    id: 'motion-visuals',
+    stepNumber: '04',
+    title: 'PHASE 04 — Motion & Visuals',
+    tagline: 'Motion Graphics & VFX',
+    description:
+      'I add motion graphics, typography, transitions, visual effects, and other elements that strengthen the edit.',
+    icon: Sparkles,
+    deliverable: 'Motion graphics, titles & visual effects',
+  },
+  {
+    id: 'color-sound',
+    stepNumber: '05',
+    title: 'PHASE 05 — Color & Sound',
+    tagline: 'Color Grade & Audio Mix',
+    description:
+      'I refine the visual tone and audio so the final video feels polished, balanced, and professional.',
+    icon: Sliders,
+    deliverable: 'Color grade, sound design & audio mix',
+  },
+  {
+    id: 'final-delivery',
+    stepNumber: '06',
+    title: 'PHASE 06 — Final Delivery',
+    tagline: 'Mastering & Publishing',
+    description:
+      'After revisions, I prepare the final master in the required format and make sure everything is ready for publishing.',
+    icon: Award,
+    deliverable: 'Final master, revisions & delivery',
   },
 ];
 
@@ -380,7 +379,7 @@ export default function Process() {
                     {/* Card Top Header: Step Number and Status Pill */}
                     <div className="flex items-center justify-between gap-2 mb-2.5">
                       <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[#7a7b83]">
-                        Phase {step.stepNumber}
+                        Step {step.stepNumber} of 06
                       </span>
 
                       {isActive ? (
