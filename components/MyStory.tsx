@@ -319,6 +319,10 @@ export default function MyStory() {
       id="my-story"
       className="relative px-5 py-20 md:px-10 md:py-32 overflow-hidden selection:bg-[#121218] selection:text-white"
     >
+      {/* Anchor targets so both #about and #my-story scroll smoothly to this section */}
+      <span id="about" className="sr-only">About Borshon Kabir - My Story</span>
+      <span id="about-intro" className="sr-only">About Borshon Kabir</span>
+      <span id="story" className="sr-only">My Story</span>
       <div className="mx-auto max-w-[1240px]">
         {/* Editorial Presentation Canvas / Sheet */}
         <div

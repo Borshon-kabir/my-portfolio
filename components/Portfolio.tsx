@@ -289,15 +289,13 @@ export default function Portfolio() {
       if (!targetId) return;
 
       let targetEl = document.getElementById(targetId);
-      if (!targetEl) {
+      if (targetId === 'about' || targetId === 'about-intro' || targetId === 'story' || targetId === 'my-story') {
+        targetEl = document.getElementById('my-story') || document.getElementById('about');
+      } else if (!targetEl) {
         if (targetId === 'projects') targetEl = document.getElementById('work');
         else if (targetId === 'work') targetEl = document.getElementById('projects');
-        else if (targetId === 'about') targetEl = document.getElementById('about') || document.getElementById('about-intro');
-        else if (targetId === 'about-intro') targetEl = document.getElementById('about');
         else if (targetId === 'services' || targetId === 'why-me' || targetId === 'why-choose-me') {
           targetEl = document.getElementById('services');
-        } else if (targetId === 'story' || targetId === 'my-story') {
-          targetEl = document.getElementById('my-story');
         }
       }
 
@@ -351,13 +349,12 @@ export default function Portfolio() {
     }
 
     let target = document.getElementById(id);
-    if (!target) {
+    if (id === 'about' || id === 'story' || id === 'my-story') {
+      target = document.getElementById('my-story') || document.getElementById('about');
+    } else if (!target) {
       if (id === 'projects') target = document.getElementById('work');
-      else if (id === 'about') target = document.getElementById('about') || document.getElementById('about-intro');
       else if (id === 'services' || id === 'why-me' || id === 'why-choose-me') {
         target = document.getElementById('services');
-      } else if (id === 'story' || id === 'my-story') {
-        target = document.getElementById('my-story');
       }
     }
 

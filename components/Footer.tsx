@@ -59,6 +59,7 @@ export default function Footer() {
               <p className="text-xs font-semibold uppercase tracking-wider text-[#7a7b83]">Navigation</p>
               <ul className="mt-4 space-y-2.5 text-sm text-[#53545d]">
                 <li><a href="#home" className="hover:text-[#15151a] transition-colors">Home</a></li>
+                <li><a href="#about" className="hover:text-[#15151a] transition-colors">My story</a></li>
                 <li><a href="#work" className="hover:text-[#15151a] transition-colors">Selected work</a></li>
                 <li><a href="#why-me" className="hover:text-[#15151a] transition-colors">Why choose me</a></li>
                 <li><a href="#process" className="hover:text-[#15151a] transition-colors">Process</a></li>

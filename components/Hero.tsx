@@ -127,10 +127,13 @@ export default function Hero() {
         window.location.hash = id;
       }
       let target = document.getElementById(id);
-      if (!target && id === 'projects') target = document.getElementById('work');
-      if (!target && id === 'work') target = document.getElementById('projects');
-      if (!target && id === 'about') target = document.getElementById('about-intro');
-      if (!target && id === 'services') target = document.getElementById('why-choose-me');
+      if (id === 'about' || id === 'story') {
+        target = document.getElementById('my-story') || document.getElementById('about');
+      } else if (!target) {
+        if (id === 'projects') target = document.getElementById('work');
+        if (id === 'work') target = document.getElementById('projects');
+        if (id === 'services') target = document.getElementById('why-choose-me');
+      }
 
       if (target) {
         if ((window as any).__lenis) {
