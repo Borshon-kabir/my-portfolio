@@ -54,17 +54,19 @@ export default function Pricing() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // 1. Header reveal animation
+
+      // ── 1. Header: eyebrow pill pops in, heading clips up, subtitle fades
       gsap.fromTo(
         '.pricing-header-elem',
-        { y: 30, opacity: 0, filter: 'blur(6px)' },
+        { y: 36, opacity: 0, filter: 'blur(8px)', skewY: 1 },
         {
           y: 0,
           opacity: 1,
           filter: 'blur(0px)',
-          duration: 0.8,
+          skewY: 0,
+          duration: 0.9,
           stagger: 0.1,
-          ease: 'power3.out',
+          ease: 'expo.out',
           scrollTrigger: {
             trigger: headerRef.current,
             start: 'top 88%',
@@ -73,119 +75,129 @@ export default function Pricing() {
         }
       );
 
-      // 2. Cards entrance animation with 3D perspective stagger
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: cardsContainerRef.current,
-          start: 'top 82%',
-          once: true,
-        },
-      });
+      // ── 2. Cards: simultaneously rise + 3D tilt-in + blur dissolve
+      const cards = [card1Ref.current, card2Ref.current].filter(Boolean);
 
-      // Card 1 spring in
-      tl.fromTo(
-        card1Ref.current,
+      gsap.fromTo(
+        cards,
         {
-          y: 80,
+          y: 90,
           opacity: 0,
-          rotateX: 8,
-          scale: 0.95,
+          rotateX: 12,
+          rotateY: (i) => (i === 0 ? -6 : 6),   // light card tilts left, dark right
+          scale: 0.94,
+          filter: 'blur(10px)',
+          transformPerspective: 1000,
         },
         {
           y: 0,
           opacity: 1,
           rotateX: 0,
+          rotateY: 0,
           scale: 1,
-          duration: 0.95,
-          ease: 'power3.out',
-        },
-        0
-      );
-
-      // Card 2 spring in with micro delay and deeper stagger
-      tl.fromTo(
-        card2Ref.current,
-        {
-          y: 110,
-          opacity: 0,
-          rotateX: 10,
-          scale: 0.93,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          rotateX: 0,
-          scale: 1,
-          duration: 1.05,
-          ease: 'power3.out',
-        },
-        0.12
-      );
-
-      // 3. Counter roll-up for Price 1 ($1,200)
-      const count1 = { val: 0 };
-      tl.to(
-        count1,
-        {
-          val: 1200,
-          duration: 1.4,
-          ease: 'power2.out',
-          onUpdate: () => {
-            if (price1Ref.current) {
-              price1Ref.current.textContent = Math.round(count1.val).toLocaleString('en-US');
-            }
+          filter: 'blur(0px)',
+          duration: 1.15,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: cardsContainerRef.current,
+            start: 'top 82%',
+            once: true,
           },
-        },
-        0.2
+        }
       );
 
-      // 4. Counter roll-up for Price 2 ($2,800)
-      const count2 = { val: 0 };
-      tl.to(
-        count2,
-        {
-          val: 2800,
-          duration: 1.6,
-          ease: 'power2.out',
+      // ── 3. Light card: soft glow border pulse on entry
+      if (card1Ref.current) {
+        gsap.fromTo(
+          card1Ref.current,
+          { boxShadow: '0 0 0px 0px rgba(100,100,120,0)' },
+          {
+            boxShadow: '0 0 0px 0px rgba(100,100,120,0)',
+            duration: 0.01,
+            scrollTrigger: { trigger: cardsContainerRef.current, start: 'top 82%', once: true },
+          }
+        );
+      }
+
+      // ── 4. Dark card: inner glow shimmer sweep on entry
+      if (card2Ref.current) {
+        gsap.fromTo(
+          '.pricing-dark-shimmer',
+          { x: '-110%', opacity: 0.7 },
+          {
+            x: '110%',
+            opacity: 0,
+            duration: 1.1,
+            ease: 'expo.out',
+            delay: 0.35,
+            scrollTrigger: {
+              trigger: cardsContainerRef.current,
+              start: 'top 82%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // ── 5. Price counters — expo roll-up with blur reveal, both at once
+      const priceAnim = (ref: React.RefObject<HTMLSpanElement>, target: number, decimals = 0) => {
+        if (!ref.current) return;
+        gsap.fromTo(
+          ref.current,
+          { filter: 'blur(12px)', opacity: 0, y: 16 },
+          {
+            filter: 'blur(0px)',
+            opacity: 1,
+            y: 0,
+            duration: 1.0,
+            ease: 'expo.out',
+            delay: 0.25,
+            scrollTrigger: { trigger: cardsContainerRef.current, start: 'top 82%', once: true },
+          }
+        );
+        const counter = { val: 0 };
+        gsap.to(counter, {
+          val: target,
+          duration: 1.7,
+          ease: 'expo.out',
+          delay: 0.25,
+          scrollTrigger: { trigger: cardsContainerRef.current, start: 'top 82%', once: true },
           onUpdate: () => {
-            if (price2Ref.current) {
-              price2Ref.current.textContent = Math.round(count2.val).toLocaleString('en-US');
-            }
+            if (ref.current)
+              ref.current.textContent = counter.val.toFixed(decimals === 0 ? 0 : decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
           },
-        },
-        0.3
-      );
+        });
+      };
 
-      // 5. Features checklist cascade
-      tl.fromTo(
-        '.pricing-f1-item',
-        { x: -10, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.45,
-          stagger: 0.05,
-          ease: 'power2.out',
-        },
-        0.4
-      );
+      priceAnim(price1Ref, 1200);
+      priceAnim(price2Ref, 2800);
 
-      tl.fromTo(
-        '.pricing-f2-item',
-        { x: -10, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.45,
-          stagger: 0.05,
-          ease: 'power2.out',
-        },
-        0.5
-      );
+      // ── 6. Feature lists: spring-wave cascade (both lists start together)
+      const featureAnim = (selector: string, delay: number) => {
+        gsap.fromTo(
+          selector,
+          { x: -16, opacity: 0, filter: 'blur(4px)' },
+          {
+            x: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            duration: 0.55,
+            stagger: 0.065,
+            ease: 'expo.out',
+            delay,
+            scrollTrigger: { trigger: cardsContainerRef.current, start: 'top 82%', once: true },
+          }
+        );
+      };
+
+      featureAnim('.pricing-f1-item', 0.5);
+      featureAnim('.pricing-f2-item', 0.5);
+
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
+
 
   // Interactive 3D Card Hover Tilt handlers
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, card: HTMLDivElement | null) => {
@@ -314,6 +326,8 @@ export default function Pricing() {
                 className="h-full w-full object-cover"
               />
             </div>
+            {/* Entry shimmer sweep */}
+            <div className="pricing-dark-shimmer pointer-events-none absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
             <div className="relative z-10">
               {/* Squircle Icon */}
