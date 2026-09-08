@@ -28,7 +28,7 @@ const processSteps: ProcessStep[] = [
   {
     id: 'brief-discovery',
     stepNumber: '01',
-    title: 'PHASE 01 — Brief & Discovery',
+    title: 'Brief & Discovery',
     tagline: 'Discovery & Scope',
     description:
       'I understand your goals, audience, content style, references, and editing requirements.',
@@ -38,7 +38,7 @@ const processSteps: ProcessStep[] = [
   {
     id: 'story-structure',
     stepNumber: '02',
-    title: 'PHASE 02 — Story & Structure',
+    title: 'Story & Structure',
     tagline: 'Story & Narrative Arc',
     description:
       'I shape the footage into a clear story with the right pacing, structure, and visual flow.',
@@ -48,7 +48,7 @@ const processSteps: ProcessStep[] = [
   {
     id: 'rough-cut',
     stepNumber: '03',
-    title: 'PHASE 03 — Rough Cut',
+    title: 'Rough Cut',
     tagline: 'Assembly & First Edit',
     description:
       'The first edit comes together with carefully selected footage, music, timing, and transitions.',
@@ -58,7 +58,7 @@ const processSteps: ProcessStep[] = [
   {
     id: 'motion-visuals',
     stepNumber: '04',
-    title: 'PHASE 04 — Motion & Visuals',
+    title: 'Motion & Visuals',
     tagline: 'Motion Graphics & VFX',
     description:
       'I add motion graphics, typography, transitions, visual effects, and other elements that strengthen the edit.',
@@ -68,7 +68,7 @@ const processSteps: ProcessStep[] = [
   {
     id: 'color-sound',
     stepNumber: '05',
-    title: 'PHASE 05 — Color & Sound',
+    title: 'Color & Sound',
     tagline: 'Color Grade & Audio Mix',
     description:
       'I refine the visual tone and audio so the final video feels polished, balanced, and professional.',
@@ -78,7 +78,7 @@ const processSteps: ProcessStep[] = [
   {
     id: 'final-delivery',
     stepNumber: '06',
-    title: 'PHASE 06 — Final Delivery',
+    title: 'Final Delivery',
     tagline: 'Mastering & Publishing',
     description:
       'After revisions, I prepare the final master in the required format and make sure everything is ready for publishing.',
