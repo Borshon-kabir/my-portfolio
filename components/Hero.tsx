@@ -15,7 +15,9 @@ export default function Hero() {
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'manual';
       }
-      window.scrollTo(0, 0);
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+      }
     }
 
     const ctx = gsap.context(() => {
@@ -115,35 +117,91 @@ export default function Hero() {
       </span>
     ));
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+    e.preventDefault();
+    const id = hash.replace('#', '').toLowerCase();
+    if (typeof window !== 'undefined') {
+      try {
+        window.history.pushState(null, '', `#${id}`);
+      } catch {
+        window.location.hash = id;
+      }
+      let target = document.getElementById(id);
+      if (!target && id === 'projects') target = document.getElementById('work');
+      if (!target && id === 'work') target = document.getElementById('projects');
+      if (!target && id === 'about') target = document.getElementById('about-intro');
+      if (!target && id === 'services') target = document.getElementById('why-choose-me');
+
+      if (target) {
+        if ((window as any).__lenis) {
+          (window as any).__lenis.scrollTo(target, { offset: -80, duration: 1.2 });
+        } else {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else if (id === 'home') {
+        if ((window as any).__lenis) {
+          (window as any).__lenis.scrollTo(0, { duration: 1.2 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }
+  };
+
   return (
     <section ref={root} id="home" className="min-h-screen px-5 pb-20 pt-6 md:px-10 md:pt-7">
       <nav className="show-nav mx-auto flex max-w-[1160px] items-center justify-between">
-        <a href="#home" className="flex items-center gap-2 font-semibold tracking-[-.04em] text-[#15151a]">
+        <a
+          href="#home"
+          onClick={(e) => handleNavClick(e, '#home')}
+          className="flex items-center gap-2 font-semibold tracking-[-.04em] text-[#15151a]"
+        >
           <span className="grid h-7 w-7 place-items-center rounded-full bg-[#15151a] font-serif text-xl text-[#f5f5f4]">
             B
           </span>
           <span>Borshon.</span>
         </a>
         <div className="hidden items-center gap-8 text-sm text-[#25252b] md:flex">
-          <a href="#home" className="hover:text-[#15151a] transition-colors">
+          <a
+            href="#home"
+            onClick={(e) => handleNavClick(e, '#home')}
+            className="hover:text-[#15151a] transition-colors"
+          >
             Home
           </a>
-          <a href="#about" className="hover:text-[#15151a] transition-colors">
+          <a
+            href="#about"
+            onClick={(e) => handleNavClick(e, '#about')}
+            className="hover:text-[#15151a] transition-colors"
+          >
             About
           </a>
-          <a href="#work" className="hover:text-[#15151a] transition-colors">
+          <a
+            href="#work"
+            onClick={(e) => handleNavClick(e, '#work')}
+            className="hover:text-[#15151a] transition-colors"
+          >
             Projects
           </a>
-          <a href="#services" className="hover:text-[#15151a] transition-colors">
+          <a
+            href="#services"
+            onClick={(e) => handleNavClick(e, '#services')}
+            className="hover:text-[#15151a] transition-colors"
+          >
             Services
           </a>
-          <a href="#contact" className="hover:text-[#15151a] transition-colors">
+          <a
+            href="#contact"
+            onClick={(e) => handleNavClick(e, '#contact')}
+            className="hover:text-[#15151a] transition-colors"
+          >
             Contact
           </a>
         </div>
         <div className="flex items-center gap-3">
           <a
             href="#contact"
+            onClick={(e) => handleNavClick(e, '#contact')}
             className="dark-cta group flex items-center gap-3 rounded-lg bg-[#17171d] py-2 pl-4 pr-2 text-sm font-semibold text-white shadow-md hover:scale-[1.01] active:scale-[0.98] transition-all"
           >
             <span>Let&apos;s talk</span>

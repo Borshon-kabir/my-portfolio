@@ -195,6 +195,7 @@ export default function WhyChooseMe() {
       className="relative px-5 py-24 md:px-10 md:py-32 overflow-hidden"
     >
       <span id="why-choose-me" className="sr-only">Why choose me</span>
+      <span id="why-me" className="sr-only">Why me</span>
       <span id="the-craft" className="sr-only">The craft, considered</span>
 
       <div className="mx-auto max-w-[1200px]">

@@ -76,9 +76,10 @@ export default function HomeIntro() {
   return (
     <section
       ref={root}
-      id="about-intro"
+      id="about"
       className="relative min-h-[620px] overflow-hidden px-6 pb-28 pt-24 text-center md:px-10 md:pt-36"
     >
+      <span id="about-intro" className="sr-only">About Borshon Kabir</span>
       {/* Subtle ambient background glow */}
       <div className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[640px] rounded-full bg-black/[0.015] blur-[130px]" />
 

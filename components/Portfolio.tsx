@@ -14,7 +14,7 @@ import Pricing from './Pricing';
 import FAQ from './FAQ';
 import Footer from './Footer';
 
-const nav = ['Home', 'Projects', 'Services', 'Process', 'Pricing', 'FAQ', 'Contact'];
+const nav = ['Home', 'About', 'Projects', 'Services', 'Process', 'Pricing', 'FAQ', 'Contact'];
 
 export default function Portfolio() {
   const [menu, setMenu] = useState(false);
@@ -121,14 +121,18 @@ export default function Portfolio() {
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'manual';
       }
-      window.scrollTo(0, 0);
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+      }
     }
 
     const onBeforeUnload = () => {
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'manual';
       }
-      window.scrollTo(0, 0);
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+      }
     };
     window.addEventListener('beforeunload', onBeforeUnload);
 
@@ -143,7 +147,12 @@ export default function Portfolio() {
       smoothWheel: true,
       wheelMultiplier: 1.0,
     });
-    l.scrollTo(0, { immediate: true });
+    if (!window.location.hash) {
+      l.scrollTo(0, { immediate: true });
+    }
+    if (typeof window !== 'undefined') {
+      (window as any).__lenis = l;
+    }
 
     l.on('scroll', ScrollTrigger.update);
     const updateRaf = (time: number) => {
@@ -252,6 +261,9 @@ export default function Portfolio() {
     });
 
     return () => {
+      if (typeof window !== 'undefined') {
+        delete (window as any).__lenis;
+      }
       window.removeEventListener('beforeunload', onBeforeUnload);
       gsap.ticker.remove(updateRaf);
       l.destroy();
@@ -264,9 +276,99 @@ export default function Portfolio() {
     return () => clearInterval(i);
   }, []);
 
+  // Auto-scroll on page load/refresh if a URL hash exists, after GSAP animations initialize
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const scrollToHash = (isInitial = false) => {
+      const rawHash = window.location.hash;
+      if (!rawHash) return;
+
+      const targetId = decodeURIComponent(rawHash.replace(/^#/, '')).toLowerCase().trim();
+      if (!targetId) return;
+
+      let targetEl = document.getElementById(targetId);
+      if (!targetEl) {
+        if (targetId === 'projects') targetEl = document.getElementById('work');
+        else if (targetId === 'work') targetEl = document.getElementById('projects');
+        else if (targetId === 'about') targetEl = document.getElementById('about') || document.getElementById('about-intro');
+        else if (targetId === 'about-intro') targetEl = document.getElementById('about');
+        else if (targetId === 'services' || targetId === 'why-me' || targetId === 'why-choose-me') {
+          targetEl = document.getElementById('services');
+        }
+      }
+
+      if (targetEl) {
+        ScrollTrigger.refresh();
+        const lenis = (window as any).__lenis;
+        if (lenis) {
+          lenis.scrollTo(targetEl, {
+            offset: -80,
+            duration: isInitial ? 0.9 : 1.2,
+            immediate: false,
+          });
+        } else {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else if (targetId === 'home') {
+        const lenis = (window as any).__lenis;
+        if (lenis) {
+          lenis.scrollTo(0, { duration: 0.8 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    };
+
+    // Automatically scroll to the hashed section after GSAP animations initialize
+    const timer1 = setTimeout(() => scrollToHash(true), 250);
+    const timer2 = setTimeout(() => scrollToHash(false), 850);
+
+    const onHashChange = () => scrollToHash(false);
+    window.addEventListener('hashchange', onHashChange);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      window.removeEventListener('hashchange', onHashChange);
+    };
+  }, []);
+
   const go = (x: string) => {
     setMenu(false);
-    document.getElementById(x.toLowerCase())?.scrollIntoView({ behavior: 'smooth' });
+    const id = x.toLowerCase().trim();
+
+    // 1. Update the URL hash (e.g. /#services, /#about, /#contact)
+    if (typeof window !== 'undefined') {
+      try {
+        window.history.pushState(null, '', `#${id}`);
+      } catch {
+        window.location.hash = id;
+      }
+    }
+
+    let target = document.getElementById(id);
+    if (!target) {
+      if (id === 'projects') target = document.getElementById('work');
+      else if (id === 'about') target = document.getElementById('about') || document.getElementById('about-intro');
+      else if (id === 'services' || id === 'why-me' || id === 'why-choose-me') {
+        target = document.getElementById('services');
+      }
+    }
+
+    if (target) {
+      if (typeof window !== 'undefined' && (window as any).__lenis) {
+        (window as any).__lenis.scrollTo(target, { offset: -80, duration: 1.2 });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else if (id === 'home') {
+      if (typeof window !== 'undefined' && (window as any).__lenis) {
+        (window as any).__lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
   };
 
   return (
@@ -289,26 +391,41 @@ export default function Portfolio() {
 
       <header className="fixed inset-x-0 top-0 z-40 p-4 md:p-6">
         <nav className="mx-auto flex max-w-[1500px] items-center justify-between rounded-full border border-black/10 bg-[#f4f4f6]/80 px-5 py-3 backdrop-blur-xl">
-          <button onClick={() => go('Home')} className="display text-lg font-bold text-[#15151a]">
+          <a
+            href="#home"
+            onClick={(e) => {
+              e.preventDefault();
+              go('Home');
+            }}
+            className="display text-lg font-bold text-[#15151a]"
+          >
             BK<span className="text-[#15151a]">.</span>
-          </button>
+          </a>
           <div className="hidden gap-6 lg:flex">
             {nav.map((x) => (
-              <button
+              <a
                 key={x}
-                onClick={() => go(x)}
+                href={`#${x.toLowerCase()}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  go(x);
+                }}
                 className="text-[10px] font-semibold uppercase tracking-[.16em] text-[#53545d] hover:text-[#15151a] transition-colors"
               >
                 {x}
-              </button>
+              </a>
             ))}
           </div>
-          <button
-            onClick={() => go('Contact')}
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              go('Contact');
+            }}
             className="hidden rounded-full bg-[#17171d] px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition hover:bg-[#34343a] sm:block"
           >
             Let&apos;s Talk <ArrowUpRight className="inline" size={13} />
-          </button>
+          </a>
           <button
             aria-label="Open menu"
             onClick={() => setMenu(true)}
@@ -332,13 +449,17 @@ export default function Portfolio() {
             </button>
             <div className="my-auto">
               {nav.map((x) => (
-                <button
-                  onClick={() => go(x)}
+                <a
+                  href={`#${x.toLowerCase()}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    go(x);
+                  }}
                   key={x}
                   className="display block text-6xl font-bold leading-tight text-[#15151a] hover:text-[#53545d] transition-colors"
                 >
                   {x}
-                </button>
+                </a>
               ))}
             </div>
             <p className="text-xs uppercase tracking-[.2em] text-[#7a7b83]">
@@ -364,7 +485,6 @@ export default function Portfolio() {
 
       {/* Selected Work Section (Projects with Clarity) */}
       <section id="work" className="px-5 py-24 md:px-10 md:py-32">
-        <span id="about" className="sr-only">About Borshon Kabir</span>
         <span id="projects" className="sr-only">Projects with clarity</span>
 
         <div className="mx-auto max-w-[1160px]">
