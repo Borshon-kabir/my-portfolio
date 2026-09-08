@@ -225,64 +225,72 @@ export default function Pricing() {
             ref={card2Ref}
             onMouseMove={(e) => onMove(e, card2Ref.current)}
             onMouseLeave={() => onLeave(card2Ref.current)}
-            className="group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-[#2e2f38] bg-gradient-to-b from-[#24242a] to-[#121218] p-6 sm:p-7 shadow-[0_4px_8px_-4px_rgba(148,151,158,0.3),0_16px_36px_-2px_rgba(148,151,158,0.2),inset_0_1px_0_1px_#44454c] transition-all duration-300 hover:border-[#44454c] hover:shadow-[0_8px_16px_-4px_rgba(148,151,158,0.4),0_24px_48px_-2px_rgba(148,151,158,0.3)] will-change-transform"
+            className="group relative flex flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#131318] p-7 sm:p-8 shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_64px_-12px_rgba(0,0,0,0.7)] transition-all duration-300 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1),0_32px_80px_-12px_rgba(0,0,0,0.8)] will-change-transform"
           >
-            {/* Glow bg */}
-            <div className="pointer-events-none absolute -bottom-12 -right-12 h-[380px] w-[380px] overflow-hidden rounded-[inherit] opacity-45 mix-blend-screen">
-              <img src="/images/pricing-glow.gif" alt="" className="h-full w-full object-cover" />
-            </div>
-            {/* Shimmer sweep */}
-            <div className="pricing-dark-shimmer pointer-events-none absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            {/* Ambient radial glow — bottom right, no overflow clipping issues */}
+            <div className="pointer-events-none absolute bottom-0 right-0 h-72 w-72 rounded-full bg-indigo-600/10 blur-[80px]" />
+            <div className="pointer-events-none absolute top-0 left-0 h-48 w-48 rounded-full bg-purple-600/8 blur-[60px]" />
 
-            {/* Popular badge */}
-            <div className="absolute right-5 top-5 rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-amber-300">
-              Most Popular
-            </div>
+            {/* Entry shimmer sweep */}
+            <div className="pricing-dark-shimmer pointer-events-none absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/8 to-transparent" />
 
-            <div className="relative z-10">
-              {/* Icon */}
-              <div className="grid h-11 w-11 place-items-center rounded-xl border border-[#44454c] bg-gradient-to-b from-[#2e2e36] to-[#1a1a20] text-white shadow-[0_4px_8px_-4px_rgba(18,18,24,0.9),0_12px_18px_-2px_rgba(18,18,24,0.9),inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_#121218]">
+            {/* Top row: icon + badge aligned */}
+            <div className="relative z-10 flex items-center justify-between">
+              <div className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-white/5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
                 <CrownIcon className="h-5 w-5" />
               </div>
-
-              {/* Title & Subtitle */}
-              <h3 className="mt-5 text-lg font-semibold text-white tracking-tight">Documentary Edit</h3>
-              <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#9ea0a8]">
-                Cinematic, story-driven long-form video editing for videos 10 minutes or less.
-              </p>
-
-              {/* Price */}
-              <div className="mt-7 flex items-baseline gap-1">
-                <span className="font-serif text-3xl font-semibold text-white">$</span>
-                <span ref={price2Ref} className="font-serif text-[48px] sm:text-[54px] font-semibold leading-none tracking-tight text-white">
-                  110
-                </span>
-                <span className="ml-1.5 text-xs font-semibold uppercase tracking-wider text-[#7a7b83]">USD</span>
-              </div>
-
-              {/* CTA */}
-              <a
-                href="#contact"
-                className="group/btn relative mt-7 flex h-11 w-full items-center justify-center overflow-hidden rounded-lg bg-white text-sm font-medium text-[#121218] shadow-[0_2px_4px_rgba(0,0,0,0.2),0_6px_16px_rgba(0,0,0,0.15)] transition-all duration-300 hover:bg-[#f2f2f4] hover:shadow-[0_8px_24px_rgba(255,255,255,0.2)] active:scale-[0.99]"
-              >
-                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/10 to-transparent transition-transform duration-1000 ease-out group-hover/btn:translate-x-full" />
-                <span className="relative z-10">Book this package</span>
-              </a>
+              <span className="rounded-full border border-amber-400/25 bg-amber-400/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-amber-300">
+                Most Popular
+              </span>
             </div>
 
-            {/* Features */}
-            <div className="relative z-10 mt-7 rounded-xl border border-white/10 bg-[#16161c]/80 backdrop-blur-md p-5">
-              <h4 className="text-xs font-semibold text-white mb-3.5 tracking-tight">What's included</h4>
-              <ul className="space-y-2.5">
+            {/* Title & Subtitle */}
+            <div className="relative z-10 mt-6">
+              <h3 className="text-lg font-semibold text-white tracking-tight">Documentary Edit</h3>
+              <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-white/50">
+                Cinematic, story-driven long-form video editing for videos 10 minutes or less.
+              </p>
+            </div>
+
+            {/* Price */}
+            <div className="relative z-10 mt-7 flex items-baseline gap-1">
+              <span className="font-serif text-3xl font-semibold text-white">$</span>
+              <span ref={price2Ref} className="font-serif text-[48px] sm:text-[54px] font-semibold leading-none tracking-tight text-white">
+                110
+              </span>
+              <span className="ml-1.5 text-xs font-semibold uppercase tracking-wider text-white/30">USD</span>
+            </div>
+
+            {/* CTA Button */}
+            <a
+              href="#contact"
+              className="group/btn relative z-10 mt-7 flex h-12 w-full items-center justify-center overflow-hidden rounded-xl bg-white text-sm font-semibold text-[#121218] shadow-[0_2px_8px_rgba(255,255,255,0.12)] transition-all duration-300 hover:scale-[1.02] hover:bg-[#f0f0f2] hover:shadow-[0_8px_28px_rgba(255,255,255,0.18)] active:scale-[0.98]"
+            >
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/8 to-transparent transition-transform duration-700 ease-out group-hover/btn:translate-x-full" />
+              <span className="relative z-10">Book this package</span>
+            </a>
+
+            {/* Divider */}
+            <div className="relative z-10 mt-7 border-t border-white/8" />
+
+            {/* Features — seamlessly integrated, no nested card */}
+            <div className="relative z-10 mt-5 flex-1">
+              <h4 className="text-[11px] font-semibold uppercase tracking-widest text-white/35 mb-4">
+                What's included
+              </h4>
+              <ul className="space-y-3">
                 {card2Features.map((feat) => (
-                  <li key={feat} className="pricing-f2-item flex items-center gap-2.5 text-xs sm:text-[13px] text-[#a8a9b0] will-change-transform will-change-opacity">
-                    <Check size={13} strokeWidth={2.2} className="text-white shrink-0" />
+                  <li key={feat} className="pricing-f2-item flex items-center gap-3 text-xs sm:text-[13px] text-white/70 will-change-transform will-change-opacity">
+                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/8">
+                      <Check size={9} strokeWidth={2.5} className="text-white" />
+                    </span>
                     <span>{feat}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
+
 
           {/* ── CARD 3: Custom Order (Accent) ── */}
           <div
