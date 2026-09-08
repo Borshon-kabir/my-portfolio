@@ -530,64 +530,356 @@ export default function Portfolio() {
             </p>
           </div>
 
-          {/* Video Gallery Grid */}
-          <div className="projects-grid-container mt-16 grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
-              <div
-                key={project.id}
-                onClick={() => setActive(project)}
-                className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
-              >
-                {/* Thumbnail — 16:9 */}
-                <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-black/8 shadow-sm transition-all duration-500 group-hover:shadow-[0_20px_48px_rgba(20,20,25,0.14)]">
-                  {/* Thumbnail image */}
-                  <img
-                    src={project.thumbnail}
-                    alt={project.title}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  {/* Dark scrim */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
-
-                  {/* Play button */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/20 backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:bg-white/30 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.25)]">
-                      <Play size={20} className="translate-x-0.5 fill-white text-white" />
+          {/* 2-Column Grid */}
+          <div className="projects-grid-container mt-16 grid gap-8 md:grid-cols-2">
+            {/* Card 1: Brandora */}
+            <div
+              onClick={() => setActive(projects[0])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#fceee9] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl border border-black/5 bg-white shadow-xl flex flex-col justify-between">
+                  <div className="flex items-center justify-between border-b border-black/5 bg-neutral-50/80 px-4 py-2.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="h-2 w-2 rounded-full bg-black/20" />
+                      <span className="h-2 w-2 rounded-full bg-black/20" />
+                      <span className="h-2 w-2 rounded-full bg-black/20" />
+                    </div>
+                    <span className="rounded-full bg-white px-3 py-0.5 text-[9px] font-mono text-neutral-400 border border-black/5">
+                      brandorastudio.com
+                    </span>
+                    <span className="rounded-full bg-black px-2 py-0.5 text-[9px] font-medium text-white">
+                      New launch
+                    </span>
+                  </div>
+                  <div className="p-5 pb-2">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-medium text-neutral-400 mb-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
+                      Creative Studio
+                    </span>
+                    <h4 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-[#15151a] leading-tight">
+                      Design Better,<br />Faster, Smarter
+                    </h4>
+                  </div>
+                  <div className="relative mt-auto h-[55%] w-full overflow-hidden bg-neutral-900 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-700/30 via-neutral-900 to-black" />
+                    <div className="relative z-10 flex items-center gap-3 opacity-90 scale-90">
+                      <div className="w-28 h-20 rounded-lg bg-neutral-800 border border-white/20 p-2 shadow-2xl flex flex-col justify-between">
+                        <div className="h-1.5 w-10 bg-amber-400 rounded-full" />
+                        <div className="space-y-1">
+                          <div className="h-1 w-full bg-white/20 rounded" />
+                          <div className="h-1 w-3/4 bg-white/20 rounded" />
+                        </div>
+                        <div className="h-2 w-full bg-neutral-700 rounded flex gap-0.5 p-0.5">
+                          <div className="h-full w-1/3 bg-amber-500 rounded-sm" />
+                          <div className="h-full w-1/4 bg-indigo-500 rounded-sm" />
+                        </div>
+                      </div>
+                      <div className="w-24 h-16 rounded-lg bg-neutral-800 border border-white/20 p-1.5 flex flex-col justify-between">
+                        <div className="h-1 w-8 bg-emerald-400 rounded-full" />
+                        <div className="grid grid-cols-2 gap-1 h-8">
+                          <div className="bg-white/10 rounded" />
+                          <div className="bg-white/10 rounded" />
+                        </div>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Category badge */}
-                  <span className="absolute left-3 top-3 rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[10px] font-mono tracking-wider uppercase text-white/80 backdrop-blur-sm">
-                    {project.category}
-                  </span>
-
-                  {/* Tags at bottom */}
-                  <div className="absolute bottom-3 left-3 flex flex-wrap gap-1.5">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full bg-white/15 px-2.5 py-0.5 text-[9px] font-medium text-white/80 backdrop-blur-sm border border-white/15"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
                 </div>
-
-                {/* Card footer */}
-                <div className="mt-3.5 flex items-start justify-between px-0.5">
-                  <div>
-                    <h3 className="font-serif text-xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="mt-0.5 text-xs text-[#7a7b83]">{project.client} · {project.year}</p>
+                {/* Play overlay */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-black/40 backdrop-blur-md shadow-lg">
+                    <Play size={20} className="translate-x-0.5 fill-white text-white" />
                   </div>
-                  <span className="mt-1 text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
-                    <ArrowUpRight size={20} />
-                  </span>
                 </div>
               </div>
-            ))}
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  Brandora
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+
+            {/* Card 2: Nivora */}
+            <div
+              onClick={() => setActive(projects[1])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#a2e701] flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)] p-6 sm:p-7">
+                <div className="relative h-full w-full flex flex-col justify-between">
+                  <div className="flex items-center justify-between text-[#0d2900] text-xs font-mono font-bold tracking-wider">
+                    <span>NIVORA</span>
+                    <span>SATURDAY, 09:52 AM</span>
+                  </div>
+                  <div className="relative my-auto flex flex-col items-center justify-center text-center">
+                    <div className="relative w-full max-w-[280px] h-[160px] flex items-center justify-center overflow-hidden">
+                      <svg viewBox="0 0 200 200" className="w-full h-full text-[#0d2900] opacity-85">
+                        <path d="M100,30 C75,30 55,50 55,80 C55,105 70,120 75,140 C80,160 70,180 60,195 L140,195 C130,180 120,160 125,140 C130,120 145,105 145,80 C145,50 125,30 100,30 Z" fill="currentColor" opacity="0.35" />
+                        <circle cx="85" cy="75" r="14" fill="none" stroke="currentColor" strokeWidth="4" />
+                        <circle cx="115" cy="75" r="14" fill="none" stroke="currentColor" strokeWidth="4" />
+                        <line x1="99" y1="75" x2="101" y2="75" stroke="currentColor" strokeWidth="4" />
+                      </svg>
+                    </div>
+                    <h3 className="font-sans text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter text-[#0d2900] leading-[0.85] -mt-10 z-10">
+                      DESIGN<br />FOR<br />EVERYONE
+                    </h3>
+                  </div>
+                  <p className="text-[9px] font-mono tracking-widest text-[#0d2900]/70 uppercase text-center">
+                    THOUGHTFUL DESIGN ACROSS BRANDS, PRODUCTS, AND DIGITAL EXPERIENCES
+                  </p>
+                </div>
+                {/* Play overlay */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-black/40 backdrop-blur-md shadow-lg">
+                    <Play size={20} className="translate-x-0.5 fill-white text-white" />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  Nivora
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+
+            {/* Card 3: Codify */}
+            <div
+              onClick={() => setActive(projects[2])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#18392b] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white p-5 shadow-xl flex flex-col justify-between border border-black/5">
+                  <div className="flex items-center justify-between border-b border-black/5 pb-2.5">
+                    <span className="font-bold tracking-tight text-[#15151a] text-xs">Codify.</span>
+                    <div className="flex items-center gap-3 text-[9px] text-neutral-400">
+                      <span>Services</span>
+                      <span>Our work</span>
+                      <span>About</span>
+                    </div>
+                    <span className="rounded-full bg-black px-2 py-0.5 text-[8px] text-white">Book</span>
+                  </div>
+                  <div className="my-1.5">
+                    <span className="text-[8px] font-mono uppercase tracking-widest text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
+                      Creative Agency
+                    </span>
+                    <h4 className="font-serif text-base sm:text-lg font-bold tracking-tight text-[#15151a] mt-1 leading-snug">
+                      Elevating Your Brand with Innovative Design
+                    </h4>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2 h-20 sm:h-24">
+                    <div className="rounded-lg bg-[#a2e701] p-1.5 flex flex-col justify-between">
+                      <span className="text-[7px] font-black uppercase">Brand</span>
+                      <div className="h-1 w-full bg-black/30 rounded" />
+                    </div>
+                    <div className="rounded-lg bg-[#fed8aa] p-1.5 flex flex-col justify-between">
+                      <span className="text-[7px] font-bold">Packaging</span>
+                      <div className="h-6 w-full rounded bg-white/60" />
+                    </div>
+                    <div className="rounded-lg bg-[#15151a] p-1.5 flex flex-col justify-between text-white">
+                      <span className="text-[7px] font-mono">Mobile</span>
+                      <div className="h-6 w-full rounded bg-neutral-800 border border-white/10" />
+                    </div>
+                    <div className="rounded-lg bg-[#a5f2fb] p-1.5 flex flex-col justify-between">
+                      <span className="text-[7px] font-bold">Identity</span>
+                      <div className="h-1 w-full bg-black/30 rounded" />
+                    </div>
+                  </div>
+                </div>
+                {/* Play overlay */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-black/40 backdrop-blur-md shadow-lg">
+                    <Play size={20} className="translate-x-0.5 fill-white text-white" />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  Codify
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+
+            {/* Card 4: Neutra */}
+            <div
+              onClick={() => setActive(projects[3])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#191920] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl bg-[#111116] p-5 sm:p-6 shadow-xl flex flex-col justify-between border border-white/10 text-white">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-sm bg-white" />
+                      <span className="text-xs font-bold tracking-tight">Neutra</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-[9px] text-neutral-400">
+                      <span>Docs</span>
+                      <span>Features</span>
+                      <span>Pricing</span>
+                    </div>
+                  </div>
+                  <div className="relative my-auto grid grid-cols-2 items-center gap-4 py-2">
+                    <div>
+                      <h4 className="font-serif text-base sm:text-lg font-semibold leading-tight text-white">
+                        Design for ambitious software companies
+                      </h4>
+                      <p className="mt-1.5 text-[9px] text-neutral-400 leading-normal">
+                        Uncover distinct features engineered for clarity.
+                      </p>
+                    </div>
+                    <div className="relative flex items-center justify-center">
+                      <svg viewBox="0 0 120 120" className="w-20 h-20 sm:w-24 sm:h-24">
+                        <defs>
+                          <linearGradient id="chromeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#ffffff" />
+                            <stop offset="30%" stopColor="#d1d5db" />
+                            <stop offset="50%" stopColor="#4b5563" />
+                            <stop offset="70%" stopColor="#f3f4f6" />
+                            <stop offset="100%" stopColor="#1f2937" />
+                          </linearGradient>
+                        </defs>
+                        <circle cx="60" cy="60" r="34" fill="none" stroke="url(#chromeGrad)" strokeWidth="10" />
+                        <polygon points="60,25 90,85 30,85" fill="url(#chromeGrad)" opacity="0.9" />
+                        <circle cx="60" cy="60" r="12" fill="#ffffff" opacity="0.9" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-[8px] text-neutral-500 pt-2 border-t border-white/5">
+                    <span>Enterprise Grade</span>
+                    <span>Explore Features ↗</span>
+                  </div>
+                </div>
+                {/* Play overlay */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-black/40 backdrop-blur-md shadow-lg">
+                    <Play size={20} className="translate-x-0.5 fill-white text-white" />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  Neutra
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+
+            {/* Card 5: Snapkit */}
+            <div
+              onClick={() => setActive(projects[4])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#16161b] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white p-5 sm:p-6 shadow-xl flex flex-col justify-between border border-black/5 text-[#15151a]">
+                  <div className="flex items-center justify-between border-b border-black/5 pb-2.5">
+                    <span className="font-bold text-xs tracking-tight">Snapkit.</span>
+                    <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[8px] font-mono text-neutral-600">v2.4 Released</span>
+                  </div>
+                  <div className="my-auto text-center py-2">
+                    <span className="inline-block rounded-full bg-black/5 px-2 py-0.5 text-[8px] font-mono text-neutral-500 mb-1.5">
+                      Components &amp; Wireframes
+                    </span>
+                    <h4 className="font-serif text-lg sm:text-xl font-bold tracking-tight text-[#15151a] leading-tight">
+                      Premium Templates for Nuxt, Framer &amp; Figma
+                    </h4>
+                    <div className="mt-3 flex justify-center gap-2">
+                      <span className="rounded-lg bg-[#15151a] px-3 py-1 text-[9px] font-semibold text-white">Get template</span>
+                      <span className="rounded-lg border border-black/10 px-3 py-1 text-[9px] text-neutral-600">Preview</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center gap-3 text-[8px] text-neutral-400 pt-2 border-t border-black/5">
+                    <span>Framer</span>
+                    <span>•</span>
+                    <span>Figma</span>
+                    <span>•</span>
+                    <span>Nuxt</span>
+                  </div>
+                </div>
+                {/* Play overlay */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-black/40 backdrop-blur-md shadow-lg">
+                    <Play size={20} className="translate-x-0.5 fill-white text-white" />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  Snapkit
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
+
+            {/* Card 6: TodoFusion */}
+            <div
+              onClick={() => setActive(projects[5])}
+              className="project-card-anim group cursor-pointer will-change-transform will-change-opacity"
+            >
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#ede8ff] p-5 sm:p-7 md:p-8 flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.12)]">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white p-5 sm:p-6 shadow-xl flex flex-col justify-between border border-black/5 text-[#15151a]">
+                  <div className="flex items-center justify-between border-b border-black/5 pb-2.5">
+                    <div className="flex items-center gap-1.5">
+                      <div className="h-2.5 w-2.5 rounded-full bg-indigo-600" />
+                      <span className="font-bold text-xs">TodoFusion</span>
+                    </div>
+                    <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-[8px] font-medium text-indigo-600">AI Powered</span>
+                  </div>
+                  <div className="my-1.5">
+                    <h4 className="font-serif text-base sm:text-lg font-bold tracking-tight text-[#15151a] leading-tight">
+                      Boost Your Productivity with TodoFusion
+                    </h4>
+                  </div>
+                  <div className="rounded-xl border border-black/5 bg-[#faf5ff] p-2.5 space-y-1.5">
+                    <div className="flex items-center justify-between text-[8px] text-neutral-500">
+                      <span className="font-semibold text-neutral-700">Sprint Roadmap</span>
+                      <span className="text-indigo-600 font-bold">84% Done</span>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-indigo-100 overflow-hidden">
+                      <div className="h-full w-[84%] rounded-full bg-gradient-to-r from-indigo-500 to-purple-500" />
+                    </div>
+                    <div className="grid grid-cols-3 gap-1 pt-1">
+                      <div className="rounded bg-white p-1 shadow-sm border border-black/5 text-center">
+                        <span className="text-[6px] text-neutral-400 block">Tasks</span>
+                        <b className="text-[9px] text-[#15151a]">42/50</b>
+                      </div>
+                      <div className="rounded bg-white p-1 shadow-sm border border-black/5 text-center">
+                        <span className="text-[6px] text-neutral-400 block">Efficiency</span>
+                        <b className="text-[9px] text-emerald-600">+28%</b>
+                      </div>
+                      <div className="rounded bg-white p-1 shadow-sm border border-black/5 text-center">
+                        <span className="text-[6px] text-neutral-400 block">Velocity</span>
+                        <b className="text-[9px] text-purple-600">9.8x</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Play overlay */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-black/40 backdrop-blur-md shadow-lg">
+                    <Play size={20} className="translate-x-0.5 fill-white text-white" />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <h3 className="font-serif text-2xl font-semibold text-[#15151a] tracking-tight group-hover:text-black transition-colors">
+                  TodoFusion
+                </h3>
+                <span className="text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+                  <ArrowUpRight size={22} />
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
