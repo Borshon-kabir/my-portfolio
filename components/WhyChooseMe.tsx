@@ -206,12 +206,12 @@ export default function WhyChooseMe() {
               Why choose me
             </span>
             <h2 className="mt-4 font-serif text-[clamp(2.5rem,4.5vw,4.25rem)] font-semibold leading-[1.05] tracking-[-0.035em] text-[#121218]">
-              Design built around<br />lasting clarity
+              Edits that drive<br />retention
             </h2>
           </div>
           <div ref={descRef} className="max-w-md will-change-transform will-change-opacity md:pb-2">
             <p className="text-[15px] leading-relaxed text-[#53545d] md:text-base">
-              I bring strategy, visual direction, and refined execution together to create meaningful digital experiences with lasting impact.
+              I combine pacing, sound design, and visual storytelling to transform raw footage into high-converting videos with lasting impact.
             </p>
           </div>
         </div>
@@ -252,7 +252,7 @@ export default function WhyChooseMe() {
               {/* Card 1B: Satisfaction Stat Card */}
               <div className="group flex flex-1 flex-col justify-between rounded-2xl border border-black/10 bg-white p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] min-h-[220px] sm:min-h-[250px]">
                 <p className="text-[15px] font-medium leading-snug text-[#121218] sm:text-base">
-                  Clear design direction shaped around every project goal.
+                  Every frame edited with purpose, pacing, and passion.
                 </p>
                 <div className="mt-8">
                   <span
@@ -272,7 +272,7 @@ export default function WhyChooseMe() {
               className="group flex flex-1 flex-col justify-between rounded-2xl border border-black/10 bg-white p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] min-h-[340px] sm:min-h-[388px] will-change-transform will-change-opacity"
             >
               <p className="text-[15px] font-medium leading-snug text-[#121218] sm:text-base">
-                Brand identities, websites, and digital systems delivered with care.
+                Engaging videos, dynamic motion, and seamless edits delivered on time.
               </p>
               <div className="my-6">
                 <span
@@ -304,7 +304,7 @@ export default function WhyChooseMe() {
             className="group flex flex-col justify-between rounded-2xl border border-[#121218] p-7 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] md:w-[40%] min-h-[340px] sm:min-h-[388px] will-change-transform will-change-opacity"
           >
             <p className="text-[15px] font-normal leading-relaxed text-[#c9cdd2] sm:text-base">
-              I help founders, creators, and teams turn ideas into refined digital experiences that feel memorable and easy to navigate.
+              I help creators, brands, and teams turn raw footage into engaging visual stories that keep viewers hooked from start to finish.
             </p>
             <div className="mt-8 flex items-end gap-3.5">
               <span
