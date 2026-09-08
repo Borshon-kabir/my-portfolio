@@ -6,6 +6,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 export default function WhyChooseMe() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLSpanElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLDivElement>(null);
   const col1Ref = useRef<HTMLDivElement>(null);
   const col2Ref = useRef<HTMLDivElement>(null);
@@ -19,167 +21,212 @@ export default function WhyChooseMe() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // 1. Header Entrance (y: 60 -> 0, opacity 0 -> 1)
-      if (headerRef.current) {
+      // ── 1. Eyebrow pill: fade + slide up
+      if (eyebrowRef.current) {
         gsap.fromTo(
-          headerRef.current,
-          { y: 60, opacity: 0 },
+          eyebrowRef.current,
+          { y: 20, opacity: 0, filter: 'blur(4px)' },
+          {
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            duration: 0.7,
+            ease: 'expo.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 86%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // ── 2. Heading: character-like clip reveal via y + slight skew
+      if (headingRef.current) {
+        gsap.fromTo(
+          headingRef.current,
+          { y: 48, opacity: 0, skewY: 1.5 },
+          {
+            y: 0,
+            opacity: 1,
+            skewY: 0,
+            duration: 0.95,
+            delay: 0.08,
+            ease: 'expo.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 86%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // ── 3. Description: delayed fade + subtle rise
+      if (descRef.current) {
+        gsap.fromTo(
+          descRef.current,
+          { y: 32, opacity: 0 },
           {
             y: 0,
             opacity: 1,
             duration: 0.85,
-            ease: 'power3.out',
+            delay: 0.2,
+            ease: 'expo.out',
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: 'top 88%',
+              start: 'top 86%',
               once: true,
             },
           }
         );
       }
 
-      // 2. Description Entrance (y: 80 -> 0, opacity 0 -> 1)
-      if (descRef.current) {
-        gsap.fromTo(
-          descRef.current,
-          { y: 80, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.9,
-            delay: 0.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 88%',
-              once: true,
-            },
-          }
-        );
-      }
-
-      // 3. Staggered Column Cards Entrance (matching frame-by-frame progression)
+      // ── 4. Cards: staggered scale + y + blur entrance
       const cols = [col1Ref.current, col2Ref.current, col3Ref.current].filter(Boolean);
       if (cols.length) {
         gsap.fromTo(
           cols,
-          { y: 96, opacity: 0, transformPerspective: 1200 },
+          { y: 72, opacity: 0, scale: 0.97, filter: 'blur(6px)' },
           {
             y: 0,
             opacity: 1,
-            duration: 1.05,
-            stagger: 0.12,
-            ease: 'power3.out',
+            scale: 1,
+            filter: 'blur(0px)',
+            duration: 1.0,
+            stagger: {
+              amount: 0.36,
+              ease: 'power2.out',
+            },
+            ease: 'expo.out',
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: 'top 84%',
+              start: 'top 78%',
               once: true,
             },
           }
         );
       }
 
-      // 4. Counter 92% (0% -> 92% with blur reveal)
+      // ── 5. Subtle parallax drift on header while scrolling
+      if (headerRef.current) {
+        gsap.to(headerRef.current, {
+          y: -28,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.8,
+          },
+        });
+      }
+
+      // ── 6. Counter 92% — smooth expo count + blur reveal
       if (counter92Ref.current) {
-        const val92 = { val: 0 };
         gsap.fromTo(
           counter92Ref.current,
-          { filter: 'blur(8px)', opacity: 0.2 },
+          { filter: 'blur(10px)', opacity: 0, y: 12 },
           {
             filter: 'blur(0px)',
             opacity: 1,
-            duration: 1.2,
-            ease: 'power2.out',
+            y: 0,
+            duration: 1.1,
+            ease: 'expo.out',
             scrollTrigger: {
               trigger: col1Ref.current,
-              start: 'top 88%',
+              start: 'top 85%',
               once: true,
             },
           }
         );
+        const val92 = { val: 0 };
         gsap.to(val92, {
           val: 92,
-          duration: 1.6,
-          ease: 'power2.out',
+          duration: 1.8,
+          ease: 'expo.out',
           scrollTrigger: {
             trigger: col1Ref.current,
-            start: 'top 88%',
+            start: 'top 85%',
             once: true,
           },
           onUpdate: () => {
-            if (counter92Ref.current) {
+            if (counter92Ref.current)
               counter92Ref.current.textContent = `${Math.round(val92.val)}%`;
-            }
           },
         });
       }
 
-      // 5. Counter 56+ (0+ -> 56+ with blur reveal)
+      // ── 7. Counter 56+ — smooth expo count
       if (counter56Ref.current) {
-        const val56 = { val: 0 };
         gsap.fromTo(
           counter56Ref.current,
-          { filter: 'blur(8px)', opacity: 0.2 },
+          { filter: 'blur(10px)', opacity: 0, y: 12 },
           {
             filter: 'blur(0px)',
             opacity: 1,
-            duration: 1.2,
-            ease: 'power2.out',
+            y: 0,
+            duration: 1.1,
+            ease: 'expo.out',
+            delay: 0.12,
             scrollTrigger: {
               trigger: col2Ref.current,
-              start: 'top 88%',
+              start: 'top 85%',
               once: true,
             },
           }
         );
+        const val56 = { val: 0 };
         gsap.to(val56, {
           val: 56,
-          duration: 1.6,
-          ease: 'power2.out',
+          duration: 1.8,
+          ease: 'expo.out',
+          delay: 0.12,
           scrollTrigger: {
             trigger: col2Ref.current,
-            start: 'top 88%',
+            start: 'top 85%',
             once: true,
           },
           onUpdate: () => {
-            if (counter56Ref.current) {
+            if (counter56Ref.current)
               counter56Ref.current.textContent = `${Math.round(val56.val)}+`;
-            }
           },
         });
       }
 
-      // 6. Counter 4.9 (0.0 -> 4.9 with blur reveal)
+      // ── 8. Counter 4.9 — smooth expo count
       if (counter49Ref.current) {
-        const val49 = { val: 0 };
         gsap.fromTo(
           counter49Ref.current,
-          { filter: 'blur(8px)', opacity: 0.2 },
+          { filter: 'blur(10px)', opacity: 0, y: 12 },
           {
             filter: 'blur(0px)',
             opacity: 1,
-            duration: 1.2,
-            ease: 'power2.out',
+            y: 0,
+            duration: 1.1,
+            ease: 'expo.out',
+            delay: 0.24,
             scrollTrigger: {
               trigger: col3Ref.current,
-              start: 'top 88%',
+              start: 'top 85%',
               once: true,
             },
           }
         );
+        const val49 = { val: 0 };
         gsap.to(val49, {
           val: 4.9,
-          duration: 1.6,
-          ease: 'power2.out',
+          duration: 1.8,
+          ease: 'expo.out',
+          delay: 0.24,
           scrollTrigger: {
             trigger: col3Ref.current,
-            start: 'top 88%',
+            start: 'top 85%',
             once: true,
           },
           onUpdate: () => {
-            if (counter49Ref.current) {
+            if (counter49Ref.current)
               counter49Ref.current.textContent = val49.val.toFixed(1);
-            }
           },
         });
       }
@@ -201,15 +248,21 @@ export default function WhyChooseMe() {
       <div className="mx-auto max-w-[1200px]">
         {/* Section Header */}
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div ref={headerRef} className="max-w-xl will-change-transform will-change-opacity">
-            <span className="inline-flex items-center rounded-full border border-black/10 bg-[#e5e5e7]/80 px-3.5 py-1 text-xs font-medium text-[#121218] shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm">
+          <div ref={headerRef} className="max-w-xl will-change-transform">
+            <span
+              ref={eyebrowRef}
+              className="inline-flex items-center rounded-full border border-black/10 bg-[#e5e5e7]/80 px-3.5 py-1 text-xs font-medium text-[#121218] shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm will-change-transform"
+            >
               Why choose me
             </span>
-            <h2 className="mt-4 font-serif text-[clamp(2.5rem,4.5vw,4.25rem)] font-semibold leading-[1.05] tracking-[-0.035em] text-[#121218]">
+            <h2
+              ref={headingRef}
+              className="mt-4 font-serif text-[clamp(2.5rem,4.5vw,4.25rem)] font-semibold leading-[1.05] tracking-[-0.035em] text-[#121218] will-change-transform"
+            >
               Edits that drive<br />retention
             </h2>
           </div>
-          <div ref={descRef} className="max-w-md will-change-transform will-change-opacity md:pb-2">
+          <div ref={descRef} className="max-w-md will-change-transform md:pb-2">
             <p className="text-[15px] leading-relaxed text-[#53545d] md:text-base">
               I combine pacing, sound design, and visual storytelling to transform raw footage into high-converting videos with lasting impact.
             </p>
@@ -221,7 +274,7 @@ export default function WhyChooseMe() {
           {/* Leading Content Group (Columns 1 & 2) */}
           <div className="flex flex-1 flex-col gap-3.5 sm:flex-row">
             {/* Column 1: Stack of 2 Cards */}
-            <div ref={col1Ref} className="flex flex-1 flex-col gap-3.5 will-change-transform will-change-opacity">
+            <div ref={col1Ref} className="flex flex-1 flex-col gap-3.5 will-change-transform">
               {/* Card 1A: Avatar Pill Card */}
               <div className="group flex items-center gap-3.5 rounded-2xl border border-black/10 bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]">
                 <div className="flex -space-x-2.5 overflow-hidden">
@@ -269,7 +322,7 @@ export default function WhyChooseMe() {
             {/* Column 2: 56+ Projects Completed Card */}
             <div
               ref={col2Ref}
-              className="group flex flex-1 flex-col justify-between rounded-2xl border border-black/10 bg-white p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] min-h-[340px] sm:min-h-[388px] will-change-transform will-change-opacity"
+              className="group flex flex-1 flex-col justify-between rounded-2xl border border-black/10 bg-white p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] min-h-[340px] sm:min-h-[388px] will-change-transform"
             >
               <p className="text-[15px] font-medium leading-snug text-[#121218] sm:text-base">
                 Engaging videos, dynamic motion, and seamless edits delivered on time.
@@ -301,7 +354,7 @@ export default function WhyChooseMe() {
               boxShadow:
                 '0px 4px 8px -4px rgba(148, 151, 158, 0.4), 0px 12px 24px -2px rgba(148, 151, 158, 0.25), inset 0px 1px 0px 1px #44454c',
             }}
-            className="group flex flex-col justify-between rounded-2xl border border-[#121218] p-7 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] md:w-[40%] min-h-[340px] sm:min-h-[388px] will-change-transform will-change-opacity"
+            className="group flex flex-col justify-between rounded-2xl border border-[#121218] p-7 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] md:w-[40%] min-h-[340px] sm:min-h-[388px] will-change-transform"
           >
             <p className="text-[15px] font-normal leading-relaxed text-[#c9cdd2] sm:text-base">
               I help creators, brands, and teams turn raw footage into engaging visual stories that keep viewers hooked from start to finish.
