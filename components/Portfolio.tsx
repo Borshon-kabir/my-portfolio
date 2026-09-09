@@ -169,12 +169,13 @@ export default function Portfolio() {
       ScrollTrigger.clearScrollMemory('manual');
     }
 
-    const l = new Lenis({
-      lerp: 0.08,
-      duration: 1.2,
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-    });
+    const isMobile = window.innerWidth <= 768;
+
+    const l = new Lenis(
+      isMobile
+        ? { lerp: 0.12, duration: 0.9, smoothWheel: true, wheelMultiplier: 0.9 }
+        : { lerp: 0.08, duration: 1.2, smoothWheel: true, wheelMultiplier: 1.0 }
+    );
     if (!window.location.hash) {
       l.scrollTo(0, { immediate: true });
     }
@@ -189,15 +190,19 @@ export default function Portfolio() {
     gsap.ticker.add(updateRaf);
     gsap.ticker.lagSmoothing(0);
 
+    // Helper: reduce y offset and duration on mobile for smooth 60fps
+    const my = (n: number) => (isMobile ? Math.round(n * 0.4) : n);
+    const md = (n: number) => (isMobile ? +(n * 0.65).toFixed(2) : n);
+
     const ctx = gsap.context(() => {
-      // Projects Section Reveal (Projects with clarity)
+      // Projects Section Reveal
       gsap.fromTo(
         '.project-header-anim',
-        { y: 25, opacity: 0 },
+        { y: my(25), opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.7,
+          duration: md(0.7),
           stagger: 0.08,
           ease: 'power3.out',
           scrollTrigger: {
@@ -210,12 +215,12 @@ export default function Portfolio() {
 
       gsap.fromTo(
         '.project-card-anim',
-        { y: 35, opacity: 0, scale: 0.97 },
+        { y: my(35), opacity: 0, scale: 0.97 },
         {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: 0.75,
+          duration: md(0.75),
           stagger: 0.1,
           ease: 'power3.out',
           scrollTrigger: {
@@ -229,12 +234,12 @@ export default function Portfolio() {
       // Testimonials reveal
       gsap.fromTo(
         '.testimonial-anim',
-        { y: 35, opacity: 0, scale: 0.97 },
+        { y: my(35), opacity: 0, scale: 0.97 },
         {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: 0.8,
+          duration: md(0.8),
           ease: 'power3.out',
           scrollTrigger: {
             trigger: '#testimonials',
@@ -247,11 +252,11 @@ export default function Portfolio() {
       // Contact reveal
       gsap.fromTo(
         '.contact-text-anim',
-        { y: 25, opacity: 0 },
+        { y: my(25), opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.7,
+          duration: md(0.7),
           stagger: 0.08,
           ease: 'power3.out',
           scrollTrigger: {
@@ -264,12 +269,12 @@ export default function Portfolio() {
 
       gsap.fromTo(
         '.contact-form-anim',
-        { y: 35, opacity: 0, scale: 0.97 },
+        { y: my(35), opacity: 0, scale: 0.97 },
         {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: 0.75,
+          duration: md(0.75),
           ease: 'power3.out',
           scrollTrigger: {
             trigger: '#contact',
@@ -500,17 +505,6 @@ export default function Portfolio() {
 
       <Hero />
       <HomeIntro />
-
-      <div className="overflow-hidden py-5">
-        <div className="marquee flex gap-8">
-          <p className="display whitespace-nowrap text-3xl font-bold text-[#15151a]">
-            EDIT • COLOR • MOTION • SOUND • STORY • EDIT • COLOR • MOTION • SOUND • STORY •{' '}
-          </p>
-          <p className="display whitespace-nowrap text-3xl font-bold text-[#a8a9b0]">
-            EDIT • COLOR • MOTION • SOUND • STORY • EDIT • COLOR • MOTION • SOUND • STORY •{' '}
-          </p>
-        </div>
-      </div>
 
       {/* Selected Work Section (Projects with Clarity) */}
       <section id="work" className="px-5 py-24 md:px-10 md:py-32">
@@ -1068,33 +1062,34 @@ export default function Portfolio() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setActive(null)}
-            className="fixed inset-0 z-[90] grid place-items-center bg-neutral-950/90 p-5 backdrop-blur-md"
+            className="fixed inset-0 z-[90] flex items-center justify-center bg-neutral-950/90 p-3 sm:p-5 backdrop-blur-md overflow-y-auto"
           >
             <motion.div
               initial={{ scale: 0.94, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 p-7 md:p-10 text-white shadow-2xl"
+              className="relative w-[92vw] max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl sm:rounded-3xl border border-white/10 bg-neutral-900 p-4 sm:p-7 md:p-10 text-white shadow-2xl my-auto"
             >
               <button
                 onClick={() => setActive(null)}
-                className="absolute right-5 top-5 text-neutral-400 hover:text-white transition-colors"
+                className="absolute right-4 top-4 sm:right-5 sm:top-5 text-neutral-400 hover:text-white transition-colors z-10"
               >
                 <X />
               </button>
-              <p className="eyebrow text-neutral-400">
+              <p className="eyebrow text-neutral-400 pr-8">
                 {active.category} / {active.year}
               </p>
-              <h2 className="display mt-4 text-4xl md:text-5xl text-white">{active.title}</h2>
+              <h2 className="display mt-4 text-2xl sm:text-4xl md:text-5xl text-white pr-8">{active.title}</h2>
 
-              {/* Video Embed */}
-              <div className="mt-6 aspect-video w-full overflow-hidden rounded-2xl border border-white/10 bg-neutral-950">
+              {/* Video Embed — strict 16:9 aspect ratio, no crop */}
+              <div className="mt-5 aspect-video w-full overflow-hidden rounded-xl sm:rounded-2xl border border-white/10 bg-neutral-950">
                 <iframe
                   src={getEmbedUrl(active.videoUrl)}
                   className="h-full w-full"
                   allow="autoplay; fullscreen; picture-in-picture"
                   allowFullScreen
                   title={active.title}
+                  style={{ display: 'block' }}
                 />
               </div>
 

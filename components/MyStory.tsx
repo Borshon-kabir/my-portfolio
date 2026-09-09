@@ -370,66 +370,63 @@ export default function MyStory() {
               </p>
             </div>
 
-            {/* Pinned Polaroids Composition (Bottom-Right Corner, Side-by-Side with Gentle Overlap) */}
-            <div className="lg:col-span-6 xl:col-span-6 relative flex justify-center lg:justify-end items-end pt-6 lg:pt-0">
-              <div className="relative w-[340px] sm:w-[410px] md:w-[450px] lg:w-[480px] h-[280px] sm:h-[320px] md:h-[350px] lg:h-[360px]">
-                {/* ------------------------------------------------------------- */}
-                {/* PHOTO 1: LEFT POLAROID (Fully visible, tilted counter-clockwise) */}
-                {/* ------------------------------------------------------------- */}
+            {/* Pinned Polaroids Composition */}
+            <div className="lg:col-span-6 xl:col-span-6 relative flex justify-center lg:justify-end items-end pt-8 lg:pt-0">
+              {/* Container: sized to tightly fit both polaroids on every breakpoint */}
+              <div className="relative w-[300px] sm:w-[380px] md:w-[450px] lg:w-[480px] h-[260px] sm:h-[300px] md:h-[350px] lg:h-[360px]">
+
+                {/* PHOTO 1: LEFT POLAROID */}
                 <div
                   ref={photo1Ref}
                   onMouseMove={handlePhoto1Move}
                   onMouseLeave={handlePhoto1Leave}
-                  style={{ transform: 'rotate(-6deg)' }}
-                  className="absolute left-0 bottom-1 sm:bottom-2 md:bottom-3 z-10 w-[175px] sm:w-[205px] md:w-[225px] lg:w-[240px] p-3 pb-7 sm:p-3.5 sm:pb-8 md:p-4 md:pb-10 bg-white rounded-[2px] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.22),0_10px_20px_-5px_rgba(0,0,0,0.1)] border border-black/[0.06] cursor-pointer will-change-transform transition-shadow duration-300 hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.32)]"
+                  style={{ transform: 'rotate(-4deg)' }}
+                  className="absolute left-0 bottom-0 z-10 w-[140px] sm:w-[185px] md:w-[225px] lg:w-[240px] p-2.5 pb-6 sm:p-3.5 sm:pb-8 md:p-4 md:pb-10 bg-white rounded-[2px] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.22),0_10px_20px_-5px_rgba(0,0,0,0.1)] border border-black/[0.06] cursor-pointer will-change-transform transition-shadow duration-300 hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.32)]"
                 >
-                  {/* Pinned Thumbtack on top center */}
+                  {/* Pinned Thumbtack */}
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-30">
                     <PushPin className="w-7 h-7" />
                   </div>
-
                   {/* Photo Frame */}
                   <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#e8e9ec] rounded-[1px]">
                     <Image
                       src={STORY_CONFIG.image1.src}
                       alt={STORY_CONFIG.image1.alt}
                       fill
-                      sizes="(max-width: 768px) 210px, 260px"
+                      sizes="(max-width: 640px) 145px, (max-width: 768px) 190px, 260px"
                       className="object-cover transition-transform duration-700 ease-out hover:scale-105"
-                      priority
+                      loading="lazy"
                       onLoad={() => setPhoto1Loaded(true)}
                     />
                   </div>
                 </div>
 
-                {/* ------------------------------------------------------------- */}
-                {/* PHOTO 2: RIGHT POLAROID (Side-by-side with gentle edge overlap) */}
-                {/* ------------------------------------------------------------- */}
+                {/* PHOTO 2: RIGHT POLAROID */}
                 <div
                   ref={photo2Ref}
                   onMouseMove={handlePhoto2Move}
                   onMouseLeave={handlePhoto2Leave}
                   style={{ transform: 'rotate(3deg)' }}
-                  className="absolute left-[160px] sm:left-[195px] md:left-[215px] lg:left-[230px] bottom-4 sm:bottom-6 md:bottom-8 z-20 w-[180px] sm:w-[210px] md:w-[230px] lg:w-[245px] p-3 pb-7 sm:p-3.5 sm:pb-8 md:p-4 md:pb-10 bg-white rounded-[2px] shadow-[0_28px_65px_-12px_rgba(0,0,0,0.28),0_12px_24px_-6px_rgba(0,0,0,0.12)] border border-black/[0.06] cursor-pointer will-change-transform transition-shadow duration-300 hover:shadow-[0_38px_85px_-18px_rgba(0,0,0,0.36)]"
+                  className="absolute left-[128px] sm:left-[175px] md:left-[215px] lg:left-[230px] bottom-3 sm:bottom-5 md:bottom-8 z-20 w-[148px] sm:w-[195px] md:w-[230px] lg:w-[245px] p-2.5 pb-6 sm:p-3.5 sm:pb-8 md:p-4 md:pb-10 bg-white rounded-[2px] shadow-[0_28px_65px_-12px_rgba(0,0,0,0.28),0_12px_24px_-6px_rgba(0,0,0,0.12)] border border-black/[0.06] cursor-pointer will-change-transform transition-shadow duration-300 hover:shadow-[0_38px_85px_-18px_rgba(0,0,0,0.36)]"
                 >
-                  {/* Pinned Thumbtack on top center */}
+                  {/* Pinned Thumbtack */}
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-30">
                     <PushPin className="w-7 h-7" />
                   </div>
-
                   {/* Photo Frame */}
                   <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#e8e9ec] rounded-[1px]">
                     <Image
                       src={STORY_CONFIG.image2.src}
                       alt={STORY_CONFIG.image2.alt}
                       fill
-                      sizes="(max-width: 768px) 210px, 260px"
+                      sizes="(max-width: 640px) 152px, (max-width: 768px) 200px, 260px"
                       className="object-cover transition-transform duration-700 ease-out hover:scale-105"
-                      priority
+                      loading="lazy"
                       onLoad={() => setPhoto2Loaded(true)}
                     />
                   </div>
                 </div>
+
               </div>
             </div>
           </div>

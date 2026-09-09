@@ -291,7 +291,7 @@ export default function Hero() {
           />
         </div>
 
-        <div className="show-floating absolute top-2 right-5 md:top-3 md:right-8 z-20 bg-black/40 backdrop-blur-xl border border-white/20 rounded-2xl p-4 max-w-[220px] text-white shadow-2xl transition-all duration-300 hover:border-white/40 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] will-change-transform will-change-opacity">
+        <div className="show-floating hidden md:block absolute md:top-3 md:right-8 z-20 bg-black/40 backdrop-blur-xl border border-white/20 rounded-2xl p-4 max-w-[220px] text-white shadow-2xl transition-all duration-300 hover:border-white/40 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] will-change-transform will-change-opacity">
           <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-1">Select project</p>
           <h4 className="text-xs font-semibold mb-1">Available for projects</h4>
           <p className="text-[11px] text-neutral-300 leading-tight mb-2">
@@ -306,17 +306,32 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="mx-auto mt-11 flex max-w-[1160px] items-center gap-9 overflow-hidden text-[#26262d] opacity-60 grayscale md:gap-12">
-        <p className="w-24 shrink-0 text-xs leading-4 text-[#7a7b83]">Trusted by creators & brands</p>
-        <div className="brand-track flex min-w-max items-center gap-9 text-base font-semibold md:gap-12">
-          {['AGENTIFY', 'TODOFUSION', 'IDENTIFY', 'NEXUS AI', 'LANDIFY', 'FLEXIFY', 'AGENTIFY', 'TODOFUSION'].map(
-            (brand, index) => (
-              <span className="flex items-center gap-2" key={`${brand}-${index}`}>
-                <span className="h-4 w-4 rounded-sm bg-[#25252b]" />
-                {brand}
-              </span>
-            )
-          )}
+      <div className="mx-auto mt-11 flex max-w-[1160px] flex-col items-center gap-4 md:flex-row md:gap-8 text-[#26262d] opacity-60 grayscale">
+        {/* Label — sits outside the scrolling track, never clips */}
+        <p className="shrink-0 text-xs leading-4 text-[#7a7b83] md:w-28">
+          Trusted by creators &amp; brands
+        </p>
+
+        {/* Scrolling track wrapper — overflow-hidden is scoped here only */}
+        <div
+          className="relative w-full overflow-hidden"
+          style={{
+            maskImage:
+              'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+            WebkitMaskImage:
+              'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+          }}
+        >
+          <div className="brand-track flex min-w-max items-center gap-9 text-base font-semibold md:gap-12">
+            {['AGENTIFY', 'TODOFUSION', 'IDENTIFY', 'NEXUS AI', 'LANDIFY', 'FLEXIFY', 'AGENTIFY', 'TODOFUSION'].map(
+              (brand, index) => (
+                <span className="flex items-center gap-2" key={`${brand}-${index}`}>
+                  <span className="h-4 w-4 rounded-sm bg-[#25252b]" />
+                  {brand}
+                </span>
+              )
+            )}
+          </div>
         </div>
       </div>
     </section>
