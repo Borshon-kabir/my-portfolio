@@ -35,7 +35,7 @@ const projectBreakdowns: Record<string, ProjectBreakdown> = {
     turnaround: '7 days',
     overview:
       'A documentary-style map animation designed to make a complex story feel immediate. The edit combines archival imagery, geographic motion design, and a deliberate narrative pace that gives each reveal room to land.',
-    software: ['After Effects', 'Premiere Pro', 'Illustrator'],
+    software: ['After Effects', 'Premiere Pro', 'Illustrator', 'Photoshop'],
     plugins: ['Sapphire', 'GeoLayers 3', 'Deep Glow', 'Twixtor'],
     blueprintNotes: ['GeoLayers map rig', 'Archival texture stack', 'Narrative marker pass'],
   },
@@ -44,7 +44,7 @@ const projectBreakdowns: Record<string, ProjectBreakdown> = {
     turnaround: '4 days',
     overview:
       'A fashion and music-led brand piece built around graphic rhythm. Saturated color, kinetic type, and cut-to-beat transitions turn the campaign message into a fast, memorable visual system.',
-    software: ['After Effects', 'Premiere Pro', 'Photoshop'],
+    software: ['After Effects', 'Premiere Pro', 'Illustrator', 'Photoshop'],
     plugins: ['Sapphire', 'Deep Glow', 'Turbulent Displace', 'Optical Flares'],
     blueprintNotes: ['Kinetic typography rig', 'Beat marker edit', 'Acid-grade adjustment layer'],
   },
@@ -53,7 +53,7 @@ const projectBreakdowns: Record<string, ProjectBreakdown> = {
     turnaround: '5 days',
     overview:
       'A product launch film that translates a modular software system into a clear, editorial narrative. UI pacing, design details, and restrained motion work together to make the product feel precise and useful.',
-    software: ['Premiere Pro', 'After Effects', 'Figma'],
+    software: ['After Effects', 'Premiere Pro', 'Illustrator', 'Photoshop'],
     plugins: ['Sapphire', 'Motion Bro', 'Deep Glow', 'RSMB'],
     blueprintNotes: ['UI sequence pre-comps', 'Product callout pass', 'Sound-sync markers'],
   },
@@ -62,7 +62,7 @@ const projectBreakdowns: Record<string, ProjectBreakdown> = {
     turnaround: '6 days',
     overview:
       'A premium software commercial built around chrome forms, measured pacing, and a sparse visual world. Every transition and sound cue was shaped to make the brand feel considered and technically confident.',
-    software: ['After Effects', 'Cinema 4D', 'Premiere Pro'],
+    software: ['After Effects', 'Premiere Pro', 'Illustrator', 'Photoshop'],
     plugins: ['Element 3D', 'Mocha Pro', 'Sapphire', 'Deep Glow'],
     blueprintNotes: ['3D object composites', 'Tracked interface planes', 'Foley timing pass'],
   },
@@ -71,7 +71,7 @@ const projectBreakdowns: Record<string, ProjectBreakdown> = {
     turnaround: '2 days',
     overview:
       'A social-first product edit made to earn attention in the first second. Tactile transitions, concise captions, and sound-led pacing keep the message clear while the visual energy stays high.',
-    software: ['Premiere Pro', 'After Effects'],
+    software: ['After Effects', 'Premiere Pro', 'Illustrator', 'Photoshop'],
     plugins: ['Sapphire', 'RSMB', 'Deep Glow', 'Motion Bro'],
     blueprintNotes: ['Hook-first cutdown', 'Caption rhythm pass', 'Platform-safe framing'],
   },
@@ -80,7 +80,7 @@ const projectBreakdowns: Record<string, ProjectBreakdown> = {
     turnaround: '3 days',
     overview:
       'A fast SaaS spot that pairs product UI with clean motion cues and retention-focused pacing. The sequence is structured around immediate value, feature clarity, and a decisive final callout.',
-    software: ['After Effects', 'Premiere Pro', 'Figma'],
+    software: ['After Effects', 'Premiere Pro', 'Illustrator', 'Photoshop'],
     plugins: ['Sapphire', 'Mocha Pro', 'Deep Glow', 'EaseCopy'],
     blueprintNotes: ['Interface animation rig', 'Feature hierarchy pass', 'CTA end-frame comp'],
   },
@@ -166,6 +166,49 @@ function MediaViewport({ project, mode, notes }: { project: Project; mode: 'fina
       </div>
     </motion.article>
   );
+}
+
+function SoftwareBadge({ name }: { name: string }) {
+  switch (name) {
+    case 'After Effects':
+      return (
+        <span
+          aria-hidden="true"
+          className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] bg-[#00005b] font-sans text-[9px] font-black tracking-tight text-[#9999ff] border border-[#9999ff]/40 select-none leading-none"
+        >
+          Ae
+        </span>
+      );
+    case 'Premiere Pro':
+      return (
+        <span
+          aria-hidden="true"
+          className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] bg-[#2a0033] font-sans text-[9px] font-black tracking-tight text-[#ea77ff] border border-[#ea77ff]/40 select-none leading-none"
+        >
+          Pr
+        </span>
+      );
+    case 'Illustrator':
+      return (
+        <span
+          aria-hidden="true"
+          className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] bg-[#331400] font-sans text-[9px] font-black tracking-tight text-[#ff9a00] border border-[#ff9a00]/40 select-none leading-none"
+        >
+          Ai
+        </span>
+      );
+    case 'Photoshop':
+      return (
+        <span
+          aria-hidden="true"
+          className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] bg-[#001e36] font-sans text-[9px] font-black tracking-tight text-[#31a8ff] border border-[#31a8ff]/40 select-none leading-none"
+        >
+          Ps
+        </span>
+      );
+    default:
+      return null;
+  }
 }
 
 export default function ProjectBreakdownPage() {
@@ -288,7 +331,13 @@ export default function ProjectBreakdownPage() {
               <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--text-dim)]">Software used</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {breakdown.software.map((item) => (
-                  <span key={item} className="rounded-full border border-[color:var(--line)] bg-[var(--bg)] px-3 py-1.5 text-xs font-medium text-[var(--text)]">{item}</span>
+                  <span
+                    key={item}
+                    className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] bg-[var(--bg)] px-3 py-1.5 text-xs font-medium text-[var(--text)] shadow-sm"
+                  >
+                    <SoftwareBadge name={item} />
+                    <span>{item}</span>
+                  </span>
                 ))}
               </div>
             </div>
