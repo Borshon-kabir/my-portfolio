@@ -291,7 +291,6 @@ export default function ProjectBreakdownPage() {
                   <span key={item} className="rounded-full border border-[color:var(--line)] bg-[var(--bg)] px-3 py-1.5 text-xs font-medium text-[var(--text)]">{item}</span>
                 ))}
               </div>
-              </div>
             </div>
           </div>
         </section>
