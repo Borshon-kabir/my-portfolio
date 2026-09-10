@@ -112,7 +112,7 @@ function isDirectVideoUrl(url: string) {
 function ProjectVideoPlayer({ sourceUrl, title, poster }: { sourceUrl: string; title: string; poster: string }) {
   if (isDirectVideoUrl(sourceUrl)) {
     return (
-      <video className="absolute inset-0 h-full w-full object-cover" controls playsInline preload="metadata" poster={poster}>
+      <video className="absolute inset-0 h-full w-full object-cover border-0" controls playsInline preload="metadata" poster={poster}>
         <source src={sourceUrl} />
         Your browser does not support video playback.
       </video>
@@ -123,7 +123,7 @@ function ProjectVideoPlayer({ sourceUrl, title, poster }: { sourceUrl: string; t
     <iframe
       src={getEmbedUrl(sourceUrl)}
       title={title}
-      className="absolute inset-0 h-full w-full border-0"
+      className="absolute inset-0 h-full w-full object-cover border-0"
       allow="autoplay; fullscreen; picture-in-picture"
       allowFullScreen
     />
@@ -186,16 +186,16 @@ function MediaViewport({ project, mode, notes }: { project: Project; mode: 'fina
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -12 }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="overflow-hidden rounded-[28px] border border-black/10 bg-white/75 p-3 sm:p-4 backdrop-blur-xl shadow-[0_16px_46px_rgba(20,20,25,0.07)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(20,20,25,0.12)]"
+      className="flex h-full w-full flex-col justify-center overflow-hidden rounded-3xl border border-black/10 bg-white/75 p-3.5 sm:p-4 backdrop-blur-xl shadow-[0_16px_46px_rgba(20,20,25,0.07)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(20,20,25,0.12)]"
     >
       <div
-        className={`relative w-full overflow-hidden rounded-[20px] bg-[#111115] ${
-          isVertical ? 'aspect-[9/16] max-w-[360px] mx-auto' : 'aspect-video'
+        className={`relative w-full aspect-video overflow-hidden rounded-xl bg-[#111115] ${
+          isVertical ? 'aspect-[9/16] max-w-[360px] mx-auto' : ''
         }`}
       >
         <ProjectVideoPlayer sourceUrl={sourceUrl} title={mediaTitle} poster={project.thumbnail} />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25" />
-        <span className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3.5 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-md backdrop-blur-md">
+        <span className="absolute left-4 top-4 z-10 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3.5 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-md backdrop-blur-md select-none">
           {isBlueprint ? <Layers size={13} /> : <Film size={13} />}
           {isBlueprint ? 'After Effects Timeline & Layers' : 'Final Render Output'}
         </span>
@@ -320,7 +320,7 @@ export default function ProjectBreakdownPage() {
 
           <motion.div
             layout
-            className={`mt-8 grid gap-6 ${view === 'split' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}
+            className={`mt-8 grid gap-6 items-stretch ${view === 'split' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}
           >
             <AnimatePresence mode="popLayout" initial={false}>
               {visibleViews.map((mediaView) => (
