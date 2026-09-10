@@ -1,11 +1,12 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowDown, ArrowUpRight, Check, Copy, Instagram, Linkedin, Loader2, Menu, Play, X, Youtube } from 'lucide-react';
-import { projects, testimonials, type Project } from '../data/content';
+import { projects, testimonials } from '../data/content';
 import Hero from './Hero';
 import HomeIntro from './HomeIntro';
 import WhyChooseMe from './WhyChooseMe';
@@ -17,24 +18,8 @@ import Footer from './Footer';
 
 const nav = ['Home', 'About', 'Projects', 'Services', 'Process', 'Pricing', 'FAQ', 'Contact'];
 
-/** Convert Google Drive share links and YouTube watch URLs to embeddable URLs */
-function getEmbedUrl(url: string): string {
-  // Google Drive: /file/d/{ID}/view → /preview
-  const driveMatch = url.match(/\/file\/d\/([^/]+)\//);
-  if (driveMatch) return `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
-  // YouTube watch URL: ?v=ID
-  const ytWatch = url.match(/[?&]v=([^&]+)/);
-  if (ytWatch) return `https://www.youtube.com/embed/${ytWatch[1]}?autoplay=1`;
-  // YouTube short URL: youtu.be/ID
-  const ytShort = url.match(/youtu\.be\/([^?]+)/);
-  if (ytShort) return `https://www.youtube.com/embed/${ytShort[1]}?autoplay=1`;
-  // Already an embed / preview URL — return as-is
-  return url;
-}
-
 export default function Portfolio() {
   const [menu, setMenu] = useState(false);
-  const [active, setActive] = useState<Project | null>(null);
   const [copied, setCopied] = useState(false);
   const [sent, setSent] = useState(false);
   const [quote, setQuote] = useState(0);
@@ -560,11 +545,10 @@ export default function Portfolio() {
               const isVertical = activeProjectTab === 'shorts';
 
               return (
-                <button
+                <Link
                   key={project.id}
-                  type="button"
-                  onClick={() => setActive(project)}
-                  className="project-card-anim group cursor-pointer text-left will-change-transform will-change-opacity"
+                  href={'/projects/' + project.id}
+                  className="project-card-anim group block cursor-pointer text-left will-change-transform will-change-opacity"
                 >
                   <div
                     className={`relative w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#17171d] shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.18)] ${
@@ -616,7 +600,7 @@ export default function Portfolio() {
                       </span>
                     </div>
                   )}
-                </button>
+                </Link>
               );
             })}
           </div>
@@ -818,73 +802,6 @@ export default function Portfolio() {
       {/* Footer */}
       <Footer />
 
-      {/* Project Lightbox */}
-      <AnimatePresence>
-        {active && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setActive(null)}
-            className="fixed inset-0 z-[90] flex items-center justify-center bg-neutral-950/90 p-3 sm:p-5 backdrop-blur-md overflow-y-auto"
-          >
-            <motion.div
-              initial={{ scale: 0.94, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-[92vw] max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl sm:rounded-3xl border border-white/10 bg-neutral-900 p-4 sm:p-7 md:p-10 text-white shadow-2xl my-auto"
-            >
-              <button
-                onClick={() => setActive(null)}
-                className="absolute right-4 top-4 sm:right-5 sm:top-5 text-neutral-400 hover:text-white transition-colors z-10"
-              >
-                <X />
-              </button>
-              <p className="eyebrow text-neutral-400 pr-8">
-                {active.category} / {active.year}
-              </p>
-              <h2 className="display mt-4 text-2xl sm:text-4xl md:text-5xl text-white pr-8">{active.title}</h2>
-
-              {/* Video Embed — strict 16:9 aspect ratio, no crop */}
-              <div className="mt-5 aspect-video w-full overflow-hidden rounded-xl sm:rounded-2xl border border-white/10 bg-neutral-950">
-                <iframe
-                  src={getEmbedUrl(active.videoUrl)}
-                  className="h-full w-full"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                  title={active.title}
-                  style={{ display: 'block' }}
-                />
-              </div>
-
-              {/* Tags */}
-              {active.tags && active.tags.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {active.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] font-mono tracking-wider text-white/70"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {/* Description & client */}
-              <div className="mt-5 grid gap-4 text-sm leading-6 text-neutral-400 md:grid-cols-2">
-                <p>{active.description}</p>
-                <p>
-                  <b className="text-white">Client:</b> {active.client}
-                  <br />
-                  <b className="text-white">Year:</b> {active.year}
-                </p>
-              </div>
-
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </main>
   );
 }

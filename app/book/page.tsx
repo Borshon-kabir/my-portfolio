@@ -21,20 +21,6 @@ const documentaryPrices: Record<string, string> = {
   '15 mins': '$160 USD',
   Custom: 'Price will be discussed in chat',
 };
-type DocumentaryDeliveryRule = {
-  basePrice: number;
-  maxDays: number;
-  rushFees: Record<number, number>;
-  impossibleDays: number[];
-};
-
-const documentaryDeliveryRules: Record<string, DocumentaryDeliveryRule> = {
-  '5 mins': { basePrice: 70, maxDays: 4, rushFees: { 4: 0, 3: 5, 2: 10, 1: 0 }, impossibleDays: [1] },
-  '10 mins': { basePrice: 110, maxDays: 7, rushFees: { 7: 0, 6: 5, 5: 10, 4: 10, 3: 20, 2: 0, 1: 0 }, impossibleDays: [2, 1] },
-  '15 mins': { basePrice: 160, maxDays: 10, rushFees: { 10: 0, 9: 5, 8: 10, 7: 20, 6: 0, 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }, impossibleDays: [6, 5, 4, 3, 2, 1] },
-};
-const deliveryOptions = ['24 Hours (Urgent)', '2-3 Days', '1 Week'];
-
 type ChoiceCardProps = {
   active: boolean;
   children: ReactNode;
@@ -79,21 +65,11 @@ function BookingForm() {
   const [duration, setDuration] = useState(defaultDuration);
   const [customDuration, setCustomDuration] = useState('');
   const [customDelivery, setCustomDelivery] = useState('');
-  const [delivery, setDelivery] = useState('2-3 Days');
-  const [documentaryDeliveryDays, setDocumentaryDeliveryDays] = useState(4);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const documentaryDeliveryRule = isDocumentary ? documentaryDeliveryRules[duration] : undefined;
-
-  useEffect(() => {
-    if (documentaryDeliveryRule) {
-      setDocumentaryDeliveryDays(documentaryDeliveryRule.maxDays);
-    }
-  }, [documentaryDeliveryRule?.maxDays]);
-
   useEffect(() => {
     setDuration(defaultDuration);
     setCustomDuration('');
@@ -107,37 +83,25 @@ function BookingForm() {
 
   const selectedDuration = duration === 'Custom' ? customDuration.trim() || 'Custom' : duration;
   const selectedVideoType = videoType === 'Type your category' ? customVideoType.trim() || 'Custom category' : videoType;
-  const documentaryDeliveryDetails = documentaryDeliveryRule
-    ? {
-        days: documentaryDeliveryDays,
-        rushFee: documentaryDeliveryRule.rushFees[documentaryDeliveryDays] ?? 0,
-        isPossible: !documentaryDeliveryRule.impossibleDays.includes(documentaryDeliveryDays),
-      }
-    : undefined;
-  const documentaryDeliveryOptions = documentaryDeliveryRule
-    ? Array.from({ length: documentaryDeliveryRule.maxDays }, (_, index) => index + 1)
-    : [];
-  const documentaryDeliveryUnavailable = Boolean(documentaryDeliveryDetails && !documentaryDeliveryDetails.isPossible);
-  const documentaryTotal = documentaryDeliveryRule && documentaryDeliveryDetails
-    ? documentaryDeliveryRule.basePrice + documentaryDeliveryDetails.rushFee
-    : 0;
-  const deliveryTimeline = isCustomOrder
+  const requiresCustomDeliveryTimeline = isCustomOrder || duration === 'Custom';
+  const standardDeliveryTimeline = isDocumentary
+    ? duration === '5 mins'
+      ? '4 Days'
+      : duration === '10 mins'
+        ? '7 Days'
+        : duration === '15 mins'
+          ? '10 Days'
+          : 'To be discussed'
+    : '2-3 Days';
+  const deliveryTimeline = requiresCustomDeliveryTimeline
     ? customDelivery.trim() || 'Not specified'
-    : isDocumentary
-      ? documentaryDeliveryDetails
-        ? `${documentaryDeliveryDetails.days} ${documentaryDeliveryDetails.days === 1 ? 'Day' : 'Days'}`
-        : 'To be discussed'
-      : delivery;
-
+    : standardDeliveryTimeline;
   const estimatedPrice = isDocumentary
-    ? !documentaryDeliveryRule
-      ? 'Price will be discussed in chat'
-      : documentaryDeliveryUnavailable
-        ? 'Delivery not available for the selected timeline'
-        : `$${documentaryDeliveryRule.basePrice} + $${documentaryDeliveryDetails?.rushFee ?? 0} Rush Fee = $${documentaryTotal} USD`
+    ? documentaryPrices[duration] || 'Price will be discussed in chat'
     : isShorts
       ? shortsPrices[duration] || 'Price will be discussed in chat'
       : 'Price will be discussed in chat';
+  const finalOrderPrice = estimatedPrice;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -148,31 +112,23 @@ function BookingForm() {
       return;
     }
 
-    if (isDocumentary && documentaryDeliveryUnavailable) {
-      setError(`Fast delivery within ${documentaryDeliveryDetails?.days} days is not possible for this video length.`);
-      return;
-    }
     if (isCustomOrder && videoType === 'Type your category' && !customVideoType.trim()) {
       setError('Please enter your video type.');
       return;
     }
 
-    if (isCustomOrder && !customDelivery.trim()) {
+    if (requiresCustomDeliveryTimeline && !customDelivery.trim()) {
       setError('Please enter your required delivery timeline.');
       return;
     }
 
     const whatsappVideoTypeLine = isCustomOrder ? `\n- Video Type: ${selectedVideoType}` : '';
     const emailVideoTypeLine = isCustomOrder ? `\nVideo Type: ${selectedVideoType}` : '';
-    const whatsappDeliveryLine = isDocumentary && documentaryDeliveryDetails
-      ? `\n- Delivery Needed: ${deliveryTimeline}\n- Rush Fee: $${documentaryDeliveryDetails.rushFee} USD`
-      : `\n- Delivery Needed: ${deliveryTimeline}`;
-    const emailDeliveryLine = isDocumentary && documentaryDeliveryDetails
-      ? `\nDelivery Needed: ${deliveryTimeline}\nRush Fee: $${documentaryDeliveryDetails.rushFee} USD`
-      : `\nDelivery Needed: ${deliveryTimeline}`;
+    const whatsappDeliveryLine = '\n- Delivery Needed: ' + deliveryTimeline;
+    const emailDeliveryLine = '\nDelivery Needed: ' + deliveryTimeline;
 
     if (communication === 'WhatsApp') {
-      const message = `Hi Borshon! I want to book the ${packageName} package.${whatsappVideoTypeLine}\n- Duration: ${selectedDuration}\n- Price: ${estimatedPrice}${whatsappDeliveryLine}`;
+      const message = `Hi Borshon! I want to book the ${packageName} package.${whatsappVideoTypeLine}\n- Duration: ${selectedDuration}\n- Total Price: ${finalOrderPrice}${whatsappDeliveryLine}`;
       window.open(`https://wa.me/+8801750071200?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
       return;
     }
@@ -186,7 +142,7 @@ function BookingForm() {
           name: name.trim(),
           email: email.trim(),
           projectType: packageName,
-          message: `Booking request\n\nPackage: ${packageName}${emailVideoTypeLine}\nDuration: ${selectedDuration}\nPrice: ${estimatedPrice}${emailDeliveryLine}\nCommunication Preference: Email`,
+          message: `Booking request\n\nPackage: ${packageName}${emailVideoTypeLine}\nDuration: ${selectedDuration}\nTotal Price: ${finalOrderPrice}${emailDeliveryLine}\nCommunication Preference: Email`,
         }),
       });
       const result = await response.json();
@@ -308,7 +264,7 @@ function BookingForm() {
             )}
           </div>
 
-          {isCustomOrder ? (
+          {requiresCustomDeliveryTimeline ? (
             <label className="mt-6 block">
               <span className="flex items-center gap-2 text-xs font-medium text-[#53545d]"><Clock3 size={14} /> Delivery timeline</span>
               <input
@@ -319,56 +275,33 @@ function BookingForm() {
                 placeholder="Enter delivery timeframe / deadline"
                 className="mt-2 w-full rounded-xl border border-[#d9dbe0] bg-white px-4 py-3 text-sm text-[#15151a] outline-none transition focus:border-[#17171d] focus:ring-2 focus:ring-[#17171d]/10"
               />
+              <p className="mt-2 text-xs leading-5 text-[#7a7b83]">⚡ Need faster delivery? Please discuss via chat before placing your order.</p>
             </label>
-          ) : isDocumentary ? (
-            <div className="mt-6">
-              <label className="block">
-                <span className="flex items-center gap-2 text-xs font-medium text-[#53545d]"><Clock3 size={14} /> Delivery timeline</span>
-                {documentaryDeliveryRule ? (
-                  <select
-                    value={documentaryDeliveryDays}
-                    onChange={(event) => {
-                      setDocumentaryDeliveryDays(Number(event.target.value));
-                      setError('');
-                    }}
-                    className="mt-2 w-full appearance-none rounded-xl border border-[#d9dbe0] bg-white px-4 py-3 text-sm font-medium text-[#15151a] outline-none transition focus:border-[#17171d] focus:ring-2 focus:ring-[#17171d]/10"
-                  >
-                    {documentaryDeliveryOptions.map((days) => {
-                      const isImpossible = documentaryDeliveryRule.impossibleDays.includes(days);
-                      const rushFee = documentaryDeliveryRule.rushFees[days] ?? 0;
-                      const dayLabel = `${days} ${days === 1 ? 'Day' : 'Days'}`;
-
-                      return (
-                        <option key={days} value={days}>
-                          {isImpossible ? `${dayLabel} — Not possible` : rushFee ? `${dayLabel} — +$${rushFee} rush fee` : `${dayLabel} — Standard`}
-                        </option>
-                      );
-                    })}
-                  </select>
-                ) : (
-                  <p className="mt-2 rounded-xl border border-[#d9dbe0] bg-[#f7f7f8] px-4 py-3 text-sm text-[#53545d]">
-                    Delivery timeline will be discussed for a custom duration.
-                  </p>
-                )}
-              </label>
-              {documentaryDeliveryUnavailable && documentaryDeliveryDetails && (
-                <p role="alert" className="mt-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                  Fast delivery within {documentaryDeliveryDetails.days} {documentaryDeliveryDetails.days === 1 ? 'day' : 'days'} is not possible for this video length.
-                </p>
-              )}
-            </div>
           ) : (
             <div className="mt-6">
-              <p className="flex items-center gap-2 text-xs font-medium text-[#53545d]"><Clock3 size={14} /> Delivery timeline</p>
-              <div className="mt-2 grid gap-3 sm:grid-cols-3">
-                {deliveryOptions.map((option) => (
-                  <ChoiceCard key={option} active={delivery === option} onClick={() => setDelivery(option)}>
-                    {option}
-                  </ChoiceCard>
-                ))}
-              </div>
+              <p className="flex items-center gap-2 text-xs font-medium text-[#53545d]"><Clock3 size={14} /> Estimated delivery timeline</p>
+              <p className="mt-2 rounded-xl border border-[#d9dbe0] bg-[#f7f7f8] px-4 py-3 text-sm font-medium text-[#15151a]">{standardDeliveryTimeline}</p>
+              <p className="mt-2 text-xs leading-5 text-[#7a7b83]">⚡ Need faster delivery? Please discuss via chat before placing your order.</p>
             </div>
           )}
+
+          <div aria-live="polite" className="mt-4 rounded-2xl border border-[#d9dbe0] bg-[#f7f7f8] p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7a7b83]">Price summary</p>
+            {estimatedPrice === 'Price will be discussed in chat' ? (
+              <p className="mt-3 font-serif text-lg font-semibold tracking-[-0.03em] text-[#15151a]">{estimatedPrice}</p>
+            ) : (
+              <dl className="mt-3 space-y-2 text-sm text-[#53545d]">
+                <div className="flex items-center justify-between gap-4">
+                  <dt>Base Price</dt>
+                  <dd className="font-medium text-[#15151a]">{estimatedPrice}</dd>
+                </div>
+                <div className="mt-3 flex items-center justify-between gap-4 border-t border-[#d9dbe0] pt-3">
+                  <dt className="font-semibold text-[#15151a]">Total Price</dt>
+                  <dd className="font-serif text-xl font-semibold tracking-[-0.03em] text-[#15151a]">{finalOrderPrice}</dd>
+                </div>
+              </dl>
+            )}
+          </div>
         </fieldset>
 
         <fieldset className="space-y-4">
@@ -405,10 +338,10 @@ function BookingForm() {
 
         <button
           type="submit"
-          disabled={isSubmitting || documentaryDeliveryUnavailable}
+          disabled={isSubmitting}
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#17171d] px-5 py-3.5 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(23,23,29,0.16)] transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60 active:scale-[0.98]"
         >
-          {isSubmitting ? 'Sending request…' : documentaryDeliveryUnavailable ? 'Choose a valid delivery day' : 'Done'} <Send size={16} />
+          {isSubmitting ? 'Sending request…' : 'Done'} <Send size={16} />
         </button>
       </form>
     </section>

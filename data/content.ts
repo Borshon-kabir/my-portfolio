@@ -14,6 +14,7 @@ export type Project = {
   description: string;
   thumbnail: string; // image URL or path
   videoUrl: string;  // YouTube watch URL, YouTube short URL, or Google Drive share URL
+  processVideoUrl?: string; // Google Drive share URL or direct video file for the proof-of-work view
   tags: string[];
 };
 export const projects: Project[] = [
@@ -31,6 +32,7 @@ export const projects: Project[] = [
     description: 'A cinematic documentary-style map animation video crafted with dynamic motion graphics, archival visuals, and compelling storytelling.',
     thumbnail: '/thumbnails/map-animation.jpg',
     videoUrl: 'https://drive.google.com/file/d/1J2pzygfxyluF_Lk2_8yYdK1Hmi-NRNZy/view?usp=sharing',
+    processVideoUrl: 'https://drive.google.com/file/d/1ct8vFduSVZC1oB85t1pWYr3sn3wZI3-q/view?usp=sharing',
     tags: ['Documentary', 'Map Animation', 'Motion Graphics'],
   },
   {
