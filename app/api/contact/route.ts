@@ -22,8 +22,15 @@ export async function POST(req: Request) {
       );
     }
 
-    const gmailUser = process.env.GMAIL_USER || 'borshonkabirofficial@gmail.com';
-    const gmailPass = process.env.GMAIL_APP_PASSWORD || 'borshonkabir@007';
+    const gmailUser = process.env.GMAIL_USER!;
+    const gmailPass = process.env.GMAIL_APP_PASSWORD!;
+
+    if (!gmailUser || !gmailPass) {
+      return NextResponse.json(
+        { error: 'Email service is not configured. Please contact me directly.' },
+        { status: 500 }
+      );
+    }
 
     // Create Nodemailer Transporter for Gmail
     const transporter = nodemailer.createTransport({
@@ -83,7 +90,7 @@ export async function POST(req: Request) {
     const mailOptions = {
       from: `"${cleanName}" <${gmailUser}>`,
       replyTo: cleanEmail,
-      to: 'borshonkabirofficial@gmail.com',
+      to: gmailUser,
       subject: `New Project Enquiry: ${cleanName} — ${cleanType}`,
       text: `New Project Enquiry from ${cleanName} (${cleanEmail})\n\nProject Type: ${cleanType}\n\nMessage:\n${cleanMessage}`,
       html: htmlContent,
@@ -113,7 +120,7 @@ export async function POST(req: Request) {
       {
         error:
           error?.message ||
-          'Failed to send message. Please try again or reach out directly at borshonkabirofficial@gmail.com',
+          'Failed to send message. Please try again or reach out directly at borshonkabiredits@gmail.com',
       },
       { status: 500 }
     );

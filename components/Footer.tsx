@@ -46,7 +46,7 @@ export default function Footer() {
               <span>Borshon.</span>
             </a>
             <p className="mt-4 max-w-sm text-sm leading-6 text-[#53545d]">
-              Refined cinematic video editing, pacing, and visual storytelling for ambitious brands, directors, and creators worldwide.
+              I cut with precision, pace with purpose, and keep every frame moving.🔥
             </p>
             <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-3.5 py-1.5 text-xs text-[#25252b]">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />

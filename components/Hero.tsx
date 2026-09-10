@@ -4,7 +4,11 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ArrowUpRight, Menu } from 'lucide-react';
 
-const metrics = [['30+', 'Projects completed'], ['4yr', 'Experience'], ['40+', 'Happy clients']];
+const metrics = [
+  { target: 1.5, suffix: '+ Years', label: 'Experience', decimals: 1 },
+  { target: 10, suffix: '+', label: 'Clients', decimals: 0 },
+  { target: 15, suffix: '+', label: 'Projects', decimals: 0 },
+];
 
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -84,9 +88,8 @@ export default function Hero() {
         );
 
       // Smooth number counter rolling up
-      [30, 4, 40].forEach((target, index) => {
+      metrics.forEach(({ target, suffix, decimals }, index) => {
         const val = { n: 0 };
-        const suffix = index === 1 ? 'yr' : '+';
         timeline.to(
           val,
           {
@@ -95,7 +98,8 @@ export default function Hero() {
             ease: 'power2.out',
             onUpdate: () => {
               if (counterRefs.current[index]) {
-                counterRefs.current[index]!.textContent = `${Math.round(val.n)}${suffix}`;
+                const value = decimals ? val.n.toFixed(decimals) : String(Math.round(val.n));
+                counterRefs.current[index]!.textContent = `${value}${suffix}`;
               }
             },
           },
@@ -236,7 +240,7 @@ export default function Hero() {
           </h1>
 
           <p className="show-copy mt-5 max-w-[365px] text-[15px] leading-6 text-[#53545d] will-change-transform will-change-opacity">
-            I craft refined cinematic videos, pacing, and visual storytelling for ambitious brands and creators.
+            I cut with precision, pace with purpose, and keep every frame moving.🔥
           </p>
 
           <div className="show-copy mt-7 flex gap-2 will-change-transform will-change-opacity">
@@ -255,7 +259,7 @@ export default function Hero() {
           </div>
 
           <div className="relative z-30 mt-auto grid grid-cols-3 gap-6 pt-16 md:pt-20">
-            {metrics.map(([, label], index) => (
+            {metrics.map(({ label }, index) => (
               <div className="show-metric will-change-transform will-change-opacity" key={label}>
                 <p className="font-serif text-[2rem] font-semibold tracking-[-.05em] text-[#15151a]">
                   <span
