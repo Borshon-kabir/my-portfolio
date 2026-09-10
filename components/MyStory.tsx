@@ -15,7 +15,7 @@ export const STORY_CONFIG = {
 
   // Main story statement
   storyText:
-    "I'm Borshon Kabir, a passionate Video Editor with 1+ year of hands-on experience in turning raw footage into compelling visual stories. Focused on precise pacing, engaging motion graphics, and clean sound design, I help creators and brands elevate their content and capture their audience's attention. Creative, detail-oriented, and results-driven, I excel at crafting seamless edits that leave a lasting impression.",
+    "I'm Borshon Kabir, a passionate Video Editor with 1.5+ years of hands-on experience in turning raw footage into compelling visual stories. Focused on precise pacing, engaging motion graphics, and clean sound design, I help creators and brands elevate their content and capture their audience's attention. Creative, detail-oriented, and results-driven, I excel at crafting seamless edits that leave a lasting impression.",
 
   // First photo (Left Polaroid with pin) - easily replace or update image path
   image1: {

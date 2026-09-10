@@ -5,9 +5,9 @@ import gsap from 'gsap';
 import { ArrowUpRight, Menu } from 'lucide-react';
 
 const metrics = [
-  { target: 1.5, suffix: '+ Years', label: 'Experience', decimals: 1 },
-  { target: 10, suffix: '+', label: 'Clients', decimals: 0 },
-  { target: 15, suffix: '+', label: 'Projects', decimals: 0 },
+  { target: 15, suffix: '+', label: 'Projects completed', decimals: 0 },
+  { target: 1.5, suffix: 'yr+', label: 'Experience', decimals: 1 },
+  { target: 10, suffix: '+', label: 'Happy clients', decimals: 0 },
 ];
 
 export default function Hero() {

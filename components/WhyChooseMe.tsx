@@ -153,7 +153,7 @@ export default function WhyChooseMe() {
         });
       }
 
-      // ── 7. Counter 56+ — smooth expo count
+      // ── 7. Counter 15+ — smooth expo count
       if (counter56Ref.current) {
         gsap.fromTo(
           counter56Ref.current,
@@ -173,7 +173,7 @@ export default function WhyChooseMe() {
         );
         const val56 = { val: 0 };
         gsap.to(val56, {
-          val: 56,
+          val: 15,
           duration: 1.8,
           ease: 'expo.out',
           scrollTrigger: {
@@ -291,7 +291,7 @@ export default function WhyChooseMe() {
                     className="inline-block h-8 w-8 rounded-full object-cover ring-2 ring-white"
                   />
                 </div>
-                <span className="text-sm font-semibold text-[#121218]">+3K clients</span>
+                <span className="text-sm font-semibold text-[#121218]">10+ clients</span>
               </div>
 
               {/* Card 1B: Satisfaction Stat Card */}
@@ -311,7 +311,7 @@ export default function WhyChooseMe() {
               </div>
             </div>
 
-            {/* Column 2: 56+ Projects Completed Card */}
+            {/* Column 2: 15+ Projects Completed Card */}
             <div
               ref={col2Ref}
               className="group flex flex-1 flex-col justify-between rounded-2xl border border-black/10 bg-white p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] min-h-[340px] sm:min-h-[388px] will-change-transform"
@@ -324,7 +324,7 @@ export default function WhyChooseMe() {
                   ref={counter56Ref}
                   className="font-serif text-5xl font-semibold leading-none tracking-tight text-[#121218] sm:text-6xl"
                 >
-                  56+
+                  15+
                 </span>
                 <p className="mt-2 text-xs font-normal text-[#53545d] sm:text-sm">Projects completed</p>
               </div>
