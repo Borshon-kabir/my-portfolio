@@ -4,6 +4,7 @@ export type Project = {
   title: string;
   client: string;
   category: string;
+  format: 'shorts' | 'long';
   year: string;
   tone: string;
   size?: string;
@@ -21,6 +22,7 @@ export const projects: Project[] = [
     title: 'Map Animation',
     client: 'Personal Project',
     category: 'Documentary Video',
+    format: 'long',
     year: '2024',
     tone: 'from-[#fceee9] to-[#fed6c8]',
     themeColor: '#fed6c8',
@@ -36,6 +38,7 @@ export const projects: Project[] = [
     title: 'Nivora',
     client: 'Nivora Collective',
     category: 'Fashion & Music Video',
+    format: 'long',
     year: '2024',
     tone: 'from-[#a2e701] to-[#83ca16]',
     themeColor: '#a2e701',
@@ -52,6 +55,7 @@ export const projects: Project[] = [
     title: 'Codify',
     client: 'Codify Systems',
     category: 'Product Launch & Tech',
+    format: 'long',
     year: '2024',
     tone: 'from-[#1a382b] to-[#0f241a]',
     themeColor: '#1a382b',
@@ -68,6 +72,7 @@ export const projects: Project[] = [
     title: 'Neutra',
     client: 'Neutra Software',
     category: '3D Motion & Commercial',
+    format: 'long',
     year: '2023',
     tone: 'from-[#1c1d22] to-[#121216]',
     themeColor: '#1c1d22',
@@ -84,6 +89,7 @@ export const projects: Project[] = [
     title: 'Snapkit',
     client: 'Snapkit Digital',
     category: 'Reels & Short-form',
+    format: 'shorts',
     year: '2023',
     tone: 'from-[#18181b] to-[#0d0d10]',
     themeColor: '#18181b',
@@ -100,6 +106,7 @@ export const projects: Project[] = [
     title: 'TodoFusion',
     client: 'TodoFusion AI',
     category: 'SaaS Commercial',
+    format: 'shorts',
     year: '2024',
     tone: 'from-[#ede8ff] to-[#ddd6fe]',
     themeColor: '#ede8ff',

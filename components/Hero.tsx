@@ -141,13 +141,13 @@ export default function Hero() {
 
       if (target) {
         if ((window as any).__lenis) {
-          (window as any).__lenis.scrollTo(target, { offset: -80, duration: 1.2 });
+          (window as any).__lenis.scrollTo(target, { offset: -80, duration: 0.5 });
         } else {
           target.scrollIntoView({ behavior: 'smooth' });
         }
       } else if (id === 'home') {
         if ((window as any).__lenis) {
-          (window as any).__lenis.scrollTo(0, { duration: 1.2 });
+          (window as any).__lenis.scrollTo(0, { duration: 0.5 });
         } else {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -196,6 +196,13 @@ export default function Hero() {
             className="hover:text-[#15151a] transition-colors"
           >
             Services
+          </a>
+          <a
+            href="#pricing"
+            onClick={(e) => handleNavClick(e, '#pricing')}
+            className="hover:text-[#15151a] transition-colors"
+          >
+            Pricing
           </a>
           <a
             href="#contact"

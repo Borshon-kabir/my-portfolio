@@ -75,7 +75,7 @@ export default function Pricing() {
         },
         {
           y: 0, opacity: 1, rotateX: 0, rotateY: 0, scale: 1, filter: 'blur(0px)',
-          duration: 1.15, ease: 'expo.out',
+          duration: 0.3, stagger: 0.08, ease: 'expo.out',
           scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
         }
       );
@@ -85,7 +85,7 @@ export default function Pricing() {
         '.pricing-dark-shimmer',
         { x: '-110%', opacity: 0.7 },
         {
-          x: '110%', opacity: 0, duration: 1.1, ease: 'expo.out', delay: 0.35,
+          x: '110%', opacity: 0, duration: 0.3, ease: 'expo.out', delay: 0.08,
           scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
         }
       );
@@ -97,13 +97,13 @@ export default function Pricing() {
           { filter: 'blur(12px)', opacity: 0, y: 16 },
           {
             filter: 'blur(0px)', opacity: 1, y: 0,
-            duration: 1.0, ease: 'expo.out', delay: 0.25,
+            duration: 0.3, ease: 'expo.out', delay: 0.1,
             scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
           }
         );
         const counter = { val: 0 };
         gsap.to(counter, {
-          val: target, duration: 1.7, ease: 'expo.out', delay: 0.25,
+          val: target, duration: 0.3, ease: 'expo.out', delay: 0.1,
           scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
           onUpdate: () => {
             if (ref.current)
@@ -111,7 +111,7 @@ export default function Pricing() {
           },
         });
       };
-      priceAnim(price1Ref, 10);
+      priceAnim(price1Ref, 20);
       priceAnim(price2Ref, 110);
 
       // ── 5. Feature lists: spring-wave cascade, all 3 at once
@@ -121,7 +121,7 @@ export default function Pricing() {
           { x: -16, opacity: 0, filter: 'blur(4px)' },
           {
             x: 0, opacity: 1, filter: 'blur(0px)',
-            duration: 0.55, stagger: 0.065, ease: 'expo.out', delay: 0.5,
+            duration: 0.3, stagger: 0.05, ease: 'expo.out', delay: 0.1,
             scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
           }
         );
@@ -173,7 +173,7 @@ export default function Pricing() {
             ref={card1Ref}
             onMouseMove={(e) => onMove(e, card1Ref.current)}
             onMouseLeave={() => onLeave(card1Ref.current)}
-            className="group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-[#e0e2e6] bg-white p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-300 hover:border-[#cbced6] hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)] will-change-transform"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-[#e0e2e6] bg-white p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-200 ease-out hover:border-[#cbced6] hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)] will-change-transform"
           >
             <div>
               {/* Icon */}
@@ -191,15 +191,15 @@ export default function Pricing() {
               <div className="mt-7 flex items-baseline gap-1">
                 <span className="font-serif text-3xl font-semibold text-[#121218]">$</span>
                 <span ref={price1Ref} className="font-serif text-[48px] sm:text-[54px] font-semibold leading-none tracking-tight text-[#121218]">
-                  10
+                  20
                 </span>
                 <span className="ml-1.5 text-xs font-semibold uppercase tracking-wider text-[#8e8f96]">USD</span>
               </div>
 
               {/* CTA */}
               <a
-                href="#contact"
-                className="group/btn relative mt-7 flex h-11 w-full items-center justify-center overflow-hidden rounded-lg bg-[#121218] text-sm font-medium text-white shadow-[0_2px_4px_rgba(18,18,24,0.1),0_4px_8px_rgba(18,18,24,0.15)] transition-all duration-300 hover:bg-[#22222a] hover:shadow-[0_8px_20px_rgba(18,18,24,0.25)] active:scale-[0.99]"
+                href="/book?package=Shorts%20%26%20Reels"
+                className="group/btn relative mt-7 flex h-11 w-full items-center justify-center overflow-hidden rounded-lg bg-[#121218] text-sm font-medium text-white shadow-[0_2px_4px_rgba(18,18,24,0.1),0_4px_8px_rgba(18,18,24,0.15)] transition-all duration-200 ease-out hover:bg-[#22222a] hover:shadow-[0_8px_20px_rgba(18,18,24,0.25)] active:scale-[0.99]"
               >
                 <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-1000 ease-out group-hover/btn:translate-x-full" />
                 <span className="relative z-10">Start a project</span>
@@ -225,7 +225,7 @@ export default function Pricing() {
             ref={card2Ref}
             onMouseMove={(e) => onMove(e, card2Ref.current)}
             onMouseLeave={() => onLeave(card2Ref.current)}
-            className="group relative flex flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#131318] p-7 sm:p-8 shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_64px_-12px_rgba(0,0,0,0.7)] transition-all duration-300 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1),0_32px_80px_-12px_rgba(0,0,0,0.8)] will-change-transform"
+            className="group relative flex flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#131318] p-7 sm:p-8 shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_64px_-12px_rgba(0,0,0,0.7)] transition-all duration-200 ease-out hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1),0_32px_80px_-12px_rgba(0,0,0,0.8)] will-change-transform"
           >
             {/* Ambient radial glow — bottom right, no overflow clipping issues */}
             <div className="pointer-events-none absolute bottom-0 right-0 h-72 w-72 rounded-full bg-indigo-600/10 blur-[80px]" />
@@ -263,8 +263,8 @@ export default function Pricing() {
 
             {/* CTA Button */}
             <a
-              href="#contact"
-              className="group/btn relative z-10 mt-7 flex h-12 w-full items-center justify-center overflow-hidden rounded-xl bg-white text-sm font-semibold text-[#121218] shadow-[0_2px_8px_rgba(255,255,255,0.12)] transition-all duration-300 hover:scale-[1.02] hover:bg-[#f0f0f2] hover:shadow-[0_8px_28px_rgba(255,255,255,0.18)] active:scale-[0.98]"
+              href="/book?package=Documentary%20Edit"
+              className="group/btn relative z-10 mt-7 flex h-12 w-full items-center justify-center overflow-hidden rounded-xl bg-white text-sm font-semibold text-[#121218] shadow-[0_2px_8px_rgba(255,255,255,0.12)] transition-all duration-200 ease-out hover:scale-[1.02] hover:bg-[#f0f0f2] hover:shadow-[0_8px_28px_rgba(255,255,255,0.18)] active:scale-[0.98]"
             >
               <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/8 to-transparent transition-transform duration-700 ease-out group-hover/btn:translate-x-full" />
               <span className="relative z-10">Book this package</span>
@@ -297,7 +297,7 @@ export default function Pricing() {
             ref={card3Ref}
             onMouseMove={(e) => onMove(e, card3Ref.current)}
             onMouseLeave={() => onLeave(card3Ref.current)}
-            className="group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-[#e0e2e6] bg-gradient-to-b from-[#f9f9fb] to-white p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-300 hover:border-[#cbced6] hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)] will-change-transform"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-[#e0e2e6] bg-gradient-to-b from-[#f9f9fb] to-white p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-200 ease-out hover:border-[#cbced6] hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)] will-change-transform"
           >
             <div>
               {/* Icon */}
@@ -321,8 +321,8 @@ export default function Pricing() {
 
               {/* CTA */}
               <a
-                href="#contact"
-                className="group/btn relative mt-7 flex h-11 w-full items-center justify-center overflow-hidden rounded-lg bg-[#121218] text-sm font-medium text-white shadow-[0_2px_4px_rgba(18,18,24,0.1),0_4px_8px_rgba(18,18,24,0.15)] transition-all duration-300 hover:bg-[#22222a] hover:shadow-[0_8px_20px_rgba(18,18,24,0.25)] active:scale-[0.99]"
+                href="/book?package=Custom%20Order"
+                className="group/btn relative mt-7 flex h-11 w-full items-center justify-center overflow-hidden rounded-lg bg-[#121218] text-sm font-medium text-white shadow-[0_2px_4px_rgba(18,18,24,0.1),0_4px_8px_rgba(18,18,24,0.15)] transition-all duration-200 ease-out hover:bg-[#22222a] hover:shadow-[0_8px_20px_rgba(18,18,24,0.25)] active:scale-[0.99]"
               >
                 <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-1000 ease-out group-hover/btn:translate-x-full" />
                 <span className="relative z-10">Get a custom quote</span>
