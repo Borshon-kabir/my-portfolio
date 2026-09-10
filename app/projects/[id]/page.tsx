@@ -291,13 +291,6 @@ export default function ProjectBreakdownPage() {
                   <span key={item} className="rounded-full border border-[color:var(--line)] bg-[var(--bg)] px-3 py-1.5 text-xs font-medium text-[var(--text)]">{item}</span>
                 ))}
               </div>
-            </div>
-            <div className="border-t border-[color:var(--line)] pt-6">
-              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--text-dim)]">Plugins & FX used</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {breakdown.plugins.map((item) => (
-                  <span key={item} className="rounded-full border border-[color:var(--line)] bg-[var(--accent)] px-3 py-1.5 text-xs font-medium text-white">{item}</span>
-                ))}
               </div>
             </div>
           </div>
