@@ -26,7 +26,7 @@ const card2Features = [
   'Advanced narrative pacing & storytelling',
   'Cinematic color grading & style matching',
   'Custom sound design & atmospheric mixing',
-  'High-quality 16:9 4K export',
+  'High-quality 16:9 Full HD export',
 ];
 
 const card3Features = [
