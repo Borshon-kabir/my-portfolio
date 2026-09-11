@@ -1,2 +1,14 @@
 import type { MetadataRoute } from 'next';
-export default function sitemap(): MetadataRoute.Sitemap { return [{ url: 'https://borshonkabir.com', lastModified: new Date(), changeFrequency: 'monthly', priority: 1 }]; }
+
+const siteUrl = 'https://my-portfolio-seven-ashen-ahlwc08ka.vercel.app';
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    {
+      url: siteUrl,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 1,
+    },
+  ];
+}

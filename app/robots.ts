@@ -1,2 +1,10 @@
 import type { MetadataRoute } from 'next';
-export default function robots(): MetadataRoute.Robots { return { rules: { userAgent: '*', allow: '/' }, sitemap: 'https://borshonkabir.com/sitemap.xml' }; }
+
+const siteUrl = 'https://my-portfolio-seven-ashen-ahlwc08ka.vercel.app';
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: { userAgent: '*', allow: '/' },
+    sitemap: `${siteUrl}/sitemap.xml`,
+  };
+}
