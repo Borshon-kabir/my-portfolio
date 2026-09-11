@@ -13,10 +13,6 @@ export default function WhyChooseMe() {
   const col2Ref = useRef<HTMLDivElement>(null);
   const col3Ref = useRef<HTMLDivElement>(null);
 
-  const counter92Ref = useRef<HTMLSpanElement>(null);
-  const counter56Ref = useRef<HTMLSpanElement>(null);
-  const counter49Ref = useRef<HTMLSpanElement>(null);
-
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -118,110 +114,6 @@ export default function WhyChooseMe() {
         });
       }
 
-      // ── 6. Counter 92% — smooth expo count + blur reveal
-      if (counter92Ref.current) {
-        gsap.fromTo(
-          counter92Ref.current,
-          { filter: 'blur(10px)', opacity: 0, y: 12 },
-          {
-            filter: 'blur(0px)',
-            opacity: 1,
-            y: 0,
-            duration: 1.1,
-            ease: 'expo.out',
-            scrollTrigger: {
-              trigger: col1Ref.current,
-              start: 'top 85%',
-              once: true,
-            },
-          }
-        );
-        const val92 = { val: 0 };
-        gsap.to(val92, {
-          val: 92,
-          duration: 1.8,
-          ease: 'expo.out',
-          scrollTrigger: {
-            trigger: col1Ref.current,
-            start: 'top 85%',
-            once: true,
-          },
-          onUpdate: () => {
-            if (counter92Ref.current)
-              counter92Ref.current.textContent = `${Math.round(val92.val)}%`;
-          },
-        });
-      }
-
-      // ── 7. Counter 15+ — smooth expo count
-      if (counter56Ref.current) {
-        gsap.fromTo(
-          counter56Ref.current,
-          { filter: 'blur(10px)', opacity: 0, y: 12 },
-          {
-            filter: 'blur(0px)',
-            opacity: 1,
-            y: 0,
-            duration: 1.1,
-            ease: 'expo.out',
-            scrollTrigger: {
-              trigger: col2Ref.current,
-              start: 'top 85%',
-              once: true,
-            },
-          }
-        );
-        const val56 = { val: 0 };
-        gsap.to(val56, {
-          val: 15,
-          duration: 1.8,
-          ease: 'expo.out',
-          scrollTrigger: {
-            trigger: col2Ref.current,
-            start: 'top 85%',
-            once: true,
-          },
-          onUpdate: () => {
-            if (counter56Ref.current)
-              counter56Ref.current.textContent = `${Math.round(val56.val)}+`;
-          },
-        });
-      }
-
-      // ── 8. Counter 4.9 — smooth expo count
-      if (counter49Ref.current) {
-        gsap.fromTo(
-          counter49Ref.current,
-          { filter: 'blur(10px)', opacity: 0, y: 12 },
-          {
-            filter: 'blur(0px)',
-            opacity: 1,
-            y: 0,
-            duration: 1.1,
-            ease: 'expo.out',
-            scrollTrigger: {
-              trigger: col3Ref.current,
-              start: 'top 85%',
-              once: true,
-            },
-          }
-        );
-        const val49 = { val: 0 };
-        gsap.to(val49, {
-          val: 4.9,
-          duration: 1.8,
-          ease: 'expo.out',
-          scrollTrigger: {
-            trigger: col3Ref.current,
-            start: 'top 85%',
-            once: true,
-          },
-          onUpdate: () => {
-            if (counter49Ref.current)
-              counter49Ref.current.textContent = val49.val.toFixed(1);
-          },
-        });
-      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -291,7 +183,12 @@ export default function WhyChooseMe() {
                     className="inline-block h-8 w-8 rounded-full object-cover ring-2 ring-white"
                   />
                 </div>
-                <span className="text-sm font-semibold text-[#121218]">10+ clients</span>
+                <div>
+                  <p className="text-sm font-semibold text-[#121218]">Minimal Shorts &amp; Reels</p>
+                  <p className="mt-1 text-xs font-normal text-[#53545d]">
+                    High-retention short-form edits with clean typography and rhythmic pacing.
+                  </p>
+                </div>
               </div>
 
               {/* Card 1B: Satisfaction Stat Card */}
@@ -301,12 +198,11 @@ export default function WhyChooseMe() {
                 </p>
                 <div className="mt-8">
                   <span
-                    ref={counter92Ref}
                     className="font-serif text-5xl font-semibold leading-none tracking-tight text-[#121218] sm:text-6xl"
                   >
-                    92%
+                    Seamless
                   </span>
-                  <p className="mt-2 text-xs font-normal text-[#53545d] sm:text-sm">Client satisfaction</p>
+                  <p className="mt-2 text-xs font-normal text-[#53545d] sm:text-sm">Transitions &amp; Motion</p>
                 </div>
               </div>
             </div>
@@ -317,23 +213,41 @@ export default function WhyChooseMe() {
               className="group flex flex-1 flex-col justify-between rounded-2xl border border-black/10 bg-white p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] min-h-[340px] sm:min-h-[388px] will-change-transform"
             >
               <p className="text-[15px] font-medium leading-snug text-[#121218] sm:text-base">
-                Engaging videos, dynamic motion, and seamless edits delivered on time.
+                Clean audio mixing, color correction, and dynamic motion graphics.
               </p>
               <div className="my-6">
                 <span
-                  ref={counter56Ref}
                   className="font-serif text-5xl font-semibold leading-none tracking-tight text-[#121218] sm:text-6xl"
                 >
-                  15+
+                  Pro Stack
                 </span>
-                <p className="mt-2 text-xs font-normal text-[#53545d] sm:text-sm">Projects completed</p>
+                <p className="mt-2 text-xs font-normal text-[#53545d] sm:text-sm">Adobe Creative Cloud Workflow</p>
               </div>
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-black/10 bg-[#edeef1] px-3.5 py-1.5 text-xs font-medium text-[#121218]">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-                </span>
-                <span>Available for projects</span>
+              <div className="flex flex-col items-start gap-3">
+                <div className="flex flex-wrap gap-2" aria-label="Adobe Creative Cloud tools">
+                  {[
+                    ['Pr', 'Premiere Pro', 'bg-[#2a164d] text-[#d5aaff]'],
+                    ['Ae', 'After Effects', 'bg-[#24134a] text-[#bca9ff]'],
+                    ['Ps', 'Photoshop', 'bg-[#001e36] text-[#62c4ff]'],
+                    ['Ai', 'Illustrator', 'bg-[#351400] text-[#ffb44b]'],
+                  ].map(([initials, name, color]) => (
+                    <span
+                      key={initials}
+                      aria-label={name}
+                      title={name}
+                      className={`inline-flex h-8 w-8 items-center justify-center rounded-md text-[11px] font-semibold ${color}`}
+                    >
+                      {initials}
+                    </span>
+                  ))}
+                </div>
+                <div className="inline-flex w-fit items-center gap-2 rounded-full border border-black/10 bg-[#edeef1] px-3.5 py-1.5 text-xs font-medium text-[#121218]">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+                  </span>
+                  <span>Available for projects</span>
+                </div>
               </div>
             </div>
           </div>
@@ -348,26 +262,23 @@ export default function WhyChooseMe() {
             }}
             className="group flex flex-col justify-between rounded-2xl border border-[#121218] p-7 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] md:w-[40%] min-h-[340px] sm:min-h-[388px] will-change-transform"
           >
-            <p className="text-[15px] font-normal leading-relaxed text-[#c9cdd2] sm:text-base">
-              I help creators, brands, and teams turn raw footage into engaging visual stories that keep viewers hooked from start to finish.
-            </p>
-            <div className="mt-8 flex items-end gap-3.5">
-              <span
-                ref={counter49Ref}
-                className="font-serif text-5xl font-semibold leading-none tracking-tight text-white sm:text-6xl"
-              >
-                4.9
-              </span>
-              <div className="pb-1">
-                <div className="flex items-center gap-1 mb-1">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} viewBox="0 0 62 58" className="h-3.5 w-3.5 fill-[#F2B347]">
-                      <path d="M29.135 1.812c.66-1.703 3.07-1.703 3.73 0l6.515 16.81a2 2 0 0 0 1.754 1.274l18 1.002c1.824.101 2.569 2.393 1.153 3.547l-13.974 11.39a2 2 0 0 0-.67 2.063l4.61 17.429c.467 1.766-1.482 3.182-3.017 2.192l-15.152-9.77a2 2 0 0 0-2.168 0l-15.152 9.77c-1.535.99-3.484-.426-3.017-2.192l4.61-17.43a2 2 0 0 0-.67-2.061L1.713 24.445c-1.416-1.154-.671-3.446 1.152-3.446l18-1.002a2 2 0 0 0 1.754-1.274l6.515-16.81z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-xs font-normal text-[#c9cdd2]">Trusted by clients worldwide</p>
-              </div>
+            <div>
+              <h3 className="font-serif text-2xl font-semibold leading-tight tracking-tight text-white sm:text-3xl">
+                Documentary, Parallax &amp; 3D Map Animations
+              </h3>
+              <p className="mt-4 text-[15px] font-normal leading-relaxed text-[#c9cdd2] sm:text-base">
+                Specializing in documentary-style video editing, custom 3D map animations, cinematic photo depth (parallax effects), and seamless camera movements that keep viewers hooked.
+              </p>
+            </div>
+            <div className="mt-8 flex flex-wrap items-end gap-2">
+              {['3D Map Animation', 'Photo Depth (Parallax)', 'Documentary Visual Storytelling'].map((badge) => (
+                <span
+                  key={badge}
+                  className="inline-flex w-fit items-center rounded-full border border-white/10 bg-white/10 px-3.5 py-1.5 text-xs font-medium text-[#c9cdd2]"
+                >
+                  {badge}
+                </span>
+              ))}
             </div>
           </div>
         </div>

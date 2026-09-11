@@ -15,7 +15,14 @@ export const STORY_CONFIG = {
 
   // Main story statement
   storyText:
-    "I'm Borshon Kabir, a passionate Video Editor with 1.5+ years of hands-on experience in turning raw footage into compelling visual stories. Focused on precise pacing, engaging motion graphics, and clean sound design, I help creators and brands elevate their content and capture their audience's attention. Creative, detail-oriented, and results-driven, I excel at crafting seamless edits that leave a lasting impression.",
+    "I started editing with a simple curiosity: how can raw footage become a story people actually want to watch?\n\nOver the past 1.5+ years, I’ve built my skills around that idea—combining precise pacing, motion graphics, sound design, and visual storytelling to make every moment serve a purpose.\n\nToday, I focus on documentary and story-driven content, where the edit isn’t just about making footage look good—it’s about creating curiosity, clarity, and momentum from beginning to end.\n\nI’m still growing, experimenting, and refining my craft with every project. But one thing remains constant: I care about making edits that have a reason to exist.",
+
+  paragraphs: [
+    "I started editing with a simple curiosity: how can raw footage become a story people actually want to watch?",
+    "Over the past 1.5+ years, I’ve built my skills around that idea—combining precise pacing, motion graphics, sound design, and visual storytelling to make every moment serve a purpose.",
+    "Today, I focus on documentary and story-driven content, where the edit isn’t just about making footage look good—it’s about creating curiosity, clarity, and momentum from beginning to end.",
+    "I’m still growing, experimenting, and refining my craft with every project. But one thing remains constant: I care about making edits that have a reason to exist.",
+  ],
 
   // First photo (Left Polaroid with pin) - easily replace or update image path
   image1: {
@@ -86,7 +93,7 @@ export default function MyStory() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const textRef = useRef<HTMLParagraphElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
   const photo1Ref = useRef<HTMLDivElement>(null);
   const photo2Ref = useRef<HTMLDivElement>(null);
   const cropMarksRef = useRef<HTMLDivElement>(null);
@@ -362,12 +369,19 @@ export default function MyStory() {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-end">
             {/* Story Paragraph Column */}
             <div className="lg:col-span-6 xl:col-span-6 max-w-xl xl:max-w-2xl pb-2 lg:pb-6">
-              <p
+              <div
                 ref={textRef}
-                className="font-sans text-[1.125rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.6rem] font-normal leading-[1.58] tracking-[-0.018em] text-[#1e1f26] will-change-transform will-change-opacity"
+                className="space-y-4 sm:space-y-5 will-change-transform will-change-opacity"
               >
-                {STORY_CONFIG.storyText}
-              </p>
+                {STORY_CONFIG.paragraphs.map((paragraph, index) => (
+                  <p
+                    key={index}
+                    className="font-sans text-[1.02rem] sm:text-[1.12rem] md:text-[1.18rem] lg:text-[1.22rem] font-normal leading-[1.62] tracking-[-0.015em] text-[#1e1f26]"
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
             </div>
 
             {/* Pinned Polaroids Composition */}
