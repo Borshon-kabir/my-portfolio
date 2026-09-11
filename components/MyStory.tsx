@@ -15,12 +15,12 @@ export const STORY_CONFIG = {
 
   // Main story statement
   storyText:
-    "I started editing with a simple curiosity: how can raw footage become a story people actually want to watch?\n\nOver the past 1.5+ years, I’ve built my skills around that idea—combining precise pacing, motion graphics, sound design, and visual storytelling to make every moment serve a purpose.\n\nToday, I focus on documentary and story-driven content, where the edit isn’t just about making footage look good—it’s about creating curiosity, clarity, and momentum from beginning to end.\n\nI’m still growing, experimenting, and refining my craft with every project. But one thing remains constant: I care about making edits that have a reason to exist.",
+    "I started editing with a simple curiosity: how can raw footage become a story people actually want to watch?\n\nOver the past 1.5+ years, I’ve built my skills around that idea combining precise pacing, motion graphics, sound design, and visual storytelling to make every moment serve a purpose.\n\nToday, I focus on documentary and story-driven content, where the edit isn’t just about making footage look good, it’s about creating curiosity, clarity, and momentum from beginning to end.\n\nI’m still growing, experimenting, and refining my craft with every project. But one thing remains constant: I care about making edits that have a reason to exist.",
 
   paragraphs: [
     "I started editing with a simple curiosity: how can raw footage become a story people actually want to watch?",
-    "Over the past 1.5+ years, I’ve built my skills around that idea—combining precise pacing, motion graphics, sound design, and visual storytelling to make every moment serve a purpose.",
-    "Today, I focus on documentary and story-driven content, where the edit isn’t just about making footage look good—it’s about creating curiosity, clarity, and momentum from beginning to end.",
+    "Over the past 1.5+ years, I’ve built my skills around that idea combining precise pacing, motion graphics, sound design, and visual storytelling to make every moment serve a purpose.",
+    "Today, I focus on documentary and story-driven content, where the edit isn’t just about making footage look good, it’s about creating curiosity, clarity, and momentum from beginning to end.",
     "I’m still growing, experimenting, and refining my craft with every project. But one thing remains constant: I care about making edits that have a reason to exist.",
   ],
 
