@@ -159,36 +159,12 @@ export default function WhyChooseMe() {
           <div className="flex flex-1 flex-col gap-3.5 sm:flex-row">
             {/* Column 1: Stack of 2 Cards */}
             <div ref={col1Ref} className="flex flex-1 flex-col gap-3.5 will-change-transform">
-              {/* Card 1A: Avatar Pill Card */}
-              <div className="group flex items-center gap-3.5 rounded-2xl border border-black/10 bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]">
-                <div className="flex -space-x-2.5 overflow-hidden">
-                  <img
-                    src="/images/avatars/avatar1.jpg"
-                    alt="Client"
-                    className="inline-block h-8 w-8 rounded-full object-cover ring-2 ring-white"
-                  />
-                  <img
-                    src="/images/avatars/avatar2.jpg"
-                    alt="Client"
-                    className="inline-block h-8 w-8 rounded-full object-cover ring-2 ring-white"
-                  />
-                  <img
-                    src="/images/avatars/avatar3.jpg"
-                    alt="Client"
-                    className="inline-block h-8 w-8 rounded-full object-cover ring-2 ring-white"
-                  />
-                  <img
-                    src="/images/avatars/avatar4.jpg"
-                    alt="Client"
-                    className="inline-block h-8 w-8 rounded-full object-cover ring-2 ring-white"
-                  />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-[#121218]">Minimal Shorts &amp; Reels</p>
-                  <p className="mt-1 text-xs font-normal text-[#53545d]">
-                    High-retention short-form edits with clean typography and rhythmic pacing.
-                  </p>
-                </div>
+              {/* Card 1A: Minimal Shorts & Reels Card */}
+              <div className="group flex flex-col justify-center rounded-2xl border border-black/10 bg-white p-5 sm:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]">
+                <h3 className="text-base font-semibold text-[#121218]">Minimal Shorts &amp; Reels</h3>
+                <p className="mt-1.5 text-xs sm:text-[13px] font-normal leading-relaxed text-[#53545d]">
+                  High-retention short-form edits with clean typography and rhythmic pacing.
+                </p>
               </div>
 
               {/* Card 1B: Satisfaction Stat Card */}
