@@ -327,10 +327,10 @@ export default function Hero() {
             </a>
           </div>
 
-          <div className="relative z-30 mt-auto grid grid-cols-3 gap-6 pt-16 md:pt-20">
+          <div className="relative z-30 mt-auto grid grid-cols-3 gap-2 sm:gap-6 w-full max-w-md pt-16 md:pt-20">
             {metrics.map(({ label }, index) => (
-              <div className="show-metric will-change-transform will-change-opacity" key={label}>
-                <p className="font-serif text-[2rem] font-semibold tracking-[-.05em] text-[#15151a]">
+              <div className="show-metric min-w-0 text-left will-change-transform will-change-opacity" key={label}>
+                <p className="font-serif text-xl sm:text-3xl font-bold tracking-tight text-neutral-900">
                   <span
                     ref={(element) => {
                       counterRefs.current[index] = element;
@@ -339,7 +339,9 @@ export default function Hero() {
                     0
                   </span>
                 </p>
-                <p className="mt-1 text-sm leading-5 text-[#575862]">{label}</p>
+                <p className="text-[10px] sm:text-xs text-neutral-500 leading-tight block mt-1">
+                  {label}
+                </p>
               </div>
             ))}
           </div>
