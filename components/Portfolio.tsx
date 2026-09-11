@@ -621,41 +621,31 @@ export default function Portfolio() {
       {/* FAQs */}
       <FAQ />
 
-      {/* Testimonials */}
-      <section id="testimonials" className="overflow-hidden py-28 text-[#15151a]">
+      {/* Cinematic Manifesto Banner */}
+      <section id="testimonials" className="overflow-hidden py-24 md:py-32 text-[#15151a]">
         <div className="mx-auto max-w-[1100px] px-5 text-center">
-          <p className="eyebrow inline-block text-[#7a7b83]">( 05 — KIND WORDS )</p>
-          <div className="testimonial-anim relative mt-12 min-h-[300px] rounded-3xl border border-black/10 bg-[#e5e5e7] p-8 md:p-14 backdrop-blur-xl shadow-lg will-change-transform will-change-opacity">
-            <span className="display text-9xl leading-none opacity-10 text-[#15151a] select-none">“</span>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={quote}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="absolute inset-x-0 top-12 px-6 md:px-12"
-              >
-                <p className="display text-2xl leading-tight tracking-[-.03em] text-[#15151a] md:text-4xl">
-                  {testimonials[quote].quote}
+          <p className="eyebrow inline-block text-[#7a7b83]">( 05 — MANIFESTO )</p>
+          <div className="testimonial-anim relative mt-10 overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 bg-[#0D0D0D] p-8 sm:p-12 md:p-16 lg:p-20 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl will-change-transform will-change-opacity">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-8 left-6 sm:left-10 font-serif text-[11rem] sm:text-[14rem] md:text-[17rem] leading-none text-white/[0.04] select-none"
+            >
+              “
+            </span>
+            <div className="relative z-10 mx-auto max-w-3xl">
+              <blockquote className="font-serif text-2xl sm:text-3xl md:text-[2rem] lg:text-[2.25rem] font-normal leading-relaxed md:leading-[1.45] tracking-[-0.02em] text-[#f4f4f6]">
+                &ldquo;The goal isn&apos;t to make viewers watch. It&apos;s to give them a reason to keep watching.&rdquo;
+              </blockquote>
+              <div className="mx-auto mt-8 sm:mt-10 h-px w-14 sm:w-16 bg-white/15" />
+              <div className="mt-6 sm:mt-7">
+                <p className="font-mono text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase text-white">
+                  BORSHON KABIR
                 </p>
-                <p className="mt-8 text-xs font-bold uppercase tracking-[.15em] text-[#15151a]">
-                  {testimonials[quote].name}
+                <p className="mt-1.5 font-mono text-[11px] sm:text-xs tracking-wider uppercase text-[#8e8f96]">
+                  Documentary &amp; Motion Editor
                 </p>
-                <p className="mt-1 text-xs text-[#53545d]">{testimonials[quote].role}</p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          <div className="mt-8 flex justify-center gap-2">
-            {testimonials.map((_, i) => (
-              <button
-                aria-label={`Show testimonial ${i + 1}`}
-                onClick={() => setQuote(i)}
-                key={i}
-                className={`h-2 rounded-full transition-all duration-300 hover:scale-110 ${
-                  i === quote ? 'w-6 bg-[#15151a]' : 'w-2 bg-black/20'
-                }`}
-              />
-            ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
