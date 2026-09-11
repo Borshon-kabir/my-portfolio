@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://my-portfolio-seven-ashen-ahlwc08ka.vercel.app/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Borshon Kabir - Video Editor Portfolio',
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Borshon Kabir',
     description: 'Video Editor',
-    images: ['/og-image.png'],
+    images: ['https://my-portfolio-seven-ashen-ahlwc08ka.vercel.app/og-image.png'],
   },
   robots: {
     index: true,
