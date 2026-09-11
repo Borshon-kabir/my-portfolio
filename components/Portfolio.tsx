@@ -71,7 +71,6 @@ export default function Portfolio() {
 
   // High-performance 120fps GSAP lerped cursor
   useEffect(() => {
-    if (window.matchMedia('(max-width: 767px)').matches) return;
     if (!cursorDotRef.current || !cursorRingRef.current) return;
     const dot = cursorDotRef.current;
     const ring = cursorRingRef.current;
@@ -152,7 +151,6 @@ export default function Portfolio() {
   }, []);
 
   useEffect(() => {
-    if (window.matchMedia('(max-width: 767px)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
     if (typeof ScrollTrigger.clearScrollMemory === 'function') {
       ScrollTrigger.clearScrollMemory('manual');
@@ -453,6 +451,8 @@ export default function Portfolio() {
             initial={{ clipPath: 'circle(0% at 92% 6%)' }}
             animate={{ clipPath: 'circle(150% at 92% 6%)' }}
             exit={{ clipPath: 'circle(0% at 92% 6%)' }}
+            whileTap={{ scale: 0.995 }}
+            viewport={{ once: true, amount: 0.1 }}
             className="fixed inset-0 z-50 flex flex-col bg-[#f4f4f6] p-6 text-[#15151a] border-b border-black/10"
           >
             <button onClick={() => setMenu(false)} className="ml-auto text-[#15151a]">

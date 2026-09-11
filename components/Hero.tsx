@@ -85,15 +85,6 @@ export default function Hero() {
         window.scrollTo(0, 0);
       }
 
-      if (window.matchMedia('(max-width: 767px)').matches) {
-        metrics.forEach(({ target, suffix, decimals }, index) => {
-          if (counterRefs.current[index]) {
-            const value = decimals ? target.toFixed(decimals) : String(target);
-            counterRefs.current[index]!.textContent = `${value}${suffix}`;
-          }
-        });
-        return;
-      }
     }
 
     const ctx = gsap.context(() => {
@@ -376,7 +367,7 @@ export default function Hero() {
           />
         </div>
 
-        <div className="show-floating hidden md:block absolute md:top-3 md:right-8 z-20 bg-black/40 backdrop-blur-xl border border-white/20 rounded-2xl p-4 max-w-[220px] text-white shadow-2xl transition-all duration-300 hover:border-white/40 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] will-change-transform will-change-opacity">
+        <div className="show-floating absolute top-3 right-3 md:top-3 md:right-8 z-20 bg-black/40 backdrop-blur-xl border border-white/20 rounded-2xl p-4 max-w-[220px] text-white shadow-2xl transition-all duration-300 hover:border-white/40 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] will-change-transform will-change-opacity">
           <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-1">Select project</p>
           <h4 className="text-xs font-semibold mb-1">Available for projects</h4>
           <p className="text-[11px] text-neutral-300 leading-tight mb-2">

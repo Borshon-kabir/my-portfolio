@@ -8,7 +8,6 @@ export default function Footer() {
   const root = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (window.matchMedia('(max-width: 767px)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       gsap.fromTo(

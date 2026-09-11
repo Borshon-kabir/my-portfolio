@@ -190,8 +190,10 @@ function MediaViewport({ project, mode, notes }: { project: Project; mode: 'fina
     <motion.article
       layout
       initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -12 }}
+      whileTap={{ scale: 0.995 }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       className="flex h-full w-full flex-col justify-center overflow-hidden rounded-3xl border border-black/10 bg-white/75 p-3.5 sm:p-4 backdrop-blur-xl shadow-[0_16px_46px_rgba(20,20,25,0.07)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(20,20,25,0.12)]"
     >
@@ -320,6 +322,7 @@ export default function ProjectBreakdownPage() {
                     {active && (
                       <motion.span
                         layoutId="proof-view-active"
+                        viewport={{ once: true, amount: 0.1 }}
                         className="absolute inset-0 rounded-xl bg-[#17171d] shadow-[0_4px_14px_rgba(20,20,25,0.2)]"
                         transition={{ type: 'spring', stiffness: 440, damping: 34 }}
                       />
@@ -334,6 +337,9 @@ export default function ProjectBreakdownPage() {
 
           <motion.div
             layout
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
             className={`mt-8 grid gap-6 items-stretch ${view === 'split' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}
           >
             <AnimatePresence mode="popLayout" initial={false}>

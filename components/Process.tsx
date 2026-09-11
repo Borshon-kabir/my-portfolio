@@ -119,7 +119,6 @@ export default function Process() {
   }, []);
 
   useEffect(() => {
-    if (window.matchMedia('(max-width: 767px)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {

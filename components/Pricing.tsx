@@ -48,7 +48,6 @@ export default function Pricing() {
   const price2Ref    = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (window.matchMedia('(max-width: 767px)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
@@ -135,7 +134,6 @@ export default function Pricing() {
 
   // 3D card tilt on hover
   const onMove = (e: React.MouseEvent<HTMLDivElement>, card: HTMLDivElement | null) => {
-    if (window.matchMedia('(max-width: 767px)').matches) return;
     if (!card) return;
     const r = card.getBoundingClientRect();
     const rx = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -4;

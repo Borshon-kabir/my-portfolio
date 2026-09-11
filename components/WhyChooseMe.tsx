@@ -14,7 +14,6 @@ export default function WhyChooseMe() {
   const col3Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (window.matchMedia('(max-width: 767px)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
