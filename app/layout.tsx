@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Bricolage_Grotesque, Inter, JetBrains_Mono, Lora } from 'next/font/google';
 import './globals.css';
+import './mobile-performance.css';
 const display = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display' });
 const body = Inter({ subsets: ['latin'], variable: '--font-body' });
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });

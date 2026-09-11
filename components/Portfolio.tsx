@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
@@ -70,6 +71,7 @@ export default function Portfolio() {
 
   // High-performance 120fps GSAP lerped cursor
   useEffect(() => {
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     if (!cursorDotRef.current || !cursorRingRef.current) return;
     const dot = cursorDotRef.current;
     const ring = cursorRingRef.current;
@@ -150,18 +152,13 @@ export default function Portfolio() {
   }, []);
 
   useEffect(() => {
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
     if (typeof ScrollTrigger.clearScrollMemory === 'function') {
       ScrollTrigger.clearScrollMemory('manual');
     }
 
-    const isMobile = window.innerWidth <= 768;
-
-    const l = new Lenis(
-      isMobile
-        ? { lerp: 0.15, duration: 0.5, smoothWheel: true, wheelMultiplier: 0.9 }
-        : { lerp: 0.12, duration: 0.5, smoothWheel: true, wheelMultiplier: 1.0 }
-    );
+    const l = new Lenis({ lerp: 0.12, duration: 0.5, smoothWheel: true, wheelMultiplier: 1.0 });
     if (!window.location.hash) {
       l.scrollTo(0, { immediate: true });
     }
@@ -176,9 +173,8 @@ export default function Portfolio() {
     gsap.ticker.add(updateRaf);
     gsap.ticker.lagSmoothing(0);
 
-    // Helper: reduce y offset and duration on mobile for smooth 60fps
-    const my = (n: number) => (isMobile ? Math.round(n * 0.4) : n);
-    const md = (n: number) => (isMobile ? +(n * 0.65).toFixed(2) : n);
+    const my = (n: number) => n;
+    const md = (n: number) => n;
 
     const ctx = gsap.context(() => {
       // Projects Section Reveal
@@ -562,9 +558,12 @@ export default function Portfolio() {
                     }`}
                     style={{ backgroundColor: project.themeColor }}
                   >
-                    <img
+                    <Image
                       src={project.thumbnail}
                       alt={`${project.title} project thumbnail`}
+                      fill
+                      sizes="(max-width: 767px) 100vw, 50vw"
+                      loading="lazy"
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5" />

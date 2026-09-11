@@ -103,6 +103,7 @@ export default function MyStory() {
   const [photo2Loaded, setPhoto2Loaded] = useState(true);
 
   useEffect(() => {
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
@@ -266,6 +267,7 @@ export default function MyStory() {
 
   // 3D Magnetic hover physics for Polaroid 1
   const handlePhoto1Move = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     const el = photo1Ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -281,6 +283,7 @@ export default function MyStory() {
   };
 
   const handlePhoto1Leave = () => {
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     const el = photo1Ref.current;
     if (!el) return;
     gsap.to(el, {
@@ -294,6 +297,7 @@ export default function MyStory() {
 
   // 3D Magnetic hover physics for Polaroid 2
   const handlePhoto2Move = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     const el = photo2Ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -309,6 +313,7 @@ export default function MyStory() {
   };
 
   const handlePhoto2Leave = () => {
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     const el = photo2Ref.current;
     if (!el) return;
     gsap.to(el, {

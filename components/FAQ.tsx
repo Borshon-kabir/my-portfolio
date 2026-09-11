@@ -33,6 +33,7 @@ export default function FAQ() {
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       // Header animation

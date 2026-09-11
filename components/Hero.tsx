@@ -84,6 +84,16 @@ export default function Hero() {
       if (!window.location.hash) {
         window.scrollTo(0, 0);
       }
+
+      if (window.matchMedia('(max-width: 767px)').matches) {
+        metrics.forEach(({ target, suffix, decimals }, index) => {
+          if (counterRefs.current[index]) {
+            const value = decimals ? target.toFixed(decimals) : String(target);
+            counterRefs.current[index]!.textContent = `${value}${suffix}`;
+          }
+        });
+        return;
+      }
     }
 
     const ctx = gsap.context(() => {

@@ -30,6 +30,7 @@ export default function HomeIntro() {
   const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       // Header reveal
@@ -136,4 +137,3 @@ export default function HomeIntro() {
     </section>
   );
 }
-
