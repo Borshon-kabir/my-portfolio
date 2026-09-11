@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ChevronUp, Instagram, Linkedin, Youtube, ArrowUpRight } from 'lucide-react';
+import { ChevronUp, ArrowUpRight } from 'lucide-react';
 
 export default function Footer() {
   const root = useRef<HTMLElement>(null);
@@ -71,25 +71,18 @@ export default function Footer() {
               <p className="text-xs font-semibold uppercase tracking-wider text-[#7a7b83]">Connect</p>
               <ul className="mt-4 space-y-2.5 text-sm text-[#53545d]">
                 <li>
-                  <a href="#" className="group inline-flex items-center gap-1.5 hover:text-[#15151a] transition-colors">
-                    <span>Instagram</span>
+                  <a
+                    href="https://wa.me/8801750071200"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group inline-flex items-center gap-1.5 hover:text-[#15151a] transition-colors"
+                  >
+                    <span>WhatsApp</span>
                     <ArrowUpRight size={13} className="text-[#7a7b83] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#15151a]" />
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="group inline-flex items-center gap-1.5 hover:text-[#15151a] transition-colors">
-                    <span>YouTube</span>
-                    <ArrowUpRight size={13} className="text-[#7a7b83] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#15151a]" />
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="group inline-flex items-center gap-1.5 hover:text-[#15151a] transition-colors">
-                    <span>LinkedIn</span>
-                    <ArrowUpRight size={13} className="text-[#7a7b83] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#15151a]" />
-                  </a>
-                </li>
-                <li>
-                  <a href="mailto:hello@borshonkabir.com" className="group inline-flex items-center gap-1.5 hover:text-[#15151a] transition-colors">
+                  <a href="mailto:borshonkabiredits@gmail.com" className="group inline-flex items-center gap-1.5 hover:text-[#15151a] transition-colors">
                     <span>Email me</span>
                     <ArrowUpRight size={13} className="text-[#7a7b83] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#15151a]" />
                   </a>

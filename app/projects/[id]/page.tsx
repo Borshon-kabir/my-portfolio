@@ -29,6 +29,13 @@ type ProjectBreakdown = {
   blueprintNotes: string[];
 };
 
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
 const projectBreakdowns: Record<string, ProjectBreakdown> = {
   'project-01': {
     duration: '8:42',
@@ -206,8 +213,8 @@ function MediaViewport({ project, mode, notes }: { project: Project; mode: 'fina
 
 export default function ProjectBreakdownPage() {
   const params = useParams<{ id: string }>();
-  const projectId = Array.isArray(params.id) ? params.id[0] : params.id;
-  const project = projects.find((item) => item.id === projectId);
+  const projectId = decodeURIComponent(Array.isArray(params.id) ? params.id[0] : params.id || '');
+  const project = projects.find((item) => item.id === projectId || slugify(item.title) === projectId);
   const [view, setView] = useState<ViewMode>('split');
 
   if (!project) {
@@ -227,7 +234,14 @@ export default function ProjectBreakdownPage() {
     );
   }
 
-  const breakdown = projectBreakdowns[project.id];
+  const breakdown = projectBreakdowns[project.id] ?? {
+    duration: 'Custom',
+    turnaround: 'Custom timeline',
+    overview: project.description,
+    software: ['After Effects', 'Premiere Pro', 'Illustrator', 'Photoshop'],
+    plugins: [],
+    blueprintNotes: [],
+  };
   const visibleViews = view === 'split' ? (['final', 'blueprint'] as const) : [view];
 
   return (

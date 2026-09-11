@@ -10,11 +10,11 @@ const reviews = [
     initials: 'TR'
   },
   {
-    quote: 'Every single cut felt intentional. The color grading and layered audio mix gave our documentary a richness that felt truly cinematic. Working with him was completely seamless.',
-    author: 'Arif Hossain',
-    role: 'Founder & Director',
-    company: 'Kora Films',
-    initials: 'AH'
+    quote: "The goal isn't to make viewers watch. It's to give them a reason to keep watching.",
+    author: 'Borshon Kabir',
+    role: 'Documentary & Motion Editor',
+    company: '',
+    initials: 'BK'
   },
   {
     quote: 'He understands pacing at a granular level. The automotive launch film captured exact brand gravity and became the centerpiece of our global digital campaign.',
@@ -64,7 +64,7 @@ export default function Testimonials() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-white">{r.author}</p>
-                  <p className="text-xs text-neutral-400">{r.role}, {r.company}</p>
+                  <p className="text-xs text-neutral-400">{r.role}{r.company ? `, ${r.company}` : ''}</p>
                 </div>
               </div>
             </div>

@@ -5,8 +5,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowDown, ArrowUpRight, Check, Copy, Instagram, Linkedin, Loader2, Menu, Play, X, Youtube } from 'lucide-react';
-import { projects, testimonials } from '../data/content';
+import { ArrowDown, ArrowUpRight, Check, Copy, Loader2, Mail, Menu, MessageCircle, Play, X } from 'lucide-react';
+import { projects } from '../data/content';
 import Hero from './Hero';
 import HomeIntro from './HomeIntro';
 import WhyChooseMe from './WhyChooseMe';
@@ -22,7 +22,6 @@ export default function Portfolio() {
   const [menu, setMenu] = useState(false);
   const [copied, setCopied] = useState(false);
   const [sent, setSent] = useState(false);
-  const [quote, setQuote] = useState(0);
   const [cursorHover, setCursorHover] = useState(false);
   const [activeProjectTab, setActiveProjectTab] = useState<'shorts' | 'long'>('long');
   const visibleProjects = projects.filter((project) => project.format === activeProjectTab);
@@ -31,7 +30,7 @@ export default function Portfolio() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    projectType: 'Brand Film',
+    projectType: 'Documentary Edit',
     message: '',
   });
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -59,7 +58,7 @@ export default function Portfolio() {
 
       setFormStatus('success');
       setSent(true);
-      setFormData({ name: '', email: '', projectType: 'Brand Film', message: '' });
+      setFormData({ name: '', email: '', projectType: 'Documentary Edit', message: '' });
     } catch (err: any) {
       setFormStatus('error');
       setFormError(err.message || 'Failed to send message. Please try again.');
@@ -289,11 +288,6 @@ export default function Portfolio() {
       l.destroy();
       ctx.revert();
     };
-  }, []);
-
-  useEffect(() => {
-    const i = setInterval(() => setQuote((x) => (x + 1) % testimonials.length), 5000);
-    return () => clearInterval(i);
   }, []);
 
   // Auto-scroll on page load/refresh if a URL hash exists, after GSAP animations initialize
@@ -541,13 +535,25 @@ export default function Portfolio() {
                 : 'grid-cols-1 gap-8 md:grid-cols-2'
             }`}
           >
+            {visibleProjects.length === 0 && (
+              <div className="col-span-full grid min-h-56 place-items-center rounded-[28px] border border-dashed border-black/15 bg-white/40 px-6 text-center">
+                <div>
+                  <p className="font-serif text-2xl font-semibold tracking-tight text-[#15151a]">
+                    Short-form edits &amp; reels coming soon
+                  </p>
+                  <p className="mt-2 text-sm text-[#7a7b83]">
+                    New work will appear here automatically.
+                  </p>
+                </div>
+              </div>
+            )}
             {visibleProjects.map((project) => {
               const isVertical = activeProjectTab === 'shorts';
 
               return (
                 <Link
                   key={project.id}
-                  href={'/projects/' + project.id}
+                  href={`/projects/${project.id}`}
                   className="project-card-anim group block cursor-pointer text-left will-change-transform will-change-opacity"
                 >
                   <div
@@ -604,6 +610,10 @@ export default function Portfolio() {
               );
             })}
           </div>
+          <p className="mt-12 flex items-center justify-center gap-2.5 text-xs font-medium tracking-wide text-zinc-500 md:text-sm">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            More projects coming soon.
+          </p>
         </div>
       </section>
       {/* My Story Section */}
@@ -621,27 +631,27 @@ export default function Portfolio() {
       {/* FAQs */}
       <FAQ />
 
-      {/* Cinematic Manifesto Banner */}
+      {/* Editorial Manifesto */}
       <section id="testimonials" className="overflow-hidden py-24 md:py-32 text-[#15151a]">
         <div className="mx-auto max-w-[1100px] px-5 text-center">
-          <p className="eyebrow inline-block text-[#7a7b83]">( 05 — MANIFESTO )</p>
-          <div className="testimonial-anim relative mt-10 overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 bg-[#0D0D0D] p-8 sm:p-12 md:p-16 lg:p-20 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl will-change-transform will-change-opacity">
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute -top-8 left-6 sm:left-10 font-serif text-[11rem] sm:text-[14rem] md:text-[17rem] leading-none text-white/[0.04] select-none"
-            >
-              “
-            </span>
-            <div className="relative z-10 mx-auto max-w-3xl">
-              <blockquote className="font-serif text-2xl sm:text-3xl md:text-[2rem] lg:text-[2.25rem] font-normal leading-relaxed md:leading-[1.45] tracking-[-0.02em] text-[#f4f4f6]">
-                &ldquo;The goal isn&apos;t to make viewers watch. It&apos;s to give them a reason to keep watching.&rdquo;
+          <div className="testimonial-anim relative mt-10 overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 px-8 py-16 shadow-xl shadow-zinc-900/5 backdrop-blur-md md:px-14 will-change-transform will-change-opacity">
+            <div className="mx-auto max-w-3xl">
+              <p className="mb-8 inline-flex items-center gap-3 text-[10px] font-semibold tracking-[0.2em] text-zinc-400">
+                <span className="h-px w-8 bg-zinc-300" />
+                PHILOSOPHY
+                <span className="h-px w-8 bg-zinc-300" />
+              </p>
+              <blockquote className="font-serif text-2xl font-normal leading-relaxed tracking-[-0.02em] text-zinc-900 md:text-3xl">
+                <span className="text-zinc-300">&ldquo;</span>
+                The goal isn&apos;t to make viewers watch. It&apos;s to give them a reason to keep watching.
+                <span className="text-zinc-300">&rdquo;</span>
               </blockquote>
-              <div className="mx-auto mt-8 sm:mt-10 h-px w-14 sm:w-16 bg-white/15" />
-              <div className="mt-6 sm:mt-7">
-                <p className="font-mono text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase text-white">
+              <div className="mx-auto my-6 h-px w-12 bg-zinc-300" />
+              <div>
+                <p className="text-xs font-bold tracking-[0.25em] uppercase text-zinc-900">
                   BORSHON KABIR
                 </p>
-                <p className="mt-1.5 font-mono text-[11px] sm:text-xs tracking-wider uppercase text-[#8e8f96]">
+                <p className="mt-1 text-[10px] font-medium tracking-[0.15em] uppercase text-zinc-400">
                   Documentary &amp; Motion Editor
                 </p>
               </div>
@@ -662,7 +672,7 @@ export default function Portfolio() {
             </h2>
             <button
               onClick={() => {
-                navigator.clipboard.writeText('hello@borshonkabir.com');
+                navigator.clipboard.writeText('borshonkabiredits@gmail.com');
                 setCopied(true);
                 setTimeout(() => setCopied(false), 1800);
               }}
@@ -674,17 +684,21 @@ export default function Portfolio() {
                 </>
               ) : (
                 <>
-                  <Copy size={17} /> hello@borshonkabir.com
+                  <Copy size={17} /> borshonkabiredits@gmail.com
                 </>
               )}
             </button>
-            <p className="contact-text-anim mt-4 text-sm text-[#53545d] will-change-transform will-change-opacity">Sylhet, Bangladesh · +880 1XXX-XXXXXX</p>
+            <p className="contact-text-anim mt-4 text-sm text-[#53545d] will-change-transform will-change-opacity">Rangpur, Bangladesh · +880 1750071200</p>
             <div className="contact-text-anim mt-8 flex gap-3 will-change-transform will-change-opacity">
-              {[Instagram, Youtube, Linkedin].map((Icon, i) => (
+              {[
+                { Icon: MessageCircle, label: 'WhatsApp', href: 'https://wa.me/8801750071200' },
+                { Icon: Mail, label: 'Email', href: 'mailto:borshonkabiredits@gmail.com' },
+              ].map(({ Icon, label, href }) => (
                 <a
-                  aria-label="Social profile"
-                  key={i}
-                  href="#"
+                  aria-label={label}
+                  key={label}
+                  href={href}
+                  {...(href.startsWith('https') ? { target: '_blank', rel: 'noreferrer' } : {})}
                   className="grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-[#e5e5e7] text-[#15151a] transition-all duration-300 hover:bg-[#17171d] hover:text-white hover:scale-110 hover:-translate-y-1 hover:shadow-md"
                 >
                   <Icon size={16} />
@@ -719,7 +733,7 @@ export default function Portfolio() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   disabled={formStatus === 'loading'}
                   className="mt-2 w-full border-b border-black/20 bg-transparent py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] placeholder:text-[#8e8f96] transition-colors disabled:opacity-60"
-                  placeholder="hello@studio.com"
+                  placeholder="your@email.com"
                 />
               </label>
               <label className="text-[10px] font-bold uppercase tracking-wider text-[#53545d]">
@@ -730,9 +744,9 @@ export default function Portfolio() {
                   disabled={formStatus === 'loading'}
                   className="mt-2 w-full border-b border-black/20 bg-[#e5e5e7] py-3 text-base text-[#15151a] outline-none focus:border-[#15151a] transition-colors disabled:opacity-60"
                 >
-                  <option>Brand Film</option>
-                  <option>Music Video</option>
-                  <option>Motion Design</option>
+                  <option>Documentary Edit</option>
+                  <option>YouTube Faceless Video</option>
+                  <option>Short Edit</option>
                   <option>Other</option>
                 </select>
               </label>
