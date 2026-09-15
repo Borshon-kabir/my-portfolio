@@ -150,13 +150,13 @@ export default function Pricing() {
 
         {/* Header */}
         <div ref={headerRef} className="text-center">
-          <span className="pricing-header-elem inline-flex items-center rounded-full border border-black/10 bg-[#e5e5e7]/80 px-3.5 py-1 text-xs font-medium text-[#121218] shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm will-change-transform will-change-opacity">
+          <span className="pricing-header-elem inline-flex items-center rounded-full border border-black/10 bg-[#e5e5e7]/80 px-3.5 py-1 text-xs font-medium text-[#121218] shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm will-change-transform will-change-opacity dark:border-slate-800 dark:bg-slate-800/80 dark:text-white">
             Pricing
           </span>
-          <h2 className="pricing-header-elem mt-4 font-serif text-[clamp(2.4rem,4.5vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.03em] text-[#121218] will-change-transform will-change-opacity">
+          <h2 className="pricing-header-elem mt-4 font-serif text-[clamp(2.4rem,4.5vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.03em] text-slate-900 dark:text-white will-change-transform will-change-opacity">
             Simple packages, clear outcomes
           </h2>
-          <p className="pricing-header-elem mx-auto mt-3.5 max-w-md text-sm sm:text-base text-[#6c6e79] will-change-transform will-change-opacity">
+          <p className="pricing-header-elem mx-auto mt-3.5 max-w-md text-sm sm:text-base text-slate-600 dark:text-slate-400 will-change-transform will-change-opacity">
             Focused packages for every type of video — from viral shorts to cinematic documentaries.
           </p>
         </div>
@@ -168,38 +168,38 @@ export default function Pricing() {
           className="mx-auto mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch"
         >
 
-          {/* ── CARD 1: Shorts & Reels (Light) ── */}
+          {/* ── CARD 1: Shorts & Reels ── */}
           <div
             ref={card1Ref}
             onMouseMove={(e) => onMove(e, card1Ref.current)}
             onMouseLeave={() => onLeave(card1Ref.current)}
-            className="group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-[#e0e2e6] bg-white p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-200 ease-out hover:border-[#cbced6] hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)] will-change-transform"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 sm:p-7 shadow-xl transition-all duration-200 ease-out hover:border-slate-300 dark:border-slate-800/80 dark:bg-[#111522] dark:hover:border-slate-700 will-change-transform"
           >
             <div>
               {/* Icon */}
-              <div className="grid h-11 w-11 place-items-center rounded-xl border border-[#e0e2e6] bg-gradient-to-b from-[#f7f7f8] to-[#e8eaed] text-[#121218] shadow-[0_4px_8px_-4px_rgba(201,205,210,0.8),0_12px_18px_-2px_rgba(201,205,210,0.5),inset_0_1px_0_white,inset_0_-1px_0_#c9cdd2]">
-                <Sparkles className="h-5 w-5 text-[#121218]" strokeWidth={1.8} />
+              <div className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-slate-100 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-800/80 dark:text-white">
+                <Sparkles className="h-5 w-5 text-slate-900 dark:text-white" strokeWidth={1.8} />
               </div>
 
               {/* Title & Subtitle */}
-              <h3 className="mt-5 text-lg font-semibold text-[#121218] tracking-tight">Shorts &amp; Reels</h3>
-              <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6c6e79]">
+              <h3 className="mt-5 text-lg font-semibold text-slate-900 dark:text-white tracking-tight">Shorts &amp; Reels</h3>
+              <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-slate-600 dark:text-slate-300">
                 Fast-paced, high-retention short-form video edit for videos 2 minutes or less.
               </p>
 
               {/* Price */}
               <div className="mt-7 flex items-baseline gap-1">
-                <span className="font-serif text-3xl font-semibold text-[#121218]">$</span>
-                <span ref={price1Ref} className="font-serif text-[48px] sm:text-[54px] font-semibold leading-none tracking-tight text-[#121218]">
+                <span className="font-serif text-3xl font-semibold text-slate-900 dark:text-white">$</span>
+                <span ref={price1Ref} className="font-serif text-[48px] sm:text-[54px] font-semibold leading-none tracking-tight text-slate-900 dark:text-white">
                   20
                 </span>
-                <span className="ml-1.5 text-xs font-semibold uppercase tracking-wider text-[#8e8f96]">USD</span>
+                <span className="ml-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">USD</span>
               </div>
 
               {/* CTA */}
               <a
                 href="/book?package=Shorts%20%26%20Reels"
-                className="group/btn relative mt-7 flex h-11 w-full items-center justify-center overflow-hidden rounded-lg bg-[#121218] text-sm font-medium text-white shadow-[0_2px_4px_rgba(18,18,24,0.1),0_4px_8px_rgba(18,18,24,0.15)] transition-all duration-200 ease-out hover:bg-[#22222a] hover:shadow-[0_8px_20px_rgba(18,18,24,0.25)] active:scale-[0.99]"
+                className="group/btn relative mt-7 flex h-11 w-full items-center justify-center overflow-hidden rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:bg-slate-800 active:scale-[0.99] dark:bg-blue-600 dark:hover:bg-blue-500 dark:shadow-[0_4px_16px_rgba(59,130,246,0.25)]"
               >
                 <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-1000 ease-out group-hover/btn:translate-x-full" />
                 <span className="relative z-10">Start a project</span>
@@ -207,12 +207,12 @@ export default function Pricing() {
             </div>
 
             {/* Features */}
-            <div className="mt-7 rounded-xl border border-[#edeef1] bg-[#f7f7f8] p-5">
-              <h4 className="text-xs font-semibold text-[#121218] mb-3.5 tracking-tight">What's included</h4>
+            <div className="mt-7 rounded-xl border border-slate-200/80 bg-slate-50/80 p-5 dark:border-slate-800/80 dark:bg-[#161a29]/60">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5">What's included</h4>
               <ul className="space-y-2.5">
                 {card1Features.map((feat) => (
-                  <li key={feat} className="pricing-f1-item flex items-center gap-2.5 text-xs sm:text-[13px] text-[#53545d] will-change-transform will-change-opacity">
-                    <Check size={13} strokeWidth={2.2} className="text-[#121218] shrink-0" />
+                  <li key={feat} className="pricing-f1-item flex items-center gap-2.5 text-xs sm:text-[13px] text-slate-700 dark:text-slate-300 opacity-100 will-change-transform will-change-opacity">
+                    <Check size={14} strokeWidth={2.2} className="text-slate-700 dark:text-slate-300 shrink-0 opacity-100" />
                     <span>{feat}</span>
                   </li>
                 ))}
@@ -220,70 +220,58 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* ── CARD 2: Documentary Edit (Dark / Featured) ── */}
+          {/* ── CARD 2: Documentary Edit (Featured) ── */}
           <div
             ref={card2Ref}
             onMouseMove={(e) => onMove(e, card2Ref.current)}
             onMouseLeave={() => onLeave(card2Ref.current)}
-            className="group relative flex flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#131318] p-7 sm:p-8 shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_64px_-12px_rgba(0,0,0,0.7)] transition-all duration-200 ease-out hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1),0_32px_80px_-12px_rgba(0,0,0,0.8)] will-change-transform"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-slate-900/90 dark:border-blue-500/80 bg-white dark:bg-[#111522] p-6 sm:p-7 shadow-2xl transition-all duration-200 ease-out hover:shadow-2xl will-change-transform"
           >
-            {/* Ambient radial glow — bottom right, no overflow clipping issues */}
-            <div className="pointer-events-none absolute bottom-0 right-0 h-72 w-72 rounded-full bg-indigo-600/10 blur-[80px]" />
-            <div className="pointer-events-none absolute top-0 left-0 h-48 w-48 rounded-full bg-purple-600/8 blur-[60px]" />
-
-            {/* Entry shimmer sweep */}
-            <div className="pricing-dark-shimmer pointer-events-none absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/8 to-transparent" />
-
-            {/* Top row: icon + badge aligned */}
-            <div className="relative z-10 flex items-center justify-between">
-              <div className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-white/5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-                <CrownIcon className="h-5 w-5" />
+            <div>
+              {/* Top row: icon + badge aligned */}
+              <div className="flex items-center justify-between">
+                <div className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-slate-100 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-800/80 dark:text-white">
+                  <CrownIcon className="h-5 w-5 text-slate-900 dark:text-white" />
+                </div>
+                <span className="rounded-full border border-slate-900/15 bg-slate-900/5 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-900 dark:border-blue-400/30 dark:bg-blue-500/20 dark:text-blue-300 shadow-sm">
+                  Most Popular
+                </span>
               </div>
-              <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">
-                Most Popular
-              </span>
-            </div>
 
-            {/* Title & Subtitle */}
-            <div className="relative z-10 mt-6">
-              <h3 className="text-lg font-semibold text-white tracking-tight">Documentary Edit</h3>
-              <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-white/50">
+              {/* Title & Subtitle */}
+              <h3 className="mt-5 text-lg font-semibold text-slate-900 dark:text-white tracking-tight">Documentary Edit</h3>
+              <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-slate-600 dark:text-slate-300">
                 Cinematic, story-driven long-form video editing for videos 10 minutes or less.
               </p>
+
+              {/* Price */}
+              <div className="mt-7 flex items-baseline gap-1">
+                <span className="font-serif text-3xl font-semibold text-slate-900 dark:text-white">$</span>
+                <span ref={price2Ref} className="font-serif text-[48px] sm:text-[54px] font-semibold leading-none tracking-tight text-slate-900 dark:text-white">
+                  110
+                </span>
+                <span className="ml-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">USD</span>
+              </div>
+
+              {/* CTA Button */}
+              <a
+                href="/book?package=Documentary%20Edit"
+                className="group/btn relative mt-7 flex h-11 w-full items-center justify-center overflow-hidden rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 ease-out hover:bg-slate-800 active:scale-[0.99] dark:bg-blue-600 dark:hover:bg-blue-500 dark:shadow-[0_4px_16px_rgba(59,130,246,0.3)]"
+              >
+                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-out group-hover/btn:translate-x-full" />
+                <span className="relative z-10">Book this package</span>
+              </a>
             </div>
 
-            {/* Price */}
-            <div className="relative z-10 mt-7 flex items-baseline gap-1">
-              <span className="font-serif text-3xl font-semibold text-white">$</span>
-              <span ref={price2Ref} className="font-serif text-[48px] sm:text-[54px] font-semibold leading-none tracking-tight text-white">
-                110
-              </span>
-              <span className="ml-1.5 text-xs font-semibold uppercase tracking-wider text-white/30">USD</span>
-            </div>
-
-            {/* CTA Button */}
-            <a
-              href="/book?package=Documentary%20Edit"
-              className="group/btn relative z-10 mt-7 flex h-12 w-full items-center justify-center overflow-hidden rounded-xl bg-white text-sm font-semibold text-[#121218] shadow-[0_2px_8px_rgba(255,255,255,0.12)] transition-all duration-200 ease-out hover:scale-[1.02] hover:bg-[#f0f0f2] hover:shadow-[0_8px_28px_rgba(255,255,255,0.18)] active:scale-[0.98]"
-            >
-              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/8 to-transparent transition-transform duration-700 ease-out group-hover/btn:translate-x-full" />
-              <span className="relative z-10">Book this package</span>
-            </a>
-
-            {/* Divider */}
-            <div className="relative z-10 mt-7 border-t border-white/8" />
-
-            {/* Features — seamlessly integrated, no nested card */}
-            <div className="relative z-10 mt-5 flex-1">
-              <h4 className="text-[11px] font-semibold uppercase tracking-widest text-white/35 mb-4">
+            {/* Features */}
+            <div className="mt-7 rounded-xl border border-slate-200/80 bg-slate-50/80 p-5 dark:border-slate-800/80 dark:bg-[#161a29]/60">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5">
                 What's included
               </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {card2Features.map((feat) => (
-                  <li key={feat} className="pricing-f2-item flex items-center gap-3 text-xs sm:text-[13px] text-white/70 will-change-transform will-change-opacity">
-                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/8">
-                      <Check size={9} strokeWidth={2.5} className="text-white" />
-                    </span>
+                  <li key={feat} className="pricing-f2-item flex items-center gap-2.5 text-xs sm:text-[13px] text-slate-700 dark:text-slate-300 opacity-100 will-change-transform will-change-opacity">
+                    <Check size={14} strokeWidth={2.2} className="text-slate-700 dark:text-slate-300 shrink-0 opacity-100" />
                     <span>{feat}</span>
                   </li>
                 ))}
@@ -291,38 +279,37 @@ export default function Pricing() {
             </div>
           </div>
 
-
-          {/* ── CARD 3: Custom Order (Accent) ── */}
+          {/* ── CARD 3: Custom Order ── */}
           <div
             ref={card3Ref}
             onMouseMove={(e) => onMove(e, card3Ref.current)}
             onMouseLeave={() => onLeave(card3Ref.current)}
-            className="group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-[#e0e2e6] bg-gradient-to-b from-[#f9f9fb] to-white p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-200 ease-out hover:border-[#cbced6] hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)] will-change-transform"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 sm:p-7 shadow-xl transition-all duration-200 ease-out hover:border-slate-300 dark:border-slate-800/80 dark:bg-[#111522] dark:hover:border-slate-700 will-change-transform"
           >
             <div>
               {/* Icon */}
-              <div className="grid h-11 w-11 place-items-center rounded-xl border border-[#e0e2e6] bg-gradient-to-b from-[#f7f7f8] to-[#e8eaed] text-[#121218] shadow-[0_4px_8px_-4px_rgba(201,205,210,0.8),0_12px_18px_-2px_rgba(201,205,210,0.5),inset_0_1px_0_white,inset_0_-1px_0_#c9cdd2]">
-                <MessageCircle className="h-5 w-5 text-[#121218]" strokeWidth={1.8} />
+              <div className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-slate-100 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-800/80 dark:text-white">
+                <MessageCircle className="h-5 w-5 text-slate-900 dark:text-white" strokeWidth={1.8} />
               </div>
 
               {/* Title & Subtitle */}
-              <h3 className="mt-5 text-lg font-semibold text-[#121218] tracking-tight">Custom Order</h3>
-              <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6c6e79]">
+              <h3 className="mt-5 text-lg font-semibold text-slate-900 dark:text-white tracking-tight">Custom Order</h3>
+              <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-slate-600 dark:text-slate-300">
                 Tailored video post-production for high-volume channels, series, or complex projects.
               </p>
 
               {/* Price */}
               <div className="mt-7 flex items-baseline gap-2">
-                <span className="font-serif text-[40px] sm:text-[46px] font-semibold leading-none tracking-tight text-[#121218]">
+                <span className="font-serif text-[40px] sm:text-[46px] font-semibold leading-none tracking-tight text-slate-900 dark:text-white">
                   Let's Talk
                 </span>
               </div>
-              <p className="mt-1.5 text-[11px] text-[#8e8f96] font-medium tracking-wide uppercase">Custom pricing</p>
+              <p className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Custom pricing</p>
 
               {/* CTA */}
               <a
                 href="/book?package=Custom%20Order"
-                className="group/btn relative mt-7 flex h-11 w-full items-center justify-center overflow-hidden rounded-lg bg-[#121218] text-sm font-medium text-white shadow-[0_2px_4px_rgba(18,18,24,0.1),0_4px_8px_rgba(18,18,24,0.15)] transition-all duration-200 ease-out hover:bg-[#22222a] hover:shadow-[0_8px_20px_rgba(18,18,24,0.25)] active:scale-[0.99]"
+                className="group/btn relative mt-7 flex h-11 w-full items-center justify-center overflow-hidden rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:bg-slate-800 active:scale-[0.99] dark:bg-blue-600 dark:hover:bg-blue-500 dark:shadow-[0_4px_16px_rgba(59,130,246,0.25)]"
               >
                 <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-1000 ease-out group-hover/btn:translate-x-full" />
                 <span className="relative z-10">Get a custom quote</span>
@@ -330,12 +317,12 @@ export default function Pricing() {
             </div>
 
             {/* Features */}
-            <div className="mt-7 rounded-xl border border-[#edeef1] bg-[#f7f7f8] p-5">
-              <h4 className="text-xs font-semibold text-[#121218] mb-3.5 tracking-tight">What's included</h4>
+            <div className="mt-7 rounded-xl border border-slate-200/80 bg-slate-50/80 p-5 dark:border-slate-800/80 dark:bg-[#161a29]/60">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5">What's included</h4>
               <ul className="space-y-2.5">
                 {card3Features.map((feat) => (
-                  <li key={feat} className="pricing-f3-item flex items-center gap-2.5 text-xs sm:text-[13px] text-[#53545d] will-change-transform will-change-opacity">
-                    <Check size={13} strokeWidth={2.2} className="text-[#121218] shrink-0" />
+                  <li key={feat} className="pricing-f3-item flex items-center gap-2.5 text-xs sm:text-[13px] text-slate-700 dark:text-slate-300 opacity-100 will-change-transform will-change-opacity">
+                    <Check size={14} strokeWidth={2.2} className="text-slate-700 dark:text-slate-300 shrink-0 opacity-100" />
                     <span>{feat}</span>
                   </li>
                 ))}

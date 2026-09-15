@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ArrowUpRight, Menu } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 const metrics = [
   { target: 5, suffix: '+', label: 'Pro Tools Mastered', decimals: 0 },
@@ -220,109 +221,121 @@ export default function Hero() {
 
   return (
     <section ref={root} id="home" className="min-h-screen px-5 pb-20 pt-6 md:px-10 md:pt-7">
-      <nav className="show-nav mx-auto flex max-w-[1160px] items-center justify-between">
-        <a
-          href="#home"
-          onClick={(e) => handleNavClick(e, '#home')}
-          className="flex items-center gap-2 font-semibold tracking-[-.04em] text-[#15151a]"
-        >
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-[#15151a] font-serif text-xl text-[#f5f5f4]">
-            B
-          </span>
-          <span>Borshon.</span>
-        </a>
-        <div className="hidden items-center gap-8 text-sm text-[#25252b] md:flex">
-          <a
-            href="#home"
-            onClick={(e) => handleNavClick(e, '#home')}
-            className="hover:text-[#15151a] transition-colors"
-          >
-            Home
-          </a>
-          <a
-            href="#about"
-            onClick={(e) => handleNavClick(e, '#about')}
-            className="hover:text-[#15151a] transition-colors"
-          >
-            About
-          </a>
-          <a
-            href="#work"
-            onClick={(e) => handleNavClick(e, '#work')}
-            className="hover:text-[#15151a] transition-colors"
-          >
-            Projects
-          </a>
-          <a
-            href="#services"
-            onClick={(e) => handleNavClick(e, '#services')}
-            className="hover:text-[#15151a] transition-colors"
-          >
-            Services
-          </a>
-          <a
-            href="#pricing"
-            onClick={(e) => handleNavClick(e, '#pricing')}
-            className="hover:text-[#15151a] transition-colors"
-          >
-            Pricing
-          </a>
-          <a
-            href="#contact"
-            onClick={(e) => handleNavClick(e, '#contact')}
-            className="hover:text-[#15151a] transition-colors"
-          >
-            Contact
-          </a>
-        </div>
-        <div className="flex items-center gap-3">
-          <a
-            href="#contact"
-            onClick={(e) => handleNavClick(e, '#contact')}
-            className="dark-cta group flex items-center gap-3 rounded-lg bg-[#17171d] py-2 pl-4 pr-2 text-sm font-semibold text-white shadow-md hover:scale-[1.01] active:scale-[0.98] transition-all"
-          >
-            <span>Let&apos;s talk</span>
-            <ArrowUpRight
-              size={15}
-              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </a>
-          <button aria-label="Open menu" className="text-[#17171d] md:hidden">
-            <Menu size={21} />
-          </button>
-        </div>
-      </nav>
+      <header className="show-nav w-full py-4 sticky top-0 z-50 bg-transparent backdrop-blur-md border-none shadow-none transition-colors duration-300">
+        <div className="mx-auto max-w-[1160px] w-full flex items-center justify-between">
+          {/* Left Slot: Logo */}
+          <div className="w-1/3 flex justify-start items-center">
+            <a
+              href="#home"
+              onClick={(e) => handleNavClick(e, '#home')}
+              className="flex items-center gap-2 font-semibold tracking-[-.04em] text-[#15151a] dark:text-[#f8fafc]"
+            >
+              <span className="grid h-7 w-7 place-items-center rounded-full bg-[#15151a] font-serif text-xl text-[#f5f5f4] dark:bg-white dark:text-[#15151a]">
+                B
+              </span>
+              <span>Borshon.</span>
+            </a>
+          </div>
 
-      <div className="relative mx-auto mt-16 grid min-h-[610px] max-w-[1160px] overflow-hidden rounded-[32px] bg-[#e5e5e7] px-8 py-12 md:mt-20 md:grid-cols-[1fr_1fr] md:px-20 md:py-16 shadow-xl">
+          {/* Middle Slot: Nav Links (Strictly Centered) */}
+          <div className="w-1/3 flex justify-center items-center">
+            <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm text-[#25252b] dark:text-[#94a3b8]">
+              <a
+                href="#home"
+                onClick={(e) => handleNavClick(e, '#home')}
+                className="hover:text-[#15151a] dark:hover:text-white transition-colors whitespace-nowrap"
+              >
+                Home
+              </a>
+              <a
+                href="#about"
+                onClick={(e) => handleNavClick(e, '#about')}
+                className="hover:text-[#15151a] dark:hover:text-white transition-colors whitespace-nowrap"
+              >
+                About
+              </a>
+              <a
+                href="#work"
+                onClick={(e) => handleNavClick(e, '#work')}
+                className="hover:text-[#15151a] dark:hover:text-white transition-colors whitespace-nowrap"
+              >
+                Projects
+              </a>
+              <a
+                href="#services"
+                onClick={(e) => handleNavClick(e, '#services')}
+                className="hover:text-[#15151a] dark:hover:text-white transition-colors whitespace-nowrap"
+              >
+                Services
+              </a>
+              <a
+                href="#pricing"
+                onClick={(e) => handleNavClick(e, '#pricing')}
+                className="hover:text-[#15151a] dark:hover:text-white transition-colors whitespace-nowrap"
+              >
+                Pricing
+              </a>
+              <a
+                href="#contact"
+                onClick={(e) => handleNavClick(e, '#contact')}
+                className="hover:text-[#15151a] dark:hover:text-white transition-colors whitespace-nowrap"
+              >
+                Contact
+              </a>
+            </nav>
+          </div>
+
+          {/* Right Slot: Let's talk + Theme Toggle */}
+          <div className="w-1/3 flex justify-end items-center gap-3">
+            <a
+              href="#contact"
+              onClick={(e) => handleNavClick(e, '#contact')}
+              className="dark-cta group flex items-center gap-3 rounded-lg bg-[#17171d] py-2 pl-4 pr-2 text-sm font-semibold text-white shadow-md hover:scale-[1.01] active:scale-[0.98] transition-all dark:bg-[#3b82f6] dark:hover:bg-[#2563eb] whitespace-nowrap"
+            >
+              <span>Let&apos;s talk</span>
+              <ArrowUpRight
+                size={15}
+                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </a>
+            <ThemeToggle />
+            <button aria-label="Open menu" className="text-[#17171d] dark:text-[#f8fafc] md:hidden">
+              <Menu size={21} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="relative mx-auto mt-16 grid min-h-[610px] max-w-[1160px] overflow-hidden rounded-[32px] border border-slate-200 bg-[#f0f2f5] px-8 py-12 text-slate-900 shadow-sm transition-colors duration-300 md:mt-20 md:grid-cols-[1fr_1fr] md:px-20 md:py-16 dark:border-slate-800 dark:bg-[#141824] dark:text-white">
         <div className="relative z-10 flex max-w-[470px] flex-col justify-center">
-          <p className="show-kicker text-sm md:text-base font-medium text-[#686973] will-change-transform will-change-opacity mb-2">
+          <p className="show-kicker mb-2 text-sm font-medium text-slate-600 will-change-transform will-change-opacity md:text-base dark:text-slate-400">
             Hey, I&apos;m Borshon Kabir.
           </p>
           <h1
             aria-label="Craft better edits, faster."
-            className="mt-0 font-serif text-4xl font-semibold leading-[1.08] tracking-[-.045em] text-[#15151a] md:text-5xl lg:text-6xl"
+            className="mt-0 font-serif text-4xl font-semibold leading-[1.08] tracking-[-.045em] text-slate-900 md:text-5xl lg:text-6xl dark:text-white"
           >
             <span className="block">{textChars('Craft better')}</span>
             <span className="block">
               {textChars('edits, ')}
-              <span className="text-[#a8a9b0]">{textChars('faster.')}</span>
+              <span className="text-slate-400 dark:text-slate-500">{textChars('faster.')}</span>
             </span>
           </h1>
 
-          <p className="show-copy mt-5 max-w-[365px] text-[15px] leading-6 text-[#53545d] will-change-transform will-change-opacity">
+          <p className="show-copy mt-5 max-w-[365px] text-[15px] leading-6 text-slate-600 will-change-transform will-change-opacity dark:text-slate-400">
             I cut with precision, pace with purpose, and keep every frame moving.🔥
           </p>
 
           <div className="show-copy mt-7 flex gap-2 will-change-transform will-change-opacity">
             <a
               href="#work"
-              className="dark-cta rounded-lg bg-[#17171d] px-5 py-3 text-sm font-semibold text-white shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="rounded-lg bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:scale-[1.02] hover:bg-slate-800 active:scale-[0.98] dark:bg-blue-600 dark:hover:bg-blue-500"
             >
               View projects
             </a>
             <a
               href="#contact"
-              className="rounded-lg border border-[#c9cbd1] bg-white/60 px-5 py-3 text-sm font-medium text-[#292a30] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:border-[#17171d] hover:shadow-sm active:scale-[0.98]"
+              className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-900 hover:shadow-sm active:scale-[0.98] dark:border-slate-700 dark:bg-transparent dark:text-white dark:hover:border-slate-500 dark:hover:bg-slate-800"
             >
               Get in touch
             </a>
@@ -331,7 +344,7 @@ export default function Hero() {
           <div className="relative z-30 mt-auto grid grid-cols-3 gap-2 sm:gap-6 w-full max-w-md pt-16 md:pt-20">
             {metrics.map(({ label }, index) => (
               <div className="show-metric min-w-0 text-left will-change-transform will-change-opacity" key={label}>
-                <p className="font-serif text-xl sm:text-3xl font-bold tracking-tight text-neutral-900">
+                <p className="font-serif text-xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                   <span
                     ref={(element) => {
                       counterRefs.current[index] = element;
@@ -340,7 +353,7 @@ export default function Hero() {
                     0
                   </span>
                 </p>
-                <p className="text-[10px] sm:text-xs text-neutral-500 leading-tight block mt-1">
+                <p className="mt-1 block text-[10px] leading-tight text-slate-600 sm:text-xs dark:text-slate-400">
                   {label}
                 </p>
               </div>
@@ -349,22 +362,28 @@ export default function Hero() {
         </div>
 
         <div
-          className="show-photo absolute bottom-0 right-4 md:right-8 w-[380px] lg:w-[460px] h-[85%] lg:h-[92%] z-0 pointer-events-none flex items-end justify-center will-change-transform will-change-opacity"
+          className="show-photo absolute bottom-0 right-4 z-0 flex h-[85%] w-[380px] items-end justify-center bg-[#f0f2f5] pointer-events-none will-change-transform will-change-opacity md:right-8 lg:h-[92%] lg:w-[460px] dark:bg-[#141824]"
           style={{
-            maskImage:
-              'linear-gradient(to bottom, black 75%, transparent 100%), linear-gradient(to left, black 90%, transparent 100%)',
-            maskComposite: 'intersect',
-            WebkitMaskImage:
-              '-webkit-linear-gradient(top, black 75%, transparent 100%), -webkit-linear-gradient(right, black 90%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+            maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
           }}
         >
           <Image
-            src="/assets/hero.jpg"
+            src="/images/profile-light.png"
             fill
             alt="Borshon Kabir"
-            className="object-contain object-bottom"
+            className="block object-contain object-bottom dark:hidden"
             priority
           />
+          <Image
+            src="/images/profile-dark.jpeg"
+            fill
+            alt=""
+            aria-hidden="true"
+            className="hidden object-contain object-bottom dark:block"
+            priority
+          />
+          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#f0f2f5] to-transparent dark:from-[#141824]" />
         </div>
 
         <div className="show-floating absolute top-3 right-3 md:top-3 md:right-8 z-20 bg-black/40 backdrop-blur-xl border border-white/20 rounded-2xl p-4 max-w-[220px] text-white shadow-2xl transition-all duration-300 hover:border-white/40 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] will-change-transform will-change-opacity">

@@ -3,3 +3,130 @@
 @tailwind utilities;
 header.fixed{display:none}.hero-word{white-space:nowrap;word-break:normal;hyphens:none}.sevora-light{background-color:#f4f4f6;background-image:repeating-linear-gradient(120deg,rgba(20,20,25,.018) 0 1px,transparent 1px 4px)}.sevora-page,.sevora-benefits{background-color:#f7f7f6;background-image:repeating-linear-gradient(120deg,rgba(20,20,25,.025) 0 1px,transparent 1px 4px)}.brand-track{animation:brand-scroll 25s linear infinite}.brand-track:hover{animation-play-state:paused}@keyframes brand-scroll{to{transform:translateX(-20%)}}.dark-cta,.glass-project{transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .3s var(--ease)}.dark-cta:hover{background:#34343a;box-shadow:0 10px 24px rgba(20,20,25,.2);transform:translateY(-3px)}.glass-project:hover{background:#303036;box-shadow:0 20px 40px rgba(20,20,25,.25);transform:translateY(-5px) rotate(-.35deg)}
 :root{--bg:#f4f4f6;--surface:#e5e5e7;--text:#15151a;--text-dim:#53545d;--accent:#17171d;--accent-soft:rgba(20,20,25,.06);--line:rgba(20,20,25,.08);--ease:cubic-bezier(.16,1,.3,1);color-scheme:light}*{box-sizing:border-box}html,body{margin:0;background-color:#f4f4f6;background-image:repeating-linear-gradient(120deg,rgba(20,20,25,.018) 0 1px,transparent 1px 4px);color:var(--text);font-family:var(--font-body),sans-serif;overflow-x:hidden;min-height:100%}::selection{background:#17171d;color:#ffffff}.grain{position:fixed;inset:0;z-index:80;pointer-events:none;opacity:.02;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}.display,h1,h2,h3,h4{font-family:var(--font-serif),serif}.eyebrow{position:relative;padding-top:15px;color:#7a7b83;font-family:var(--font-mono),monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase}.eyebrow:before{content:'';position:absolute;top:0;left:0;width:60px;height:2px;background:rgba(20,20,25,.25)}.orb{filter:blur(150px);background:radial-gradient(circle,rgba(20,20,25,.03),transparent 66%)}.marquee{animation:scroll 22s linear infinite;width:max-content}.marquee:hover{animation-play-state:paused}@keyframes scroll{to{transform:translateX(-50%)}}.gold-sweep{position:relative;overflow:hidden;isolation:isolate}.gold-sweep:before{content:'';position:absolute;inset:0;background:#17171d;clip-path:circle(0% at var(--x,50%) var(--y,50%));transition:clip-path .65s var(--ease);z-index:-1}.gold-sweep:hover:before{clip-path:circle(150% at var(--x,50%) var(--y,50%))}.gold-sweep:hover{color:#ffffff!important;border-color:#17171d!important}.section-rule{height:1px;background:var(--line);position:relative}.section-rule:after{content:'';position:absolute;inset:0 auto 0 0;width:0;background:rgba(20,20,25,.3);animation:draw 1s var(--ease) forwards}@keyframes draw{to{width:100%}}@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Cinematic dark theme */
+html {
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+html.dark {
+  --bg: #0a0b10;
+  --surface: #141824;
+  --text: #f8fafc;
+  --text-dim: #94a3b8;
+  --accent: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.14);
+  --line: #23293e;
+  color-scheme: dark;
+}
+
+html.dark,
+html.dark body {
+  background-color: #0a0b10;
+  background-image:
+    radial-gradient(circle at 50% -15%, rgba(59, 130, 246, 0.12), transparent 38%),
+    repeating-linear-gradient(120deg, rgba(148, 163, 184, 0.025) 0 1px, transparent 1px 4px);
+  color: #f8fafc;
+}
+
+html.dark .sevora-light,
+html.dark .sevora-page,
+html.dark .sevora-benefits {
+  background-color: #0a0b10;
+  background-image: repeating-linear-gradient(120deg, rgba(148, 163, 184, 0.025) 0 1px, transparent 1px 4px);
+}
+
+html.dark .grain {
+  mix-blend-mode: screen;
+  opacity: 0.035;
+}
+
+html.dark main [class*="bg-[#f4f4f6]"],
+html.dark main [class*="bg-[#f7f7f8]"],
+html.dark main [class*="bg-[#f9f9fb]"],
+html.dark main [class*="bg-[#e5e5e7]"],
+html.dark main [class*="bg-[#edeef1]"],
+html.dark main [class*="bg-white"] {
+  background-color: #141824 !important;
+  background-image: none !important;
+}
+
+html.dark main [class*="text-[#121218]"],
+html.dark main [class*="text-[#15151a]"],
+html.dark main [class*="text-[#17171d]"],
+html.dark main [class*="text-[#25252b]"],
+html.dark main [class*="text-[#292a30]"],
+html.dark main [class*="text-neutral-900"] {
+  color: #f8fafc !important;
+}
+
+html.dark main [class*="text-[#53545d]"],
+html.dark main [class*="text-[#686973]"],
+html.dark main [class*="text-[#7a7b83]"],
+html.dark main [class*="text-[#8c8d96]"],
+html.dark main [class*="text-[#8e8f96]"],
+html.dark main [class*="text-neutral-500"],
+html.dark main [class*="text-neutral-600"] {
+  color: #94a3b8 !important;
+}
+
+html.dark main [class*="border-black"],
+html.dark main [class*="border-[#d9dbe0]"],
+html.dark main [class*="border-[#e0e2e6]"],
+html.dark main [class*="border-[#edeef1]"],
+html.dark main [class*="border-[#c9cbd1]"] {
+  border-color: #23293e !important;
+}
+
+html.dark main :not(section)[class*="bg-[#17171d]"],
+html.dark main :not(section)[class*="bg-[#121218]"] {
+  background-color: #3b82f6 !important;
+}
+
+html.dark main [class*="hover:bg-[#17171d]"]:hover,
+html.dark main [class*="hover:bg-[#34343a]"]:hover {
+  background-color: #2563eb !important;
+}
+
+html.dark .dark-cta:hover,
+html.dark .gold-sweep:before {
+  background: #2563eb;
+}
+
+html.dark .gold-sweep:hover {
+  border-color: #3b82f6 !important;
+}
+
+html.dark ::selection {
+  background: #3b82f6;
+  color: #f8fafc;
+}
+html.dark main a[class*="bg-[#17171d]"],
+html.dark main button[class*="bg-[#17171d]"] {
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.24);
+}
+html:not(.dark), html:not(.dark) body { background-color: #f8fafc; }
+
+@keyframes timelineFlowDown {
+  0% {
+    top: 0%;
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.95;
+  }
+  85% {
+    opacity: 0.95;
+  }
+  100% {
+    top: 100%;
+    transform: translateY(0%);
+    opacity: 0;
+  }
+}
+
+.animate-timeline-flow {
+  animation: timelineFlowDown 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+

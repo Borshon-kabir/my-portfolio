@@ -313,24 +313,29 @@ export default function Process() {
             {/* Background vertical track line (starts center of badge 1, ends center of badge 6) */}
             <div
               ref={trackRef}
-              className="pointer-events-none absolute left-[22px] sm:left-[26px] md:left-[30px] top-[40px] bottom-[40px] w-[2px] -translate-x-1/2 rounded-full bg-[#e6e7eb] overflow-hidden"
+              className="pointer-events-none absolute left-[22px] sm:left-[26px] md:left-[30px] top-[44px] bottom-[44px] w-[2px] -translate-x-1/2 rounded-full bg-slate-200 dark:bg-slate-800/80 overflow-hidden"
             >
-              {/* Ultra-smooth GPU-accelerated progress line */}
+              {/* Ultra-smooth GPU-accelerated progress line (fills downwards as you scroll) */}
               <div
                 ref={progressBarRef}
-                className="w-full h-full bg-gradient-to-b from-[#121218] via-[#2d2e3b] to-[#121218] rounded-full origin-top will-change-transform"
+                className="w-full h-full bg-gradient-to-b from-slate-400 via-slate-600 to-slate-900 dark:from-slate-500 dark:via-white/70 dark:to-white rounded-full origin-top will-change-transform opacity-70 dark:opacity-85"
                 style={{ transform: 'scaleY(0)' }}
+              />
+
+              {/* Animated white line / glowing beam flowing sequentially from TOP to BOTTOM (Step 01 down towards Step 03+) */}
+              <div
+                className="absolute left-0 w-full h-28 sm:h-36 rounded-full bg-gradient-to-b from-transparent via-slate-900 to-transparent dark:via-white opacity-80 dark:opacity-95 shadow-[0_0_10px_rgba(15,23,42,0.4)] dark:shadow-[0_0_12px_rgba(255,255,255,0.95)] will-change-transform animate-timeline-flow"
               />
             </div>
 
             {/* Glowing tracer bead that glides along the progress line */}
             <div
               ref={tracerDotRef}
-              className="pointer-events-none absolute left-[22px] sm:left-[26px] md:left-[30px] top-[40px] -translate-x-1/2 -translate-y-1/2 z-20 will-change-transform opacity-0"
+              className="pointer-events-none absolute left-[22px] sm:left-[26px] md:left-[30px] top-[44px] -translate-x-1/2 -translate-y-1/2 z-20 will-change-transform opacity-0"
             >
               <div className="relative flex items-center justify-center">
-                <span className="animate-ping absolute h-4 w-4 rounded-full bg-[#121218] opacity-30" />
-                <span className="relative h-3 w-3 rounded-full bg-[#121218] border-2 border-white shadow-[0_0_10px_rgba(18,18,24,0.5)]" />
+                <span className="animate-ping absolute h-4 w-4 rounded-full bg-slate-900 dark:bg-white opacity-30 dark:opacity-40" />
+                <span className="relative h-3 w-3 rounded-full bg-slate-900 dark:bg-white border-2 border-white dark:border-slate-900 shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
               </div>
             </div>
 

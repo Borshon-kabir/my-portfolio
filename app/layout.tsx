@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Bricolage_Grotesque, Inter, JetBrains_Mono, Lora } from 'next/font/google';
 import './globals.css';
 import './mobile-performance.css';
+import { ThemeProvider } from '../components/ThemeProvider';
 const display = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display' });
 const body = Inter({ subsets: ['latin'], variable: '--font-body' });
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
@@ -39,15 +40,20 @@ export const metadata: Metadata = {
 };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable} ${serif.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${display.variable} ${body.variable} ${mono.variable} ${serif.variable}`}>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('borshon-theme');if(t==='dark'){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}}catch(e){}`,
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `if('scrollRestoration' in history){history.scrollRestoration='manual';}window.scrollTo(0,0);if(window.location.hash){history.replaceState(null,'',window.location.pathname+window.location.search);}`,
           }}
         />
       </head>
-      <body>{children}</body>
+      <body className="bg-[#f8fafc] transition-colors duration-300 dark:bg-[#0a0b10]"><ThemeProvider>{children}</ThemeProvider></body>
     </html>
   );
 }

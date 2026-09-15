@@ -7,6 +7,7 @@ import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowDown, ArrowUpRight, Check, Copy, Loader2, Mail, Menu, MessageCircle, Play, X } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 import { projects } from '../data/content';
 import Hero from './Hero';
 import HomeIntro from './HomeIntro';
@@ -381,7 +382,7 @@ export default function Portfolio() {
   };
 
   return (
-    <main className="text-[#15151a] min-h-screen selection:bg-[#17171d] selection:text-white">
+    <main className="min-h-screen text-[#15151a] selection:bg-[#17171d] selection:text-white transition-colors duration-300 dark:text-[#f8fafc] dark:selection:bg-[#3b82f6]">
       <div className="grain" />
 
       {/* 120fps Dual-Element Magnetic Cursor */}
@@ -398,51 +399,63 @@ export default function Portfolio() {
         }`}
       />
 
-      <header className="fixed inset-x-0 top-0 z-40 p-4 md:p-6">
-        <nav className="mx-auto flex max-w-[1500px] items-center justify-between rounded-full border border-black/10 bg-[#f4f4f6]/80 px-5 py-3 backdrop-blur-xl">
-          <a
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              go('Home');
-            }}
-            className="display text-lg font-bold text-[#15151a]"
-          >
-            BK<span className="text-[#15151a]">.</span>
-          </a>
-          <div className="hidden gap-6 lg:flex">
-            {nav.map((x) => (
-              <a
-                key={x}
-                href={`#${x.toLowerCase()}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  go(x);
-                }}
-                className="text-[10px] font-semibold uppercase tracking-[.16em] text-[#53545d] hover:text-[#15151a] transition-colors"
-              >
-                {x}
-              </a>
-            ))}
+      <header className="fixed inset-x-0 top-0 z-40 px-5 py-4 md:px-10 bg-transparent border-none shadow-none">
+        <div className="mx-auto max-w-[1160px] w-full flex items-center justify-between">
+          {/* Left Slot: Logo */}
+          <div className="w-1/3 flex justify-start items-center">
+            <a
+              href="#home"
+              onClick={(e) => {
+                e.preventDefault();
+                go('Home');
+              }}
+              className="display text-lg font-bold text-[#15151a] transition-colors duration-300 dark:text-[#f8fafc] flex-shrink-0"
+            >
+              BK<span className="text-[#15151a] dark:text-[#60a5fa]">.</span>
+            </a>
           </div>
-          <a
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              go('Contact');
-            }}
-            className="hidden rounded-full bg-[#17171d] px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition hover:bg-[#34343a] sm:block"
-          >
-            Let&apos;s Talk <ArrowUpRight className="inline" size={13} />
-          </a>
-          <button
-            aria-label="Open menu"
-            onClick={() => setMenu(true)}
-            className="grid h-9 w-9 place-items-center rounded-full border border-black/15 text-[#17171d] lg:hidden"
-          >
-            <Menu size={16} />
-          </button>
-        </nav>
+
+          {/* Middle Slot: Nav Links (Strictly Centered) */}
+          <div className="w-1/3 flex justify-center items-center">
+            <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+              {nav.map((x) => (
+                <a
+                  key={x}
+                  href={`#${x.toLowerCase()}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    go(x);
+                  }}
+                  className="text-[11px] font-semibold uppercase tracking-[.16em] text-[#53545d] transition-colors hover:text-[#15151a] dark:text-[#94a3b8] dark:hover:text-[#f8fafc] whitespace-nowrap"
+                >
+                  {x}
+                </a>
+              ))}
+            </nav>
+          </div>
+
+          {/* Right Slot: Let's talk + Theme Toggle */}
+          <div className="w-1/3 flex justify-end items-center gap-3">
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                go('Contact');
+              }}
+              className="hidden rounded-full bg-[#17171d] px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition hover:bg-[#34343a] dark:bg-[#3b82f6] dark:hover:bg-[#2563eb] sm:block whitespace-nowrap"
+            >
+              Let&apos;s Talk <ArrowUpRight className="inline" size={13} />
+            </a>
+            <ThemeToggle />
+            <button
+              aria-label="Open menu"
+              onClick={() => setMenu(true)}
+              className="grid h-9 w-9 place-items-center rounded-full border border-black/15 text-[#17171d] transition-colors dark:border-[#23293e] dark:text-[#f8fafc] md:hidden"
+            >
+              <Menu size={16} />
+            </button>
+          </div>
+        </div>
       </header>
 
       <AnimatePresence>
@@ -453,11 +466,12 @@ export default function Portfolio() {
             exit={{ clipPath: 'circle(0% at 92% 6%)' }}
             whileTap={{ scale: 0.995 }}
             viewport={{ once: true, amount: 0.1 }}
-            className="fixed inset-0 z-50 flex flex-col bg-[#f4f4f6] p-6 text-[#15151a] border-b border-black/10"
+            className="fixed inset-0 z-50 flex flex-col border-b border-black/10 bg-[#f4f4f6] p-6 text-[#15151a] transition-colors duration-300 dark:border-[#23293e] dark:bg-[#0a0b10] dark:text-[#f8fafc]"
           >
-            <button onClick={() => setMenu(false)} className="ml-auto text-[#15151a]">
-              <X size={30} />
-            </button>
+            <div className="ml-auto flex items-center gap-3">
+              <ThemeToggle />
+              <button onClick={() => setMenu(false)} className="text-[#15151a] dark:text-[#f8fafc]"><X size={30} /></button>
+            </div>
             <div className="my-auto">
               {nav.map((x) => (
                 <a
@@ -467,14 +481,14 @@ export default function Portfolio() {
                     go(x);
                   }}
                   key={x}
-                  className="display block text-6xl font-bold leading-tight text-[#15151a] hover:text-[#53545d] transition-colors"
+                  className="display block text-6xl font-bold leading-tight text-[#15151a] transition-colors hover:text-[#53545d] dark:text-[#f8fafc] dark:hover:text-[#94a3b8]"
                 >
                   {x}
                 </a>
               ))}
             </div>
-            <p className="text-xs uppercase tracking-[.2em] text-[#7a7b83]">
-              Sylhet, Bangladesh — available worldwide
+            <p className="text-xs uppercase tracking-[.2em] text-[#7a7b83] dark:text-[#94a3b8]">
+              Rangpur, Bangladesh — available worldwide
             </p>
           </motion.div>
         )}
@@ -633,25 +647,25 @@ export default function Portfolio() {
       {/* Editorial Manifesto */}
       <section id="testimonials" className="overflow-hidden py-24 md:py-32 text-[#15151a]">
         <div className="mx-auto max-w-[1100px] px-5 text-center">
-          <div className="testimonial-anim relative mt-10 overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 px-8 py-16 shadow-xl shadow-zinc-900/5 backdrop-blur-md md:px-14 will-change-transform will-change-opacity">
+          <div className="testimonial-anim relative mt-10 overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800/80 bg-white/90 dark:bg-[#111522] px-8 py-16 shadow-xl shadow-zinc-900/5 backdrop-blur-md md:px-14 will-change-transform will-change-opacity transition-colors duration-300">
             <div className="mx-auto max-w-3xl">
-              <p className="mb-8 inline-flex items-center gap-3 text-[10px] font-semibold tracking-[0.2em] text-zinc-400">
-                <span className="h-px w-8 bg-zinc-300" />
+              <p className="mb-8 inline-flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 font-semibold tracking-widest uppercase">
+                <span className="h-px w-8 bg-slate-300 dark:bg-slate-700" />
                 PHILOSOPHY
-                <span className="h-px w-8 bg-zinc-300" />
+                <span className="h-px w-8 bg-slate-300 dark:bg-slate-700" />
               </p>
-              <blockquote className="font-serif text-2xl font-normal leading-relaxed tracking-[-0.02em] text-zinc-900 md:text-3xl">
-                <span className="text-zinc-300">&ldquo;</span>
+              <blockquote className="text-slate-800 dark:text-slate-100 text-lg md:text-xl font-medium text-center leading-relaxed">
+                <span className="text-slate-500 dark:text-slate-400 font-semibold tracking-widest mr-1">&ldquo;</span>
                 The goal isn&apos;t to make viewers watch. It&apos;s to give them a reason to keep watching.
-                <span className="text-zinc-300">&rdquo;</span>
+                <span className="text-slate-500 dark:text-slate-400 font-semibold tracking-widest ml-1">&rdquo;</span>
               </blockquote>
-              <div className="mx-auto my-6 h-px w-12 bg-zinc-300" />
+              <div className="mx-auto my-6 h-px w-12 bg-slate-300 dark:bg-slate-700" />
               <div>
-                <p className="text-xs font-bold tracking-[0.25em] uppercase text-zinc-900">
+                <p className="text-xs font-bold tracking-[0.25em] uppercase text-slate-900 dark:text-white">
                   BORSHON KABIR
                 </p>
-                <p className="mt-1 text-[10px] font-medium tracking-[0.15em] uppercase text-zinc-400">
-                  Documentary &amp; Motion Editor
+                <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400 font-semibold tracking-widest uppercase">
+                  DOCUMENTARY &amp; MOTION EDITOR
                 </p>
               </div>
             </div>
