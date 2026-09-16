@@ -21,11 +21,10 @@ export default function WhyChooseMe() {
       if (eyebrowRef.current) {
         gsap.fromTo(
           eyebrowRef.current,
-          { y: 20, opacity: 0, filter: 'blur(4px)' },
+          { y: 20, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            filter: 'blur(0px)',
             duration: 0.7,
             ease: 'expo.out',
             scrollTrigger: {
@@ -78,18 +77,17 @@ export default function WhyChooseMe() {
         );
       }
 
-      // ── 4. Cards: staggered scale + y + blur entrance
+      // ── 4. Cards: staggered scale + y entrance
       const cols = [col1Ref.current, col2Ref.current, col3Ref.current].filter(Boolean);
       if (cols.length) {
         gsap.fromTo(
           cols,
-          { y: 72, opacity: 0, scale: 0.97, filter: 'blur(6px)' },
+          { y: 50, opacity: 0, scale: 0.97 },
           {
             y: 0,
             opacity: 1,
             scale: 1,
-            filter: 'blur(0px)',
-            duration: 1.0,
+            duration: 0.85,
             ease: 'expo.out',
             scrollTrigger: {
               trigger: sectionRef.current,

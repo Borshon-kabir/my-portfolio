@@ -55,27 +55,24 @@ export default function Pricing() {
       // ── 1. Header cascade
       gsap.fromTo(
         '.pricing-header-elem',
-        { y: 36, opacity: 0, filter: 'blur(8px)', skewY: 1 },
+        { y: 30, opacity: 0 },
         {
-          y: 0, opacity: 1, filter: 'blur(0px)', skewY: 0,
-          duration: 0.9, stagger: 0.1, ease: 'expo.out',
+          y: 0, opacity: 1,
+          duration: 0.75, stagger: 0.08, ease: 'expo.out',
           scrollTrigger: { trigger: headerRef.current, start: 'top 88%', once: true },
         }
       );
 
-      // ── 2. All 3 cards simultaneously: 3D tilt-in + blur dissolve
+      // ── 2. All 3 cards simultaneously: Clean GPU accelerated entrance
       const cards = [card1Ref.current, card2Ref.current, card3Ref.current].filter(Boolean);
       gsap.fromTo(
         cards,
         {
-          y: 90, opacity: 0, rotateX: 12,
-          rotateY: (i) => (i === 0 ? -5 : i === 2 ? 5 : 0),
-          scale: 0.94, filter: 'blur(10px)',
-          transformPerspective: 1000,
+          y: 50, opacity: 0, scale: 0.97,
         },
         {
-          y: 0, opacity: 1, rotateX: 0, rotateY: 0, scale: 1, filter: 'blur(0px)',
-          duration: 0.3, stagger: 0.08, ease: 'expo.out',
+          y: 0, opacity: 1, scale: 1,
+          duration: 0.6, stagger: 0.08, ease: 'expo.out',
           scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
         }
       );
@@ -85,25 +82,25 @@ export default function Pricing() {
         '.pricing-dark-shimmer',
         { x: '-110%', opacity: 0.7 },
         {
-          x: '110%', opacity: 0, duration: 0.3, ease: 'expo.out', delay: 0.08,
+          x: '110%', opacity: 0, duration: 0.6, ease: 'expo.out', delay: 0.08,
           scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
         }
       );
 
-      // ── 4. Price counters — expo roll-up with blur reveal
+      // ── 4. Price counters — expo roll-up
       const priceAnim = (ref: React.RefObject<HTMLSpanElement>, target: number) => {
         if (!ref.current) return;
         gsap.fromTo(ref.current,
-          { filter: 'blur(12px)', opacity: 0, y: 16 },
+          { opacity: 0, y: 12 },
           {
-            filter: 'blur(0px)', opacity: 1, y: 0,
-            duration: 0.3, ease: 'expo.out', delay: 0.1,
+            opacity: 1, y: 0,
+            duration: 0.5, ease: 'expo.out', delay: 0.1,
             scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
           }
         );
         const counter = { val: 0 };
         gsap.to(counter, {
-          val: target, duration: 0.3, ease: 'expo.out', delay: 0.1,
+          val: target, duration: 0.8, ease: 'expo.out', delay: 0.1,
           scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
           onUpdate: () => {
             if (ref.current)
@@ -114,14 +111,14 @@ export default function Pricing() {
       priceAnim(price1Ref, 20);
       priceAnim(price2Ref, 110);
 
-      // ── 5. Feature lists: spring-wave cascade, all 3 at once
+      // ── 5. Feature lists: spring-wave cascade
       ['.pricing-f1-item', '.pricing-f2-item', '.pricing-f3-item'].forEach((sel) => {
         gsap.fromTo(
           sel,
-          { x: -16, opacity: 0, filter: 'blur(4px)' },
+          { x: -12, opacity: 0 },
           {
-            x: 0, opacity: 1, filter: 'blur(0px)',
-            duration: 0.3, stagger: 0.05, ease: 'expo.out', delay: 0.1,
+            x: 0, opacity: 1,
+            duration: 0.5, stagger: 0.04, ease: 'expo.out', delay: 0.1,
             scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
           }
         );

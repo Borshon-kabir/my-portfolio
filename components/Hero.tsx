@@ -98,8 +98,8 @@ export default function Hero() {
         .fromTo('.show-nav', { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 })
         .fromTo(
           '.show-kicker',
-          { y: 15, opacity: 0, filter: 'blur(6px)' },
-          { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.45 },
+          { y: 15, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.45 },
           '-=0.35'
         )
         .fromTo(

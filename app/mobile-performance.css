@@ -1,14 +1,49 @@
-@media (max-width: 767px) {
-  .will-change-transform,
-  .project-card-anim,
-  .intro-card,
-  .process-card-anim,
-  .pricing-card-anim,
-  .testimonial-anim,
-  .contact-text-anim,
-  .contact-form-anim {
-    transform: translateZ(0);
-    will-change: transform;
-  }
+/* Mobile & Low-End GPU Performance Optimization Rules */
 
+/* 1. Touch Scroll Acceleration */
+html, body {
+  -webkit-overflow-scrolling: touch;
 }
+
+/* 2. Custom Cursor Hide on Touch / Mobile */
+@media (max-width: 1023px), (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring,
+  .grain {
+    display: none !important;
+  }
+}
+
+/* 3. GPU Layer Promotion & Hardware Acceleration without VRAM exhaustion */
+.project-card-anim,
+.intro-card,
+.process-card-anim,
+.pricing-card-anim,
+.testimonial-anim,
+.contact-text-anim,
+.contact-form-anim {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* 4. Reduce expensive backdrop-filters on mobile/tablet devices */
+@media (max-width: 1023px) {
+  .backdrop-blur-xl,
+  .backdrop-blur-lg,
+  .backdrop-blur-md {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+  
+  .orb {
+    display: none !important;
+  }
+}
+
+/* 5. Smooth rendering & subpixel antialiasing */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+

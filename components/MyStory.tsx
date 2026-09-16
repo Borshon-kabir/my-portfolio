@@ -150,16 +150,15 @@ export default function MyStory() {
         );
       }
 
-      // 3. Title reveal with blur-to-clear precision
+      // 3. Title reveal precision
       if (titleRef.current) {
         gsap.fromTo(
           titleRef.current,
-          { y: 35, opacity: 0, filter: 'blur(8px)' },
+          { y: 35, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            filter: 'blur(0px)',
-            duration: 0.95,
+            duration: 0.85,
             delay: 0.15,
             ease: 'power3.out',
             scrollTrigger: {

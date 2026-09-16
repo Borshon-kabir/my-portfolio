@@ -68,9 +68,12 @@ export default function Portfolio() {
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
 
-  // High-performance 120fps GSAP lerped cursor
+  // High-performance 120fps GSAP lerped cursor (Only active on desktop fine pointers)
   useEffect(() => {
-    if (!cursorDotRef.current || !cursorRingRef.current) return;
+    if (typeof window === 'undefined') return;
+    const isDesktopPointer = window.matchMedia('(pointer: fine) and (min-width: 1024px)').matches;
+    if (!isDesktopPointer || !cursorDotRef.current || !cursorRingRef.current) return;
+
     const dot = cursorDotRef.current;
     const ring = cursorRingRef.current;
 
@@ -80,6 +83,7 @@ export default function Portfolio() {
     const setRingY = gsap.quickTo(ring, 'y', { duration: 0.32, ease: 'power3.out' });
 
     let hasMoved = false;
+    let checkHoverTimer: number | null = null;
 
     const onMouseMove = (e: MouseEvent) => {
       if (!hasMoved) {
@@ -91,16 +95,21 @@ export default function Portfolio() {
       setRingX(e.clientX);
       setRingY(e.clientY);
 
-      const target = e.target as HTMLElement | null;
-      if (
-        target &&
-        target.closest(
-          'a, button, [role="button"], input, textarea, select, .work-card-anim, .intro-card, .process-card-anim, .pricing-card-anim, .dark-cta'
-        )
-      ) {
-        setCursorHover(true);
-      } else {
-        setCursorHover(false);
+      if (!checkHoverTimer) {
+        checkHoverTimer = window.requestAnimationFrame(() => {
+          checkHoverTimer = null;
+          const target = e.target as HTMLElement | null;
+          if (
+            target &&
+            target.closest(
+              'a, button, [role="button"], input, textarea, select, .work-card-anim, .intro-card, .process-card-anim, .pricing-card-anim, .dark-cta'
+            )
+          ) {
+            setCursorHover(true);
+          } else {
+            setCursorHover(false);
+          }
+        });
       }
     };
 
@@ -110,9 +119,10 @@ export default function Portfolio() {
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
-    document.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('mouseleave', onMouseLeave, { passive: true });
 
     return () => {
+      if (checkHoverTimer) window.cancelAnimationFrame(checkHoverTimer);
       window.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseleave', onMouseLeave);
     };
@@ -145,7 +155,7 @@ export default function Portfolio() {
     window.addEventListener('beforeunload', onBeforeUnload);
 
     return () => {
-
+      window.removeEventListener('beforeunload', onBeforeUnload);
     };
   }, []);
 
@@ -155,20 +165,26 @@ export default function Portfolio() {
       ScrollTrigger.clearScrollMemory('manual');
     }
 
-    const l = new Lenis({ lerp: 0.12, duration: 0.5, smoothWheel: true, wheelMultiplier: 1.0 });
-    if (!window.location.hash) {
-      l.scrollTo(0, { immediate: true });
-    }
-    if (typeof window !== 'undefined') {
+    const isDesktopPointer = typeof window !== 'undefined' && window.matchMedia('(pointer: fine) and (min-width: 1024px)').matches;
+    let l: Lenis | null = null;
+    let updateRaf: ((time: number) => void) | null = null;
+
+    if (isDesktopPointer) {
+      l = new Lenis({ lerp: 0.1, duration: 0.8, smoothWheel: true, wheelMultiplier: 1.0 });
+      if (!window.location.hash) {
+        l.scrollTo(0, { immediate: true });
+      }
       (window as any).__lenis = l;
+
+      l.on('scroll', ScrollTrigger.update);
+      updateRaf = (time: number) => {
+        l?.raf(time * 1000);
+      };
+      gsap.ticker.add(updateRaf);
     }
 
-    l.on('scroll', ScrollTrigger.update);
-    const updateRaf = (time: number) => {
-      l.raf(time * 1000);
-    };
-    gsap.ticker.add(updateRaf);
-    gsap.ticker.lagSmoothing(0);
+    // Prevents stutter & jerky jumps during frame drops
+    gsap.ticker.lagSmoothing(500, 33);
 
     const my = (n: number) => n;
     const md = (n: number) => n;
@@ -277,8 +293,12 @@ export default function Portfolio() {
         delete (window as any).__lenis;
       }
 
-      gsap.ticker.remove(updateRaf);
-      l.destroy();
+      if (updateRaf) {
+        gsap.ticker.remove(updateRaf);
+      }
+      if (l) {
+        l.destroy();
+      }
       ctx.revert();
     };
   }, []);
@@ -383,14 +403,14 @@ export default function Portfolio() {
     <main className="min-h-screen text-[#15151a] selection:bg-[#17171d] selection:text-white transition-colors duration-300 dark:text-[#f8fafc] dark:selection:bg-[#3b82f6]">
       <div className="grain" />
 
-      {/* 120fps Dual-Element Magnetic Cursor */}
+      {/* 120fps Dual-Element Magnetic Cursor (Desktop Only) */}
       <div
         ref={cursorDotRef}
-        className="pointer-events-none fixed top-0 left-0 z-[95] hidden -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#15151a] opacity-0 transition-transform duration-150 ease-out md:block will-change-transform h-1.5 w-1.5"
+        className="custom-cursor-dot pointer-events-none fixed top-0 left-0 z-[95] hidden -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#15151a] opacity-0 transition-transform duration-150 ease-out lg:block will-change-transform h-1.5 w-1.5"
       />
       <div
         ref={cursorRingRef}
-        className={`pointer-events-none fixed top-0 left-0 z-[90] hidden -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#15151a]/30 opacity-0 transition-all duration-300 ease-out md:block will-change-transform ${
+        className={`custom-cursor-ring pointer-events-none fixed top-0 left-0 z-[90] hidden -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#15151a]/30 opacity-0 transition-all duration-300 ease-out lg:block will-change-transform ${
           cursorHover
             ? 'h-12 w-12 border-[#15151a]/60 bg-[#15151a]/10 backdrop-blur-[1px] scale-110'
             : 'h-8 w-8 bg-transparent'

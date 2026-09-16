@@ -126,13 +126,12 @@ export default function Process() {
       if (leftColRef.current) {
         gsap.fromTo(
           leftColRef.current.children,
-          { y: 35, opacity: 0, filter: 'blur(4px)' },
+          { y: 30, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            filter: 'blur(0px)',
-            duration: 0.85,
-            stagger: 0.1,
+            duration: 0.75,
+            stagger: 0.08,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: sectionRef.current,
