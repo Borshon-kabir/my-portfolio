@@ -346,12 +346,12 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* Mobile Portrait: Cleanly positioned below buttons and above metrics */}
+          {/* Mobile Portrait: Larger size, centered, with seamless bottom and side fade */}
           <div
-            className="show-photo relative mx-auto mt-6 flex h-60 sm:h-72 w-full max-w-[260px] sm:max-w-[300px] items-end justify-center md:hidden"
+            className="show-photo relative mx-auto mt-6 flex h-80 sm:h-96 w-[125%] max-w-[360px] sm:max-w-[420px] items-end justify-center overflow-hidden bg-[#f0f2f5] pointer-events-none will-change-transform will-change-opacity md:hidden dark:bg-[#141824]"
             style={{
-              WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
-              maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+              maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
             }}
           >
             <Image
@@ -369,6 +369,7 @@ export default function Hero() {
               className="hidden object-contain object-bottom dark:block"
               priority
             />
+            <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#f0f2f5] via-[#f0f2f5]/80 to-transparent pointer-events-none dark:from-[#141824] dark:via-[#141824]/80" />
           </div>
 
           {/* Mobile Metrics Row: Clean horizontal 3-column row below portrait with icons */}
