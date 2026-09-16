@@ -10,15 +10,13 @@ import { ArrowDown, ArrowUpRight, Check, Copy, Loader2, Mail, Menu, MessageCircl
 import ThemeToggle from './ThemeToggle';
 import { projects } from '../data/content';
 import Hero from './Hero';
-import HomeIntro from './HomeIntro';
 import WhyChooseMe from './WhyChooseMe';
 import MyStory from './MyStory';
 import Process from './Process';
 import Pricing from './Pricing';
-import FAQ from './FAQ';
 import Footer from './Footer';
 
-const nav = ['Home', 'About', 'Projects', 'Services', 'Process', 'Pricing', 'FAQ', 'Contact'];
+const nav = ['Home', 'About', 'Projects', 'Services', 'Process', 'Pricing', 'Contact'];
 
 export default function Portfolio() {
   const [menu, setMenu] = useState(false);
@@ -97,7 +95,7 @@ export default function Portfolio() {
       if (
         target &&
         target.closest(
-          'a, button, [role="button"], input, textarea, select, .work-card-anim, .intro-card, .process-card-anim, .pricing-card-anim, .faq-item-anim, .dark-cta'
+          'a, button, [role="button"], input, textarea, select, .work-card-anim, .intro-card, .process-card-anim, .pricing-card-anim, .dark-cta'
         )
       ) {
         setCursorHover(true);
@@ -495,8 +493,6 @@ export default function Portfolio() {
       </AnimatePresence>
 
       <Hero />
-      <HomeIntro />
-
 {/* Selected Work Section */}
       <section id="work" className="px-5 py-24 md:px-10 md:py-32">
         <span id="projects" className="sr-only">Featured Edits &amp; Stories</span>
@@ -640,10 +636,6 @@ export default function Portfolio() {
 
       {/* Pricing & Packages */}
       <Pricing />
-
-      {/* FAQs */}
-      <FAQ />
-
       {/* Editorial Manifesto */}
       <section id="testimonials" className="overflow-hidden py-24 md:py-32 text-[#15151a]">
         <div className="mx-auto max-w-[1100px] px-5 text-center">

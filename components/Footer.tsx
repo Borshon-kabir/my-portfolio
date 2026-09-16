@@ -64,7 +64,6 @@ export default function Footer() {
                 <li><a href="#why-me" className="hover:text-[#15151a] transition-colors">Why choose me</a></li>
                 <li><a href="#process" className="hover:text-[#15151a] transition-colors">Process</a></li>
                 <li><a href="#pricing" className="hover:text-[#15151a] transition-colors">Pricing & packages</a></li>
-                <li><a href="#faq" className="hover:text-[#15151a] transition-colors">FAQs</a></li>
               </ul>
             </div>
             <div>

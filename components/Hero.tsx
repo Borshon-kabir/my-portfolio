@@ -1,14 +1,15 @@
 'use client';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { ArrowUpRight, Menu } from 'lucide-react';
+import { ArrowUpRight, Menu, X, Sparkles, Clock, Film } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import ProfileCardModal from './ProfileCardModal';
 
 const metrics = [
-  { target: 5, suffix: '+', label: 'Pro Tools Mastered', decimals: 0 },
-  { target: 1.5, suffix: 'yr+', label: 'Experience', decimals: 1 },
-  { target: 6, suffix: '+', label: 'Editing & Motion Skills', decimals: 0 },
+  { target: 5, suffix: '+', label: 'Pro Tools Mastered', decimals: 0, icon: Sparkles },
+  { target: 1.5, suffix: 'yr+', label: 'Experience', decimals: 1, icon: Clock },
+  { target: 6, suffix: '+', label: 'Editing & Motion Skills', decimals: 0, icon: Film },
 ];
 
 const tools = [
@@ -76,6 +77,9 @@ function ToolIcon({ tool }: { tool: string }) {
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
   const counterRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const mobileCounterRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -85,7 +89,6 @@ export default function Hero() {
       if (!window.location.hash) {
         window.scrollTo(0, 0);
       }
-
     }
 
     const ctx = gsap.context(() => {
@@ -118,27 +121,6 @@ export default function Hero() {
           '-=0.6'
         )
         .fromTo(
-          '.show-floating',
-          { y: 20, opacity: 0, scale: 0.94 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.65,
-            ease: 'power3.out',
-            onComplete: () => {
-              gsap.to('.show-floating', {
-                y: -6,
-                duration: 2.6,
-                repeat: -1,
-                yoyo: true,
-                ease: 'sine.inOut',
-              });
-            },
-          },
-          '-=0.6'
-        )
-        .fromTo(
           '.show-copy',
           { y: 18, opacity: 0 },
           { y: 0, opacity: 1, stagger: 0.06, duration: 0.55, ease: 'power3.out' },
@@ -161,9 +143,12 @@ export default function Hero() {
             duration: 0.9,
             ease: 'power2.out',
             onUpdate: () => {
+              const value = decimals ? val.n.toFixed(decimals) : String(Math.round(val.n));
               if (counterRefs.current[index]) {
-                const value = decimals ? val.n.toFixed(decimals) : String(Math.round(val.n));
                 counterRefs.current[index]!.textContent = `${value}${suffix}`;
+              }
+              if (mobileCounterRefs.current[index]) {
+                mobileCounterRefs.current[index]!.textContent = `${value}${suffix}`;
               }
             },
           },
@@ -220,26 +205,29 @@ export default function Hero() {
   };
 
   return (
-    <section ref={root} id="home" className="min-h-screen px-5 pb-20 pt-6 md:px-10 md:pt-7">
-      <header className="show-nav w-full py-4 sticky top-0 z-50 bg-transparent backdrop-blur-md border-none shadow-none transition-colors duration-300">
+    <section ref={root} id="home" className="min-h-screen px-4 sm:px-6 pb-20 pt-4 sm:pt-6 md:px-10 md:pt-7">
+      <header className="show-nav w-full py-3 sm:py-4 sticky top-0 z-50 bg-transparent backdrop-blur-md border-none shadow-none transition-colors duration-300">
         <div className="mx-auto max-w-[1160px] w-full flex items-center justify-between">
           {/* Left Slot: Logo */}
-          <div className="w-1/3 flex justify-start items-center">
-            <a
-              href="#home"
-              onClick={(e) => handleNavClick(e, '#home')}
-              className="flex items-center gap-2 font-semibold tracking-[-.04em] text-[#15151a] dark:text-[#f8fafc]"
+          <div className="w-auto md:w-1/3 flex justify-start items-center shrink-0">
+            <button
+              type="button"
+              onClick={() => setIsProfileOpen(true)}
+              className="flex items-center gap-2 font-semibold tracking-[-.04em] text-[#15151a] dark:text-[#f8fafc] cursor-pointer group hover:opacity-90 transition-all text-left"
+              aria-label="View Borshon Kabir profile card"
             >
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-[#15151a] font-serif text-xl text-[#f5f5f4] dark:bg-white dark:text-[#15151a]">
+              <span className="grid h-7 w-7 place-items-center rounded-full bg-[#15151a] font-serif text-xl text-[#f5f5f4] dark:bg-white dark:text-[#15151a] transition-transform duration-200 group-hover:scale-105">
                 B
               </span>
-              <span>Borshon.</span>
-            </a>
+              <span className="transition-colors duration-200 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                Borshon.
+              </span>
+            </button>
           </div>
 
-          {/* Middle Slot: Nav Links (Strictly Centered) */}
-          <div className="w-1/3 flex justify-center items-center">
-            <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm text-[#25252b] dark:text-[#94a3b8]">
+          {/* Middle Slot: Nav Links (Strictly Centered on desktop) */}
+          <div className="hidden md:flex md:w-1/3 justify-center items-center">
+            <nav className="flex items-center gap-6 lg:gap-8 text-sm text-[#25252b] dark:text-[#94a3b8]">
               <a
                 href="#home"
                 onClick={(e) => handleNavClick(e, '#home')}
@@ -285,35 +273,50 @@ export default function Hero() {
             </nav>
           </div>
 
-          {/* Right Slot: Let's talk + Theme Toggle */}
-          <div className="w-1/3 flex justify-end items-center gap-3">
+          {/* Right Slot: Let's talk + Theme Toggle + Mobile Menu */}
+          <div className="w-auto md:w-1/3 flex justify-end items-center gap-1.5 sm:gap-2.5 md:gap-3 shrink-0">
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, '#contact')}
-              className="dark-cta group flex items-center gap-3 rounded-lg bg-[#17171d] py-2 pl-4 pr-2 text-sm font-semibold text-white shadow-md hover:scale-[1.01] active:scale-[0.98] transition-all dark:bg-[#3b82f6] dark:hover:bg-[#2563eb] whitespace-nowrap"
+              className="dark-cta group flex items-center gap-1.5 sm:gap-2.5 rounded-lg bg-[#17171d] py-1.5 px-2.5 sm:py-2 sm:pl-4 sm:pr-2 text-[11px] sm:text-xs md:text-sm font-semibold text-white shadow-md hover:scale-[1.01] active:scale-[0.98] transition-all dark:bg-[#3b82f6] dark:hover:bg-[#2563eb] whitespace-nowrap shrink-0"
             >
               <span>Let&apos;s talk</span>
               <ArrowUpRight
-                size={15}
+                size={14}
                 className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               />
             </a>
             <ThemeToggle />
-            <button aria-label="Open menu" className="text-[#17171d] dark:text-[#f8fafc] md:hidden">
-              <Menu size={21} />
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Open menu"
+              className="flex md:hidden items-center justify-center h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-800/80 text-[#17171d] dark:text-[#f8fafc] hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shrink-0"
+            >
+              <Menu size={18} />
             </button>
           </div>
         </div>
       </header>
 
-      <div className="relative mx-auto mt-16 grid min-h-[610px] max-w-[1160px] overflow-hidden rounded-[32px] border border-slate-200 bg-[#f0f2f5] px-8 py-12 text-slate-900 shadow-sm transition-colors duration-300 md:mt-20 md:grid-cols-[1fr_1fr] md:px-20 md:py-16 dark:border-slate-800 dark:bg-[#141824] dark:text-white">
-        <div className="relative z-10 flex max-w-[470px] flex-col justify-center">
-          <p className="show-kicker mb-2 text-sm font-medium text-slate-600 will-change-transform will-change-opacity md:text-base dark:text-slate-400">
-            Hey, I&apos;m Borshon Kabir.
-          </p>
+      <div className="relative mx-auto mt-6 sm:mt-10 md:mt-20 flex flex-col md:grid md:grid-cols-[1fr_1fr] min-h-[auto] md:min-h-[610px] max-w-[1160px] overflow-hidden rounded-[28px] sm:rounded-[32px] border border-slate-200 bg-[#f0f2f5] px-5 py-8 sm:px-8 sm:py-12 md:px-20 md:py-16 text-slate-900 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-[#141824] dark:text-white">
+        <div className="relative z-10 flex max-w-[470px] flex-col justify-center w-full">
+          <div className="show-kicker mb-3 flex items-center gap-2.5 flex-wrap">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-600 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-400 shadow-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              Available
+            </span>
+            <span className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">
+              Hey, I&apos;m Borshon Kabir.
+            </span>
+          </div>
+
           <h1
             aria-label="Craft better edits, faster."
-            className="mt-0 font-serif text-4xl font-semibold leading-[1.08] tracking-[-.045em] text-slate-900 md:text-5xl lg:text-6xl dark:text-white"
+            className="mt-0 font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.1] tracking-[-.045em] text-slate-900 dark:text-white"
           >
             <span className="block">{textChars('Craft better')}</span>
             <span className="block">
@@ -322,29 +325,86 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="show-copy mt-5 max-w-[365px] text-[15px] leading-6 text-slate-600 will-change-transform will-change-opacity dark:text-slate-400">
+          <p className="show-copy mt-4 sm:mt-5 max-w-[365px] text-sm sm:text-[15px] leading-6 text-slate-600 will-change-transform will-change-opacity dark:text-slate-400">
             I cut with precision, pace with purpose, and keep every frame moving.🔥
           </p>
 
-          <div className="show-copy mt-7 flex gap-2 will-change-transform will-change-opacity">
+          <div className="show-copy mt-6 sm:mt-7 flex flex-wrap gap-2.5 will-change-transform will-change-opacity">
             <a
               href="#work"
-              className="rounded-lg bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:scale-[1.02] hover:bg-slate-800 active:scale-[0.98] dark:bg-blue-600 dark:hover:bg-blue-500"
+              onClick={(e) => handleNavClick(e, '#work')}
+              className="rounded-lg bg-slate-900 px-4 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all hover:scale-[1.02] hover:bg-slate-800 active:scale-[0.98] dark:bg-blue-600 dark:hover:bg-blue-500"
             >
               View projects
             </a>
             <a
               href="#contact"
-              className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-900 hover:shadow-sm active:scale-[0.98] dark:border-slate-700 dark:bg-transparent dark:text-white dark:hover:border-slate-500 dark:hover:bg-slate-800"
+              onClick={(e) => handleNavClick(e, '#contact')}
+              className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-medium text-slate-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-900 hover:shadow-sm active:scale-[0.98] dark:border-slate-700 dark:bg-transparent dark:text-white dark:hover:border-slate-500 dark:hover:bg-slate-800"
             >
               Get in touch
             </a>
           </div>
 
-          <div className="relative z-30 mt-auto grid grid-cols-3 gap-2 sm:gap-6 w-full max-w-md pt-16 md:pt-20">
-            {metrics.map(({ label }, index) => (
+          {/* Mobile Portrait: Cleanly positioned below buttons and above metrics */}
+          <div
+            className="show-photo relative mx-auto mt-6 flex h-60 sm:h-72 w-full max-w-[260px] sm:max-w-[300px] items-end justify-center md:hidden"
+            style={{
+              WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+              maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+            }}
+          >
+            <Image
+              src="/images/profile-light.png"
+              fill
+              alt="Borshon Kabir"
+              className="block object-contain object-bottom dark:hidden"
+              priority
+            />
+            <Image
+              src="/images/profile-dark.jpeg"
+              fill
+              alt=""
+              aria-hidden="true"
+              className="hidden object-contain object-bottom dark:block"
+              priority
+            />
+          </div>
+
+          {/* Mobile Metrics Row: Clean horizontal 3-column row below portrait with icons */}
+          <div className="show-metric mt-6 grid grid-cols-3 gap-2 sm:gap-3 w-full pt-4 border-t border-slate-200/80 dark:border-slate-800/80 md:hidden">
+            {metrics.map(({ label, icon: Icon }, index) => (
+              <div
+                key={`mobile-${label}`}
+                className="flex flex-col items-center text-center p-2 rounded-xl bg-white/60 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800/60 shadow-xs"
+              >
+                <div className="mb-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-blue-500/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
+                  <Icon size={14} />
+                </div>
+                <p className="font-serif text-lg sm:text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  <span
+                    ref={(element) => {
+                      mobileCounterRefs.current[index] = element;
+                    }}
+                  >
+                    0
+                  </span>
+                </p>
+                <p className="mt-0.5 text-[10px] leading-tight text-slate-600 dark:text-slate-400 font-medium">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Metrics Row */}
+          <div className="relative z-30 mt-auto hidden md:grid grid-cols-3 gap-4 lg:gap-6 w-full max-w-md pt-16 md:pt-20">
+            {metrics.map(({ label, icon: Icon }, index) => (
               <div className="show-metric min-w-0 text-left will-change-transform will-change-opacity" key={label}>
-                <p className="font-serif text-xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+                <div className="mb-2 flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
+                  <Icon size={15} />
+                </div>
+                <p className="font-serif text-2xl lg:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
                   <span
                     ref={(element) => {
                       counterRefs.current[index] = element;
@@ -353,7 +413,7 @@ export default function Hero() {
                     0
                   </span>
                 </p>
-                <p className="mt-1 block text-[10px] leading-tight text-slate-600 sm:text-xs dark:text-slate-400">
+                <p className="mt-1 block text-xs leading-tight text-slate-600 dark:text-slate-400">
                   {label}
                 </p>
               </div>
@@ -361,8 +421,9 @@ export default function Hero() {
           </div>
         </div>
 
+        {/* Desktop Portrait */}
         <div
-          className="show-photo absolute bottom-0 right-4 z-0 flex h-[85%] w-[380px] items-end justify-center bg-[#f0f2f5] pointer-events-none will-change-transform will-change-opacity md:right-8 lg:h-[92%] lg:w-[460px] dark:bg-[#141824]"
+          className="show-photo absolute bottom-0 right-4 z-0 hidden md:flex h-[85%] w-[380px] items-end justify-center bg-[#f0f2f5] pointer-events-none will-change-transform will-change-opacity md:right-8 lg:h-[92%] lg:w-[460px] dark:bg-[#141824]"
           style={{
             WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
             maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
@@ -384,20 +445,6 @@ export default function Hero() {
             priority
           />
           <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#f0f2f5] to-transparent dark:from-[#141824]" />
-        </div>
-
-        <div className="show-floating absolute top-3 right-3 md:top-3 md:right-8 z-20 bg-black/40 backdrop-blur-xl border border-white/20 rounded-2xl p-4 max-w-[220px] text-white shadow-2xl transition-all duration-300 hover:border-white/40 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] will-change-transform will-change-opacity">
-          <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-1">Select project</p>
-          <h4 className="text-xs font-semibold mb-1">Available for projects</h4>
-          <p className="text-[11px] text-neutral-300 leading-tight mb-2">
-            Share a few details, and I&apos;ll get back with a clear direction.
-          </p>
-          <a
-            href="#contact"
-            className="inline-flex items-center justify-center w-6 h-6 bg-white text-black rounded-full text-xs hover:scale-110 active:scale-95 transition-transform"
-          >
-            ↗
-          </a>
         </div>
       </div>
 
@@ -430,6 +477,75 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 flex flex-col bg-slate-900/95 backdrop-blur-xl p-6 md:hidden animate-in fade-in duration-200">
+          <div className="flex items-center justify-between pb-6 border-b border-slate-800">
+            <div className="flex items-center gap-2 font-semibold text-white">
+              <span className="grid h-7 w-7 place-items-center rounded-full bg-white font-serif text-xl text-[#15151a]">
+                B
+              </span>
+              <span>Borshon Kabir</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Close menu"
+              className="p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
+          <nav className="flex flex-col gap-5 pt-8 text-lg font-medium text-slate-200">
+            {[
+              { href: '#home', label: 'Home' },
+              { href: '#about', label: 'About' },
+              { href: '#work', label: 'Projects' },
+              { href: '#services', label: 'Services' },
+              { href: '#pricing', label: 'Pricing' },
+              { href: '#contact', label: 'Contact' },
+            ].map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleNavClick(e, href);
+                }}
+                className="hover:text-blue-400 transition-colors py-1"
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+          <div className="mt-auto pt-6 border-t border-slate-800 flex flex-col gap-3">
+            <a
+              href="#contact"
+              onClick={(e) => {
+                setMobileMenuOpen(false);
+                handleNavClick(e, '#contact');
+              }}
+              className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 py-3 text-center text-sm font-semibold text-white shadow-lg active:scale-98"
+            >
+              <span>Let&apos;s talk</span>
+              <ArrowUpRight size={16} />
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Profile Card Popup Modal */}
+      <ProfileCardModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        onContactClick={() => {
+          const target = document.getElementById('contact');
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
+      />
     </section>
   );
 }
