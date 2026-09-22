@@ -13,10 +13,10 @@ export const metadata: Metadata = {
   description: 'Video Editor & Motion Designer',
   icons: {
     icon: [
-      { url: '/favicon.ico?v=2', sizes: 'any' },
-      { url: '/icon.png?v=2',    type: 'image/png', sizes: '32x32' },
+      { url: '/favicon.ico?v=3', sizes: 'any' },
+      { url: '/icon.png?v=3',    type: 'image/png', sizes: '32x32' },
     ],
-    apple: '/apple-icon.png?v=2',
+    apple: '/apple-icon.png?v=3',
   },
   openGraph: {
     title: 'Borshon Kabir - Video Editor & Motion Designer',
