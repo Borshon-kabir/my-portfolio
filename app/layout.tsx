@@ -9,11 +9,15 @@ const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 const serif = Lora({ subsets: ['latin'], variable: '--font-serif', weight: ['400', '500', '600', '700'] });
 export const metadata: Metadata = {
   metadataBase: new URL('https://my-portfolio-seven-ashen-ahlwc08ka.vercel.app'),
-  title: 'Borshon Kabir',
-  description: 'Video Editor',
+  title: 'Borshon Kabir - Video Editor & Motion Designer',
+  description: 'Video Editor & Motion Designer',
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
   openGraph: {
-    title: 'Borshon Kabir',
-    description: 'Video Editor',
+    title: 'Borshon Kabir - Video Editor & Motion Designer',
+    description: 'Video Editor & Motion Designer',
     url: 'https://my-portfolio-seven-ashen-ahlwc08ka.vercel.app',
     siteName: 'Borshon Kabir',
     locale: 'en_US',
@@ -29,8 +33,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Borshon Kabir',
-    description: 'Video Editor',
+    title: 'Borshon Kabir - Video Editor & Motion Designer',
+    description: 'Video Editor & Motion Designer',
     images: ['https://my-portfolio-seven-ashen-ahlwc08ka.vercel.app/og-image.png'],
   },
   robots: {
