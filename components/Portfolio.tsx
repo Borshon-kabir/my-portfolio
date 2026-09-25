@@ -455,11 +455,7 @@ export default function Portfolio() {
           {/* Right Slot: Let's talk + Theme Toggle */}
           <div className="w-1/3 flex justify-end items-center gap-3">
             <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                go('Contact');
-              }}
+              href="mailto:hello@borshonkabir.online"
               className="hidden rounded-full bg-[#17171d] px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition hover:bg-[#34343a] dark:bg-[#3b82f6] dark:hover:bg-[#2563eb] sm:block whitespace-nowrap"
             >
               Let&apos;s Talk <ArrowUpRight className="inline" size={13} />
@@ -697,7 +693,7 @@ export default function Portfolio() {
             </h2>
             <button
               onClick={() => {
-                navigator.clipboard.writeText('borshonkabiredits@gmail.com');
+                navigator.clipboard.writeText('hello@borshonkabir.online');
                 setCopied(true);
                 setTimeout(() => setCopied(false), 1800);
               }}
@@ -709,7 +705,7 @@ export default function Portfolio() {
                 </>
               ) : (
                 <>
-                  <Copy size={17} /> borshonkabiredits@gmail.com
+                  <Copy size={17} /> hello@borshonkabir.online
                 </>
               )}
             </button>
@@ -717,7 +713,7 @@ export default function Portfolio() {
             <div className="contact-text-anim mt-8 flex gap-3 will-change-transform will-change-opacity">
               {[
                 { Icon: MessageCircle, label: 'WhatsApp', href: 'https://wa.me/8801750071200' },
-                { Icon: Mail, label: 'Email', href: 'mailto:borshonkabiredits@gmail.com' },
+                { Icon: Mail, label: 'Email', href: 'mailto:hello@borshonkabir.online' },
               ].map(({ Icon, label, href }) => (
                 <a
                   aria-label={label}

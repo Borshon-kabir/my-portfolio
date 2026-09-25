@@ -90,7 +90,7 @@ export async function POST(req: Request) {
     const mailOptions = {
       from: `"${cleanName}" <${gmailUser}>`,
       replyTo: cleanEmail,
-      to: gmailUser,
+      to: process.env.CONTACT_RECEIVER_EMAIL || 'hello@borshonkabir.online',
       subject: `New Project Enquiry: ${cleanName} — ${cleanType}`,
       text: `New Project Enquiry from ${cleanName} (${cleanEmail})\n\nProject Type: ${cleanType}\n\nMessage:\n${cleanMessage}`,
       html: htmlContent,
@@ -120,7 +120,7 @@ export async function POST(req: Request) {
       {
         error:
           error?.message ||
-          'Failed to send message. Please try again or reach out directly at borshonkabiredits@gmail.com',
+          'Failed to send message. Please try again or reach out directly at hello@borshonkabir.online',
       },
       { status: 500 }
     );

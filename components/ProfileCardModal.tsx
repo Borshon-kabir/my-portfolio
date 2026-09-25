@@ -103,11 +103,8 @@ export default function ProfileCardModal({ isOpen, onClose, onContactClick }: Pr
           {/* Action Button & Social Links */}
           <div className="w-full mt-5 flex flex-col gap-3">
             <a
-              href="#contact"
-              onClick={() => {
-                onClose();
-                if (onContactClick) onContactClick();
-              }}
+              href="mailto:hello@borshonkabir.online"
+              onClick={() => onClose()}
               className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors text-center shadow-md block"
             >
               Get in Touch
@@ -143,7 +140,7 @@ export default function ProfileCardModal({ isOpen, onClose, onContactClick }: Pr
                 <Instagram size={18} />
               </a>
               <a
-                href="mailto:borshonkabiredits@gmail.com"
+                href="mailto:hello@borshonkabir.online"
                 aria-label="Send Email"
                 className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
               >

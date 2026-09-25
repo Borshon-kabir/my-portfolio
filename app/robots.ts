@@ -1,10 +1,23 @@
 import type { MetadataRoute } from 'next';
 
-const siteUrl = 'https://my-portfolio-seven-ashen-ahlwc08ka.vercel.app';
+const siteUrl = 'https://borshonkabir.online';
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: '*', allow: '/' },
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+      {
+        userAgent: 'Googlebot-Image',
+        allow: '/',
+      },
+      {
+        userAgent: 'Google-Favicon',
+        allow: '/',
+      },
+    ],
     sitemap: `${siteUrl}/sitemap.xml`,
   };
 }

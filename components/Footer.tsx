@@ -81,8 +81,8 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:borshonkabiredits@gmail.com" className="group inline-flex items-center gap-1.5 hover:text-[#15151a] transition-colors">
-                    <span>Email me</span>
+                  <a href="mailto:hello@borshonkabir.online" className="group inline-flex items-center gap-1.5 hover:text-[#15151a] transition-colors">
+                    <span>hello@borshonkabir.online</span>
                     <ArrowUpRight size={13} className="text-[#7a7b83] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#15151a]" />
                   </a>
                 </li>

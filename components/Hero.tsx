@@ -276,8 +276,7 @@ export default function Hero() {
           {/* Right Slot: Let's talk + Theme Toggle + Mobile Menu */}
           <div className="w-auto md:w-1/3 flex justify-end items-center gap-1.5 sm:gap-2.5 md:gap-3 shrink-0">
             <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, '#contact')}
+              href="mailto:hello@borshonkabir.online"
               className="dark-cta group flex items-center gap-1.5 sm:gap-2.5 rounded-lg bg-[#17171d] py-1.5 px-2.5 sm:py-2 sm:pl-4 sm:pr-2 text-[11px] sm:text-xs md:text-sm font-semibold text-white shadow-md hover:scale-[1.01] active:scale-[0.98] transition-all dark:bg-[#3b82f6] dark:hover:bg-[#2563eb] whitespace-nowrap shrink-0"
             >
               <span>Let&apos;s talk</span>
@@ -338,8 +337,7 @@ export default function Hero() {
               View projects
             </a>
             <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, '#contact')}
+              href="mailto:hello@borshonkabir.online"
               className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-medium text-slate-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-900 hover:shadow-sm active:scale-[0.98] dark:border-slate-700 dark:bg-transparent dark:text-white dark:hover:border-slate-500 dark:hover:bg-slate-800"
             >
               Get in touch
@@ -522,11 +520,8 @@ export default function Hero() {
           </nav>
           <div className="mt-auto pt-6 border-t border-slate-800 flex flex-col gap-3">
             <a
-              href="#contact"
-              onClick={(e) => {
-                setMobileMenuOpen(false);
-                handleNavClick(e, '#contact');
-              }}
+              href="mailto:hello@borshonkabir.online"
+              onClick={() => setMobileMenuOpen(false)}
               className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 py-3 text-center text-sm font-semibold text-white shadow-lg active:scale-98"
             >
               <span>Let&apos;s talk</span>

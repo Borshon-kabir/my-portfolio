@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Google-Favicon
+Allow: /
+
+Sitemap: https://borshonkabir.online/sitemap.xml
