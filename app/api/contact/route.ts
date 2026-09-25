@@ -87,13 +87,14 @@ export async function POST(req: Request) {
     `;
 
     // Mail options
-    const verifiedSender = process.env.SENDER_EMAIL || 'hello@borshonkabir.online';
+    const senderEmail = process.env.EMAIL_USER || process.env.GMAIL_USER || gmailUser;
+    const clientName = cleanName.replace(/"/g, '');
     const mailOptions = {
-      from: `"${cleanName} via Portfolio" <${verifiedSender}>`,
+      from: `"${clientName}" <${senderEmail}>`,
       replyTo: cleanEmail,
       to: process.env.CONTACT_RECEIVER_EMAIL || 'hello@borshonkabir.online',
-      subject: `New Project Enquiry from ${cleanName} - ${cleanType}`,
-      text: `New Project Enquiry from ${cleanName} (${cleanEmail})\n\nProject Type: ${cleanType}\n\nMessage:\n${cleanMessage}`,
+      subject: `New Project Enquiry from ${clientName} - ${cleanType}`,
+      text: `New Project Enquiry from ${clientName} (${cleanEmail})\n\nProject Type: ${cleanType}\n\nMessage:\n${cleanMessage}`,
       html: htmlContent,
     };
 
