@@ -13,14 +13,17 @@ export const metadata: Metadata = {
   description: 'Video Editor & Motion Designer',
   icons: {
     icon: [
-      { url: '/favicon.ico' },
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon.ico?v=9' },
+      { url: '/favicon-32x32.png?v=9', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png?v=9', sizes: '16x16', type: 'image/png' },
+      { url: '/android-chrome-192x192.png?v=9', sizes: '192x192', type: 'image/png' },
+      { url: '/android-chrome-512x512.png?v=9', sizes: '512x512', type: 'image/png' },
     ],
     apple: [
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/apple-touch-icon.png?v=9', sizes: '180x180', type: 'image/png' },
     ],
   },
+  manifest: '/site.webmanifest',
   openGraph: {
     title: 'Borshon Kabir - Video Editor & Motion Designer',
     description: 'Video Editor & Motion Designer',
