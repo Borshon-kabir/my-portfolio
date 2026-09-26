@@ -1,329 +1,129 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useMemo, useRef } from 'react';
-import { motion, AnimatePresence, animate } from 'framer-motion';
-import { usePathname } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const words = [
-  'Bonjour',
-  'Ciao',
-  'Hola',
-  'مرحبا',
-  'やあ',
-  'Hallå',
-  'Guten Tag',
-  'হ্যালো',
-  'Hello',
+  "Bonjour",
+  "Ciao",
+  "Hola",
+  "مرحبا",
+  "やあ",
+  "Hallå",
+  "Guten Tag",
+  "হ্যালো",
+  "Hello"
 ];
 
-const STORAGE_KEY = 'hasSeenPreloader';
-
-// Prepend 2 words so rows -1 and -2 are filled above "Bonjour"
-// Append 2 words so rows +1 and +2 are filled below "Hello"
-const prefix = ['হ্যালো', 'Hello'];
-const suffix = ['Bonjour', 'Ciao'];
-const reelList = [...prefix, ...words, ...suffix];
-const START_INDEX = prefix.length; // Index 2 ("Bonjour")
-const END_INDEX = prefix.length + words.length - 1; // Index 10 ("Hello")
-
-const ITEM_HEIGHT = 56; // 56px per row item
-const CONTAINER_HEIGHT = ITEM_HEIGHT * 5; // 280px (5 visible rows)
-const CENTER_OFFSET = 2 * ITEM_HEIGHT; // 112px (row 3 is center)
-const INITIAL_Y = CENTER_OFFSET - START_INDEX * ITEM_HEIGHT; // 0px
+const ITEM_HEIGHT = 56; // height per word row
 
 export default function Preloader() {
-  const pathname = usePathname();
-  const [dimension, setDimension] = useState({ width: 0, height: 0 });
-  const [loading, setLoading] = useState(true);
-  const [checkedStorage, setCheckedStorage] = useState(false);
-  const reelRef = useRef<HTMLDivElement | null>(null);
-  const itemRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const [index, setIndex] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+  const [shouldRender, setShouldRender] = useState(true);
 
   useEffect(() => {
-    const isRoot = pathname === '/';
-    const urlParams = new URLSearchParams(window.location.search);
-    const forcePreview = urlParams.has('preloader') || urlParams.has('preview');
-
-    let hasSeen = false;
-    try {
-      hasSeen = sessionStorage.getItem(STORAGE_KEY) === 'true';
-    } catch {
-      hasSeen = false;
+    // Check session storage
+    if (typeof window !== "undefined") {
+      const hasSeen = sessionStorage.getItem("hasSeenPreloader");
+      if (hasSeen) {
+        setShouldRender(false);
+        return;
+      }
     }
 
-    if ((hasSeen || !isRoot) && !forcePreview) {
-      setLoading(false);
-      setCheckedStorage(true);
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      return;
-    }
+    // Lock body scroll
+    document.body.style.overflow = "hidden";
 
-    // First time in this session:
-    setDimension({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-    setLoading(true);
-    setCheckedStorage(true);
-
-    const handleResize = () => {
-      setDimension({
-        width: window.innerWidth,
-        height: window.innerHeight,
+    // Interval to cycle words
+    const interval = setInterval(() => {
+      setIndex((prev) => {
+        if (prev < words.length - 1) {
+          return prev + 1;
+        } else {
+          clearInterval(interval);
+          // Hold on final English "Hello" then trigger exit
+          setTimeout(() => {
+            setIsFinished(true);
+            sessionStorage.setItem("hasSeenPreloader", "true");
+            setTimeout(() => {
+              setShouldRender(false);
+              document.body.style.overflow = "";
+            }, 800);
+          }, 450);
+          return prev;
+        }
       });
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [pathname]);
-
-  // Lock scroll while preloader is active
-  useEffect(() => {
-    if (!loading) return;
-
-    const originalBodyOverflow = document.body.style.overflow;
-    const originalHtmlOverflow = document.documentElement.style.overflow;
-
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-
-    // Pause Lenis smooth scroll if present
-    const checkLenis = () => {
-      const lenis = (window as unknown as { __lenis?: { stop: () => void; start: () => void } }).__lenis;
-      if (lenis) {
-        lenis.stop();
-      }
-    };
-    checkLenis();
-    const lenisCheckTimer = setTimeout(checkLenis, 300);
+    }, 160);
 
     return () => {
-      clearTimeout(lenisCheckTimer);
-      document.body.style.overflow = originalBodyOverflow;
-      document.documentElement.style.overflow = originalHtmlOverflow;
-      const lenis = (window as unknown as { __lenis?: { start: () => void } }).__lenis;
-      if (lenis) {
-        lenis.start();
-      }
+      clearInterval(interval);
+      document.body.style.overflow = "";
     };
-  }, [loading]);
+  }, []);
 
-  // Update drum reel items on each animation frame
-  const updateReel = (progress: number) => {
-    // Translate the flex reel container vertically
-    if (reelRef.current) {
-      const currentY = CENTER_OFFSET - progress * ITEM_HEIGHT;
-      reelRef.current.style.transform = `translateY(${currentY}px)`;
-    }
-
-    itemRefs.current.forEach((el, i) => {
-      if (!el) return;
-
-      const a = Math.abs(i - progress);
-
-      // Exact Opacity Tiers replicated from greatingloader.framer.website:
-      // center (0): 1.0 | mid (1): 0.40 | edge (2): 0.18 | beyond (3): 0.0
-      let opacity = 0;
-      if (a <= 1) {
-        opacity = 1 + (0.4 - 1) * a;
-      } else if (a <= 2) {
-        opacity = 0.4 + (0.18 - 0.4) * (a - 1);
-      } else if (a <= 3) {
-        opacity = 0.18 * (1 - (a - 2));
-      }
-      opacity = Math.max(0, opacity);
-
-      // Exact Blur Tiers: Center (a=0) is strictly 0px blur
-      const blur = a <= 1 ? 0 + 2.5 * a : a <= 2 ? 2.5 + 2.5 * (a - 1) : 5;
-
-      // Wheel perspective scale taper
-      const scale = a <= 1 ? 1 - 0.08 * a : a <= 2 ? 0.92 - 0.1 * (a - 1) : 0.82;
-
-      el.style.opacity = `${opacity}`;
-      el.style.filter = blur > 0.05 ? `blur(${blur.toFixed(1)}px)` : 'none';
-      el.style.transform = `scale(${scale})`;
-
-      // Minimalist, crisp typography matching greatingloader.framer.website:
-      if (a < 0.3) {
-        el.style.fontWeight = '500';
-        el.style.color = '#ffffff';
-      } else {
-        el.style.fontWeight = '400';
-        el.style.color = 'rgba(255, 255, 255, 0.4)';
-      }
-    });
-  };
-
-  // Continuous fluid reel scroll animation with Framer's signature physics
-  useEffect(() => {
-    if (!loading || !checkedStorage) return;
-
-    // Sync initial positions immediately
-    updateReel(START_INDEX);
-
-    let exitTimeoutId: ReturnType<typeof setTimeout>;
-
-    // Exact Framer reel inertia curve [.68, 0, .22, .98]
-    const controls = animate(START_INDEX, END_INDEX, {
-      duration: 2.4, // Fluid tempo matching reference site
-      ease: [0.68, 0, 0.22, 0.98],
-      onUpdate: (latest) => {
-        updateReel(latest);
-      },
-      onComplete: () => {
-        // Pause briefly (~400ms) on "Hello" before triggering the signature curved SVG curtain reveal
-        exitTimeoutId = setTimeout(() => {
-          setLoading(false);
-          try {
-            sessionStorage.setItem(STORAGE_KEY, 'true');
-            document.documentElement.classList.add('has-seen-preloader');
-          } catch {
-            // ignore private browsing quota errors
-          }
-        }, 400);
-      },
-    });
-
-    return () => {
-      controls.stop();
-      if (exitTimeoutId) clearTimeout(exitTimeoutId);
-    };
-  }, [loading, checkedStorage]);
-
-  const curveHeight = useMemo(() => {
-    if (dimension.width === 0) return 200;
-    return dimension.width < 640 ? 140 : 260;
-  }, [dimension.width]);
-
-  const initialCurve = useMemo(() => {
-    return `M0 0 L${dimension.width} 0 Q${dimension.width / 2} ${curveHeight} 0 0 Z`;
-  }, [dimension.width, curveHeight]);
-
-  const targetCurve = useMemo(() => {
-    return `M0 0 L${dimension.width} 0 Q${dimension.width / 2} 0 0 0 Z`;
-  }, [dimension.width]);
-
-  // Fast Exit: If in browser and already seen or not on root, return null immediately
-  if (typeof window !== 'undefined') {
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      const forcePreview = urlParams.has('preloader') || urlParams.has('preview');
-      if (!forcePreview && (sessionStorage.getItem(STORAGE_KEY) === 'true' || window.location.pathname !== '/')) {
-        return null;
-      }
-    } catch {}
-  }
-
-  if (checkedStorage && !loading) {
-    return null;
-  }
+  if (!shouldRender) return null;
 
   return (
-    <AnimatePresence
-      mode="wait"
-      onExitComplete={() => {
-        // Cleanly restore scroll when animation finishes
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
-        const lenis = (window as unknown as { __lenis?: { start: () => void } }).__lenis;
-        if (lenis) {
-          lenis.start();
-        }
-      }}
-    >
-      {loading && (
+    <AnimatePresence>
+      {!isFinished ? (
         <motion.div
-          key="framer-clone-preloader"
-          initial={{ y: 0 }}
-          exit={{
-            y: `calc(-100% - ${curveHeight}px)`,
-            transition: { duration: 0.75, ease: [0.76, 0, 0.24, 1], delay: 0.05 },
-          }}
-          className="preloader-root fixed inset-0 z-[9999] w-screen h-screen flex flex-col items-center justify-center overflow-hidden bg-[#02071a] select-none pointer-events-auto"
+          key="preloader-curtain"
+          exit={{ y: "-100%" }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 z-[9999] w-screen h-screen bg-[#02071a] flex flex-col items-center justify-center pointer-events-auto select-none"
         >
-          {/* Subtle cinematic navy ambient glow */}
-          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1)_0%,transparent_65%)]" />
+          {/* Subtle Ambient Radial Glow */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-[#02071a] to-[#01040f] pointer-events-none" />
 
-          {/* Strict 280px Vertical Reel Window with Soft Gradient Edge Fade */}
+          {/* Reel Window (5 rows visible) */}
           <div
-            className="font-preloader relative w-full h-[280px] flex flex-col items-center justify-center overflow-hidden pointer-events-none z-10"
+            className="relative z-10 w-full flex items-center justify-center overflow-hidden"
             style={{
+              height: `${ITEM_HEIGHT * 5}px`,
               maskImage:
-                'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)',
+                "linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%)",
               WebkitMaskImage:
-                'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)',
+                "linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%)"
             }}
           >
-            {/* Rigid vertical flex container to prevent any word collapsing or stacking */}
-            <div
-              ref={reelRef}
-              className="w-full flex flex-col items-center"
-              style={{
-                transform: `translateY(${INITIAL_Y}px)`,
-                willChange: 'transform',
+            {/* Sliding Reel */}
+            <motion.div
+              animate={{
+                y: -index * ITEM_HEIGHT + ITEM_HEIGHT * 2
               }}
+              transition={{
+                duration: 0.18,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+              className="flex flex-col items-center w-full"
             >
-              {reelList.map((word, i) => {
-                const a = Math.abs(i - START_INDEX);
-                const isCenter = a === 0;
-                const initialOpacity = isCenter ? 1 : a === 1 ? 0.4 : a === 2 ? 0.18 : 0;
-                const initialScale = isCenter ? 1 : a === 1 ? 0.92 : 0.82;
-                const initialBlur = isCenter ? 'none' : a === 1 ? 'blur(2.5px)' : 'blur(5px)';
+              {words.map((word, i) => {
+                const distance = Math.abs(i - index);
+                const isActive = distance === 0;
 
                 return (
                   <div
-                    key={i}
+                    key={word}
                     style={{ height: `${ITEM_HEIGHT}px` }}
-                    className="w-full h-[56px] flex items-center justify-center shrink-0"
+                    className={`flex items-center justify-center w-full transition-all duration-150 ${
+                      isActive
+                        ? "text-white text-4xl sm:text-5xl font-medium tracking-tight opacity-100 scale-100"
+                        : distance === 1
+                        ? "text-white/40 text-2xl sm:text-3xl font-normal opacity-40 scale-90"
+                        : distance === 2
+                        ? "text-white/15 text-xl sm:text-2xl font-light opacity-20 scale-80"
+                        : "opacity-0"
+                    }`}
                   >
-                    <p
-                      ref={(el) => {
-                        itemRefs.current[i] = el;
-                      }}
-                      dir="auto"
-                      style={{
-                        fontFamily:
-                          "-apple-system, BlinkMacSystemFont, 'Inter', 'Geist', 'Segoe UI', sans-serif",
-                        lineHeight: 1.15,
-                        margin: 0,
-                        whiteSpace: 'nowrap',
-                        willChange: 'transform, opacity, filter',
-                        opacity: initialOpacity,
-                        transform: `scale(${initialScale})`,
-                        filter: initialBlur,
-                        fontWeight: isCenter ? 500 : 400,
-                        color: isCenter ? '#ffffff' : 'rgba(255, 255, 255, 0.4)',
-                      }}
-                      className="font-preloader text-3xl sm:text-5xl font-medium tracking-normal text-white select-none text-center antialiased"
-                    >
-                      {word}
-                    </p>
+                    {word}
                   </div>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
-
-          {/* Fluid Curved Bottom SVG Curtain */}
-          {dimension.width > 0 && (
-            <svg
-              className="absolute top-[calc(100%-2px)] left-0 w-full pointer-events-none fill-[#02071a]"
-              style={{ height: `${curveHeight}px` }}
-              viewBox={`0 0 ${dimension.width} ${curveHeight}`}
-              preserveAspectRatio="none"
-            >
-              <motion.path
-                initial={{ d: initialCurve }}
-                exit={{
-                  d: targetCurve,
-                  transition: { duration: 0.75, ease: [0.76, 0, 0.24, 1], delay: 0.05 },
-                }}
-              />
-            </svg>
-          )}
         </motion.div>
-      )}
+      ) : null}
     </AnimatePresence>
   );
 }
