@@ -205,7 +205,7 @@ export default function Pricing() {
 
             {/* Features */}
             <div className="mt-7 rounded-xl border border-slate-200/80 bg-slate-50/80 p-5 dark:border-slate-800/80 dark:bg-[#161a29]/60">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5">What's included</h4>
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5">What&apos;s included</h4>
               <ul className="space-y-2.5">
                 {card1Features.map((feat) => (
                   <li key={feat} className="pricing-f1-item flex items-center gap-2.5 text-xs sm:text-[13px] text-slate-700 dark:text-slate-300 opacity-100 will-change-transform will-change-opacity">
@@ -263,7 +263,7 @@ export default function Pricing() {
             {/* Features */}
             <div className="mt-7 rounded-xl border border-slate-200/80 bg-slate-50/80 p-5 dark:border-slate-800/80 dark:bg-[#161a29]/60">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5">
-                What's included
+                What&apos;s included
               </h4>
               <ul className="space-y-2.5">
                 {card2Features.map((feat) => (
@@ -298,7 +298,7 @@ export default function Pricing() {
               {/* Price */}
               <div className="mt-7 flex items-baseline gap-2">
                 <span className="font-serif text-[40px] sm:text-[46px] font-semibold leading-none tracking-tight text-slate-900 dark:text-white">
-                  Let's Talk
+                  Let&apos;s Talk
                 </span>
               </div>
               <p className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Custom pricing</p>
@@ -315,7 +315,7 @@ export default function Pricing() {
 
             {/* Features */}
             <div className="mt-7 rounded-xl border border-slate-200/80 bg-slate-50/80 p-5 dark:border-slate-800/80 dark:bg-[#161a29]/60">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5">What's included</h4>
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5">What&apos;s included</h4>
               <ul className="space-y-2.5">
                 {card3Features.map((feat) => (
                   <li key={feat} className="pricing-f3-item flex items-center gap-2.5 text-xs sm:text-[13px] text-slate-700 dark:text-slate-300 opacity-100 will-change-transform will-change-opacity">

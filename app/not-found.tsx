@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { Home, ArrowLeft } from 'lucide-react';
 
 export default function NotFound() {
@@ -12,7 +12,7 @@ export default function NotFound() {
           Page Not Found
         </h1>
         <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-          The page you are looking for doesn't exist or has been moved.
+          The page you are looking for doesn&apos;t exist or has been moved.
         </p>
         <div className="mt-6 flex items-center justify-center gap-3">
           <Link

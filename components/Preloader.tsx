@@ -185,7 +185,7 @@ export default function Preloader() {
         lenis.start();
       }
     };
-  }, []);
+  }, [y]);
 
   const curveHeight = useMemo(() => {
     if (dimension.width === 0) return 200;
