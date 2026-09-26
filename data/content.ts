@@ -16,6 +16,8 @@ export type Project = {
   videoUrl: string;  // YouTube watch URL, YouTube short URL, or Google Drive share URL
   processVideoUrl?: string; // Google Drive share URL or direct video file for the proof-of-work view
   previewVideo?: string; // direct video URL (e.g. mp4/webm) for hover-to-play preview
+  finalVideo?: string; // direct playable MP4 for final render
+  aeVideo?: string; // direct playable MP4 for AE blueprint
   tags: string[];
 };
 export const longProjects: Project[] = [
@@ -34,6 +36,9 @@ export const longProjects: Project[] = [
     thumbnail: '/thumbnails/map-animation.jpg',
     videoUrl: 'https://drive.google.com/file/d/1J2pzygfxyluF_Lk2_8yYdK1Hmi-NRNZy/view?usp=sharing',
     processVideoUrl: 'https://drive.google.com/file/d/1ct8vFduSVZC1oB85t1pWYr3sn3wZI3-q/view?usp=sharing',
+    finalVideo: '/videos/map-animation-final.mp4',
+    aeVideo: '/videos/map-animation-blueprint.mp4',
+    previewVideo: '/videos/map-animation-final.mp4',
     tags: ['Documentary', 'Map Animation', 'Motion Graphics'],
   },
 ];

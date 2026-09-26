@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -15,6 +15,7 @@ import {
   Film,
   Layers,
   MonitorPlay,
+  Play,
   Sparkles,
 } from 'lucide-react';
 import { projects, type Project } from '../../../data/content';
@@ -95,9 +96,9 @@ const projectBreakdowns: Record<string, ProjectBreakdown> = {
 };
 
 const viewOptions: Array<{ id: ViewMode; label: string; icon: typeof Columns2 }> = [
-  { id: 'split', label: 'Side-by-Side (Split)', icon: Columns2 },
-  { id: 'final', label: 'Final Cut Only', icon: MonitorPlay },
-  { id: 'blueprint', label: 'AE Blueprint Only', icon: Layers },
+  { id: 'split', label: 'Side-by-Side', icon: Columns2 },
+  { id: 'final', label: 'Final Cut', icon: MonitorPlay },
+  { id: 'blueprint', label: 'AE Blueprint', icon: Layers },
 ];
 
 function getEmbedUrl(url: string) {
@@ -113,29 +114,14 @@ function getEmbedUrl(url: string) {
   return url;
 }
 
-function isDirectVideoUrl(url: string) {
-  return /\.(mp4|webm|ogg|mov)(?:[?#]|$)/i.test(url);
-}
-
-function ProjectVideoPlayer({ sourceUrl, title, poster }: { sourceUrl: string; title: string; poster: string }) {
-  if (isDirectVideoUrl(sourceUrl)) {
-    return (
-      <video className="absolute inset-0 h-full w-full object-cover border-0" controls playsInline preload="metadata" poster={poster}>
-        <source src={sourceUrl} />
-        Your browser does not support video playback.
-      </video>
-    );
+function getDirectVideoUrl(url: string) {
+  const driveMatch = url.match(/\/file\/d\/([^/]+)\//);
+  if (driveMatch) return `https://drive.google.com/uc?export=download&id=${driveMatch[1]}`;
+  const driveIdMatch = url.match(/[?&]id=([^&]+)/);
+  if (url.includes('drive.google.com') && driveIdMatch) {
+    return `https://drive.google.com/uc?export=download&id=${driveIdMatch[1]}`;
   }
-
-  return (
-    <iframe
-      src={getEmbedUrl(sourceUrl)}
-      title={title}
-      className="absolute inset-0 h-full w-full object-cover border-0"
-      allow="autoplay; fullscreen; picture-in-picture"
-      allowFullScreen
-    />
-  );
+  return url;
 }
 
 function SoftwareBadge({ name }: { name: string }) {
@@ -183,30 +169,84 @@ function SoftwareBadge({ name }: { name: string }) {
 
 function MediaViewport({ project, mode, notes }: { project: Project; mode: 'final' | 'blueprint'; notes: string[] }) {
   const isBlueprint = mode === 'blueprint';
-  const sourceUrl = isBlueprint ? project.processVideoUrl || project.videoUrl : project.videoUrl;
-  const mediaTitle = project.title + (isBlueprint ? ' After Effects blueprint' : ' final render');
-  const isVertical = project.format === 'shorts';
+  const externalUrl = isBlueprint ? project.processVideoUrl || project.videoUrl : project.videoUrl;
+  const videoSrc = isBlueprint
+    ? project.aeVideo || '/videos/map-animation-blueprint.mp4'
+    : project.finalVideo || '/videos/map-animation-final.mp4';
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
 
   return (
-    <motion.article
-      layout
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -12 }}
-      whileTap={{ scale: 0.995 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className={`relative w-full overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-[#0b0c10] shadow-2xl shadow-black/20 dark:shadow-black/50 ${
-        isVertical ? 'aspect-[9/16] max-w-[360px] mx-auto' : 'aspect-video'
-      }`}
+    <div
+      onClick={togglePlay}
+      className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black border border-white/10 select-none group cursor-pointer"
     >
-      <ProjectVideoPlayer sourceUrl={sourceUrl} title={mediaTitle} poster={project.thumbnail} />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25" />
-      <span className="absolute left-3.5 top-3.5 z-10 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/75 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-md backdrop-blur-md select-none">
+      {/* Top Badges */}
+      <div className="absolute top-3 left-3 z-20 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/75 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-md backdrop-blur-md select-none pointer-events-none">
         {isBlueprint ? <Layers size={12} className="text-purple-400" /> : <Film size={12} className="text-blue-400" />}
-        {isBlueprint ? 'AE Timeline & Blueprint' : 'Final Render'}
-      </span>
-    </motion.article>
+        <span>{isBlueprint ? 'AE TIMELINE & BLUEPRINT' : 'FINAL RENDER'}</span>
+      </div>
+
+      <div className="absolute top-3 right-3 z-30 pointer-events-auto">
+        <a
+          href={externalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`Open ${isBlueprint ? 'AE Blueprint' : 'Final Render'} in new tab`}
+          onClick={(e) => e.stopPropagation()}
+          className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-black/75 text-white/80 transition-all duration-200 hover:scale-105 hover:bg-black hover:text-white shadow-md backdrop-blur-md pointer-events-auto cursor-pointer"
+        >
+          <ArrowUpRight size={14} />
+        </a>
+      </div>
+
+      {/* Center Play Button Overlay */}
+      <div
+        className={`absolute inset-0 flex items-center justify-center transition-all duration-200 ${
+          isPlaying
+            ? 'opacity-0 pointer-events-none scale-95'
+            : 'opacity-100 scale-100 pointer-events-auto z-30'
+        }`}
+        aria-label="Play video"
+      >
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            togglePlay();
+          }}
+          className="grid h-16 w-16 place-items-center rounded-full border border-white/30 bg-black/60 text-white backdrop-blur-md shadow-2xl transition-transform duration-200 hover:scale-110 active:scale-95 cursor-pointer pointer-events-auto z-30"
+          aria-label={isPlaying ? 'Pause video' : 'Play video'}
+        >
+          <Play size={26} fill="currentColor" className="ml-1 text-white" />
+        </button>
+      </div>
+
+      {/* Video element */}
+      <video
+        ref={videoRef}
+        src={videoSrc}
+        poster={project.thumbnail}
+        className="w-full h-full object-cover"
+        playsInline
+        controls
+        preload="metadata"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onEnded={() => setIsPlaying(false)}
+      />
+    </div>
   );
 }
 
@@ -290,7 +330,7 @@ export default function ProjectBreakdownPage() {
         {/* Minimalist Video Showcase */}
         <section aria-label="Proof view" className="pt-2 sm:pt-4">
           {/* Centered Segmented Glass Pill Toggles */}
-          <div className="flex justify-center mb-6 sm:mb-8">
+          <div className="flex justify-center mb-6 sm:mb-8 max-w-full overflow-x-auto scrollbar-none px-2 py-1">
             <div
               className="inline-flex items-center p-1 rounded-full border border-black/10 dark:border-white/10 bg-slate-200/50 dark:bg-white/[0.04] backdrop-blur-xl shadow-sm gap-1"
               role="tablist"
@@ -306,7 +346,7 @@ export default function ProjectBreakdownPage() {
                     role="tab"
                     aria-selected={active}
                     onClick={() => setView(option.id)}
-                    className={`relative flex items-center justify-center gap-2 rounded-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-medium transition-all duration-200 ${
+                    className={`relative flex items-center justify-center gap-1.5 sm:gap-2 rounded-full whitespace-nowrap text-xs sm:text-sm px-2.5 py-1.5 sm:px-4 sm:py-2 font-medium transition-all duration-200 ${
                       active
                         ? 'text-white'
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -319,7 +359,7 @@ export default function ProjectBreakdownPage() {
                         transition={{ type: 'spring', stiffness: 450, damping: 35 }}
                       />
                     )}
-                    <Icon size={14} className="relative z-10" />
+                    <Icon size={14} className="relative z-10 shrink-0" />
                     <span className="relative z-10">{option.label}</span>
                   </button>
                 );
@@ -333,7 +373,7 @@ export default function ProjectBreakdownPage() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.1 }}
-            className={`grid gap-6 items-stretch ${
+            className={`grid gap-6 items-start ${
               view === 'split' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 max-w-4xl mx-auto'
             }`}
           >

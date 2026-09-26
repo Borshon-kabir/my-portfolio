@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Inter, JetBrains_Mono, Lora } from 'next/font/goog
 import './globals.css';
 import './mobile-performance.css';
 import { ThemeProvider } from '../components/ThemeProvider';
+import Preloader from '../components/Preloader';
 const display = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display' });
 const body = Inter({ subsets: ['latin'], variable: '--font-body' });
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
@@ -76,7 +77,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem('borshon-theme');if(t==='dark'){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}}catch(e){}`,
+            __html: `try{var t=localStorage.getItem('borshon-theme');if(t==='dark'){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}}catch(e){}try{if(sessionStorage.getItem('hasSeenPreloader')==='true'){document.documentElement.classList.add('has-seen-preloader');}}catch(e){}`,
           }}
         />
         <script
@@ -85,7 +86,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           }}
         />
       </head>
-      <body className="bg-[#f8fafc] transition-colors duration-300 dark:bg-[#0a0b10]"><ThemeProvider>{children}</ThemeProvider></body>
+      <body className="bg-[#f8fafc] transition-colors duration-300 dark:bg-[#0a0b10]">
+        <ThemeProvider>
+          <Preloader />
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
