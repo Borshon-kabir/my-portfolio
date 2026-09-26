@@ -18,17 +18,25 @@ const words = [
 
 const STORAGE_KEY = 'hasSeenPreloader';
 
-// Build continuous drum reel list matching the Framer reference
-// [words] + [words] + [words] creates an uninterrupted reel
-const reelList = [...words, ...words, ...words];
-const START_INDEX = words.length; // Index 9 (First "Bonjour" in middle set)
-const END_INDEX = START_INDEX + words.length - 1; // Index 17 ("Hello" in middle set)
+// Prepend 2 words so rows -1 and -2 are filled above "Bonjour"
+// Append 2 words so rows +1 and +2 are filled below "Hello"
+const prefix = ['হ্যালো', 'Hello'];
+const suffix = ['Bonjour', 'Ciao'];
+const reelList = [...prefix, ...words, ...suffix];
+const START_INDEX = prefix.length; // Index 2 ("Bonjour")
+const END_INDEX = prefix.length + words.length - 1; // Index 10 ("Hello")
+
+const ITEM_HEIGHT = 64; // px per row item
+const CONTAINER_HEIGHT = ITEM_HEIGHT * 5; // 320px (5 visible rows)
+const CENTER_OFFSET = 2 * ITEM_HEIGHT; // 128px (row 3 is center)
 
 export default function Preloader() {
   const pathname = usePathname();
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
   const [loading, setLoading] = useState(true);
   const [checkedStorage, setCheckedStorage] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const reelRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
   useEffect(() => {
@@ -103,26 +111,16 @@ export default function Preloader() {
 
   // Update drum reel items on each animation frame
   const updateReel = (progress: number) => {
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
-    // Spacing between rows in rem (matching Framer's clean vertical rhythm)
-    const spacingRem = isMobile ? 4.5 : 5.6;
+    // Translate the flex reel container vertically
+    if (reelRef.current) {
+      const currentY = CENTER_OFFSET - progress * ITEM_HEIGHT;
+      reelRef.current.style.transform = `translateY(${currentY}px)`;
+    }
 
-    itemRefs.current.forEach((el, n) => {
+    itemRefs.current.forEach((el, i) => {
       if (!el) return;
 
-      const r = n - progress;
-      const a = Math.abs(r);
-
-      // Cull items outside 5-row visible perspective window
-      if (a > 3.2) {
-        el.style.display = 'none';
-        return;
-      }
-
-      el.style.display = 'block';
-
-      // Vertical translation in rem
-      const s = r * spacingRem;
+      const a = Math.abs(i - progress);
 
       // Exact Opacity Tiers replicated from greatingloader.framer.website:
       // center (0): 1.0 | mid (1): 0.40 | edge (2): 0.18 | beyond (3): 0.0
@@ -136,35 +134,44 @@ export default function Preloader() {
       }
       opacity = Math.max(0, opacity);
 
-      // Exact Blur Tiers: Center is strictly 0px blur
+      // Exact Blur Tiers: Center (a=0) is strictly 0px blur
       const blur = a <= 1 ? 0 + 2.5 * a : a <= 2 ? 2.5 + 2.5 * (a - 1) : 5;
 
       // Wheel perspective scale taper
       const scale = a <= 1 ? 1 - 0.08 * a : a <= 2 ? 0.92 - 0.1 * (a - 1) : 0.82;
 
-      el.style.transform = `translate(-50%, calc(-50% + ${s}rem)) scale(${scale})`;
       el.style.opacity = `${opacity}`;
       el.style.filter = blur > 0.05 ? `blur(${blur.toFixed(1)}px)` : 'none';
+      el.style.transform = `scale(${scale})`;
 
       // Minimalist, crisp typography matching greatingloader.framer.website:
       if (a < 0.3) {
         el.style.fontWeight = '500';
         el.style.color = '#ffffff';
-        el.style.textShadow = 'none';
       } else {
         el.style.fontWeight = '400';
         el.style.color = 'rgba(255, 255, 255, 0.4)';
-        el.style.textShadow = 'none';
       }
     });
   };
 
-  // Continuous fluid reel scroll animation with Framer's signature physics
+  // Mount guard to allow layout to settle before revealing text (zero overlap flash)
   useEffect(() => {
     if (!loading || !checkedStorage) return;
 
-    // Immediately render initial frame at START_INDEX
+    // Position initial frame before revealing text
     updateReel(START_INDEX);
+
+    const readyRaf = requestAnimationFrame(() => {
+      setIsReady(true);
+    });
+
+    return () => cancelAnimationFrame(readyRaf);
+  }, [loading, checkedStorage]);
+
+  // Continuous fluid reel scroll animation with Framer's signature physics
+  useEffect(() => {
+    if (!loading || !checkedStorage || !isReady) return;
 
     let exitTimeoutId: ReturnType<typeof setTimeout>;
 
@@ -193,7 +200,7 @@ export default function Preloader() {
       controls.stop();
       if (exitTimeoutId) clearTimeout(exitTimeoutId);
     };
-  }, [loading, checkedStorage]);
+  }, [loading, checkedStorage, isReady]);
 
   const curveHeight = useMemo(() => {
     if (dimension.width === 0) return 200;
@@ -223,6 +230,8 @@ export default function Preloader() {
     return null;
   }
 
+  const initialY = CENTER_OFFSET - START_INDEX * ITEM_HEIGHT;
+
   return (
     <AnimatePresence
       mode="wait"
@@ -249,40 +258,54 @@ export default function Preloader() {
           {/* Subtle cinematic navy ambient glow */}
           <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1)_0%,transparent_65%)]" />
 
-          {/* Vertical Reel Window with Soft Gradient Edge Fade & Clean Sans-Serif Font */}
+          {/* Vertical Reel Window with Soft Gradient Edge Fade */}
           <div
-            className="font-preloader relative w-full h-[360px] sm:h-[420px] flex items-center justify-center overflow-hidden pointer-events-none z-10"
+            className="font-preloader relative w-full flex items-center justify-center overflow-hidden pointer-events-none z-10"
             style={{
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', 'Geist', 'Segoe UI', sans-serif",
+              height: `${CONTAINER_HEIGHT}px`,
               maskImage:
                 'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)',
               WebkitMaskImage:
                 'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)',
             }}
           >
-            {reelList.map((word, i) => (
-              <p
-                key={i}
-                ref={(el) => {
-                  itemRefs.current[i] = el;
-                }}
-                dir="auto"
+            {/* Rigid vertical flex container to prevent any word collapsing or stacking */}
+            <div className={`w-full transition-opacity duration-150 ${isReady ? 'opacity-100' : 'opacity-0'}`}>
+              <div
+                ref={reelRef}
+                className="w-full flex flex-col items-center"
                 style={{
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', 'Geist', 'Segoe UI', sans-serif",
-                  letterSpacing: 'normal',
-                  lineHeight: 1.15,
-                  margin: 0,
-                  whiteSpace: 'nowrap',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  willChange: 'transform, opacity, filter',
+                  transform: `translateY(${initialY}px)`,
+                  willChange: 'transform',
                 }}
-                className="font-preloader text-3xl sm:text-5xl font-medium tracking-normal text-white select-none text-center antialiased"
               >
-                {word}
-              </p>
-            ))}
+                {reelList.map((word, i) => (
+                  <div
+                    key={i}
+                    style={{ height: `${ITEM_HEIGHT}px` }}
+                    className="w-full flex items-center justify-center shrink-0"
+                  >
+                    <p
+                      ref={(el) => {
+                        itemRefs.current[i] = el;
+                      }}
+                      dir="auto"
+                      style={{
+                        fontFamily:
+                          "-apple-system, BlinkMacSystemFont, 'Inter', 'Geist', 'Segoe UI', sans-serif",
+                        lineHeight: 1.15,
+                        margin: 0,
+                        whiteSpace: 'nowrap',
+                        willChange: 'transform, opacity, filter',
+                      }}
+                      className="font-preloader text-3xl sm:text-5xl font-medium tracking-normal text-white select-none text-center antialiased"
+                    >
+                      {word}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Fluid Curved Bottom SVG Curtain */}
