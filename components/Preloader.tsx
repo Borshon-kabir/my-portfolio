@@ -26,16 +26,16 @@ const reelList = [...prefix, ...words, ...suffix];
 const START_INDEX = prefix.length; // Index 2 ("Bonjour")
 const END_INDEX = prefix.length + words.length - 1; // Index 10 ("Hello")
 
-const ITEM_HEIGHT = 64; // px per row item
-const CONTAINER_HEIGHT = ITEM_HEIGHT * 5; // 320px (5 visible rows)
-const CENTER_OFFSET = 2 * ITEM_HEIGHT; // 128px (row 3 is center)
+const ITEM_HEIGHT = 56; // 56px per row item
+const CONTAINER_HEIGHT = ITEM_HEIGHT * 5; // 280px (5 visible rows)
+const CENTER_OFFSET = 2 * ITEM_HEIGHT; // 112px (row 3 is center)
+const INITIAL_Y = CENTER_OFFSET - START_INDEX * ITEM_HEIGHT; // 0px
 
 export default function Preloader() {
   const pathname = usePathname();
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
   const [loading, setLoading] = useState(true);
   const [checkedStorage, setCheckedStorage] = useState(false);
-  const [isReady, setIsReady] = useState(false);
   const reelRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
@@ -155,23 +155,12 @@ export default function Preloader() {
     });
   };
 
-  // Mount guard to allow layout to settle before revealing text (zero overlap flash)
+  // Continuous fluid reel scroll animation with Framer's signature physics
   useEffect(() => {
     if (!loading || !checkedStorage) return;
 
-    // Position initial frame before revealing text
+    // Sync initial positions immediately
     updateReel(START_INDEX);
-
-    const readyRaf = requestAnimationFrame(() => {
-      setIsReady(true);
-    });
-
-    return () => cancelAnimationFrame(readyRaf);
-  }, [loading, checkedStorage]);
-
-  // Continuous fluid reel scroll animation with Framer's signature physics
-  useEffect(() => {
-    if (!loading || !checkedStorage || !isReady) return;
 
     let exitTimeoutId: ReturnType<typeof setTimeout>;
 
@@ -200,7 +189,7 @@ export default function Preloader() {
       controls.stop();
       if (exitTimeoutId) clearTimeout(exitTimeoutId);
     };
-  }, [loading, checkedStorage, isReady]);
+  }, [loading, checkedStorage]);
 
   const curveHeight = useMemo(() => {
     if (dimension.width === 0) return 200;
@@ -230,8 +219,6 @@ export default function Preloader() {
     return null;
   }
 
-  const initialY = CENTER_OFFSET - START_INDEX * ITEM_HEIGHT;
-
   return (
     <AnimatePresence
       mode="wait"
@@ -258,11 +245,10 @@ export default function Preloader() {
           {/* Subtle cinematic navy ambient glow */}
           <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1)_0%,transparent_65%)]" />
 
-          {/* Vertical Reel Window with Soft Gradient Edge Fade */}
+          {/* Strict 280px Vertical Reel Window with Soft Gradient Edge Fade */}
           <div
-            className="font-preloader relative w-full flex items-center justify-center overflow-hidden pointer-events-none z-10"
+            className="font-preloader relative w-full h-[280px] flex flex-col items-center justify-center overflow-hidden pointer-events-none z-10"
             style={{
-              height: `${CONTAINER_HEIGHT}px`,
               maskImage:
                 'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)',
               WebkitMaskImage:
@@ -270,20 +256,26 @@ export default function Preloader() {
             }}
           >
             {/* Rigid vertical flex container to prevent any word collapsing or stacking */}
-            <div className={`w-full transition-opacity duration-150 ${isReady ? 'opacity-100' : 'opacity-0'}`}>
-              <div
-                ref={reelRef}
-                className="w-full flex flex-col items-center"
-                style={{
-                  transform: `translateY(${initialY}px)`,
-                  willChange: 'transform',
-                }}
-              >
-                {reelList.map((word, i) => (
+            <div
+              ref={reelRef}
+              className="w-full flex flex-col items-center"
+              style={{
+                transform: `translateY(${INITIAL_Y}px)`,
+                willChange: 'transform',
+              }}
+            >
+              {reelList.map((word, i) => {
+                const a = Math.abs(i - START_INDEX);
+                const isCenter = a === 0;
+                const initialOpacity = isCenter ? 1 : a === 1 ? 0.4 : a === 2 ? 0.18 : 0;
+                const initialScale = isCenter ? 1 : a === 1 ? 0.92 : 0.82;
+                const initialBlur = isCenter ? 'none' : a === 1 ? 'blur(2.5px)' : 'blur(5px)';
+
+                return (
                   <div
                     key={i}
                     style={{ height: `${ITEM_HEIGHT}px` }}
-                    className="w-full flex items-center justify-center shrink-0"
+                    className="w-full h-[56px] flex items-center justify-center shrink-0"
                   >
                     <p
                       ref={(el) => {
@@ -297,14 +289,19 @@ export default function Preloader() {
                         margin: 0,
                         whiteSpace: 'nowrap',
                         willChange: 'transform, opacity, filter',
+                        opacity: initialOpacity,
+                        transform: `scale(${initialScale})`,
+                        filter: initialBlur,
+                        fontWeight: isCenter ? 500 : 400,
+                        color: isCenter ? '#ffffff' : 'rgba(255, 255, 255, 0.4)',
                       }}
                       className="font-preloader text-3xl sm:text-5xl font-medium tracking-normal text-white select-none text-center antialiased"
                     >
                       {word}
                     </p>
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
           </div>
 
