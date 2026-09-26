@@ -298,9 +298,10 @@ export default function Hero() {
         </div>
       </header>
 
-      <div className="relative mx-auto mt-6 sm:mt-10 md:mt-20 flex flex-col md:grid md:grid-cols-[1fr_1fr] min-h-[auto] md:min-h-[610px] max-w-[1160px] overflow-hidden rounded-[28px] sm:rounded-[32px] border border-slate-200 bg-[#f0f2f5] px-5 py-8 sm:px-8 sm:py-12 md:px-20 md:py-16 text-slate-900 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-[#141824] dark:text-white">
-        <div className="relative z-10 flex max-w-[470px] flex-col justify-center w-full">
-          <div className="show-kicker mb-3 flex items-center gap-2.5 flex-wrap">
+      <div className="relative mx-auto mt-6 sm:mt-10 md:mt-16 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-12 min-h-[auto] md:min-h-[580px] max-w-[1160px] overflow-hidden rounded-[28px] sm:rounded-[32px] border border-slate-200 bg-[#f0f2f5] px-6 py-10 sm:px-10 sm:py-12 md:px-14 md:py-16 text-slate-900 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-[#141824] dark:text-white">
+        {/* Left Column: Intro, Headline, Copy, Action Buttons, and Desktop Metrics */}
+        <div className="relative z-10 flex flex-col justify-center w-full lg:max-w-[560px] text-left">
+          <div className="show-kicker mb-3.5 flex items-center gap-2.5 flex-wrap">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-600 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-400 shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -315,7 +316,7 @@ export default function Hero() {
 
           <h1
             aria-label="Craft better edits, faster."
-            className="mt-0 font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.1] tracking-[-.045em] text-slate-900 dark:text-white"
+            className="mt-0 font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.08] tracking-[-.045em] text-slate-900 dark:text-white"
           >
             <span className="block">{textChars('Craft better')}</span>
             <span className="block">
@@ -324,7 +325,7 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="show-copy mt-4 sm:mt-5 max-w-[365px] text-sm sm:text-[15px] leading-6 text-slate-600 will-change-transform will-change-opacity dark:text-slate-400">
+          <p className="show-copy mt-4 sm:mt-5 max-w-[420px] text-sm sm:text-[15px] leading-6 text-slate-600 will-change-transform will-change-opacity dark:text-slate-400">
             I cut with precision, pace with purpose, and keep every frame moving.🔥
           </p>
 
@@ -345,34 +346,54 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* Mobile Portrait: Larger size, centered, with seamless bottom and side fade */}
-          <div
-            className="show-photo relative mx-auto mt-6 flex h-80 sm:h-96 w-[125%] max-w-[360px] sm:max-w-[420px] items-end justify-center overflow-hidden bg-[#f0f2f5] pointer-events-none will-change-transform will-change-opacity md:hidden dark:bg-[#141824]"
-            style={{
-              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
-              maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
-            }}
-          >
+          {/* Desktop Metrics Row (Clean row underneath left copy on desktop) */}
+          <div className="show-metric mt-10 hidden lg:grid grid-cols-3 gap-4 lg:gap-6 w-full pt-8 border-t border-slate-200/80 dark:border-slate-800/80">
+            {metrics.map(({ label, icon: Icon }, index) => (
+              <div className="min-w-0 text-left will-change-transform will-change-opacity" key={label}>
+                <div className="mb-2 flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
+                  <Icon size={15} />
+                </div>
+                <p className="font-serif text-2xl lg:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  <span
+                    ref={(element) => {
+                      counterRefs.current[index] = element;
+                    }}
+                  >
+                    0
+                  </span>
+                </p>
+                <p className="mt-1 block text-xs leading-tight text-slate-600 dark:text-slate-400 font-medium">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Column: Strictly Constrained Profile Card & Mobile Metrics */}
+        <div className="relative z-10 flex flex-col items-center justify-center w-full lg:w-auto shrink-0">
+          <div className="show-photo relative w-full max-w-[340px] sm:max-w-[380px] md:max-w-[420px] aspect-[4/5] mx-auto rounded-3xl overflow-hidden border border-slate-200/80 dark:border-white/10 shadow-2xl bg-neutral-100 dark:bg-neutral-900 will-change-transform will-change-opacity">
             <Image
               src="/images/profile-light.png"
-              fill
               alt="Borshon Kabir"
-              className="block object-contain object-bottom dark:hidden"
+              fill
               priority
+              sizes="(max-width: 640px) 340px, (max-width: 768px) 380px, 420px"
+              className="block w-full h-full object-cover object-top dark:hidden"
             />
             <Image
               src="/images/profile-dark.jpeg"
+              alt="Borshon Kabir"
               fill
-              alt=""
-              aria-hidden="true"
-              className="hidden object-contain object-bottom dark:block"
               priority
+              sizes="(max-width: 640px) 340px, (max-width: 768px) 380px, 420px"
+              className="hidden w-full h-full object-cover object-top dark:block"
             />
-            <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#f0f2f5] via-[#f0f2f5]/80 to-transparent pointer-events-none dark:from-[#141824] dark:via-[#141824]/80" />
+            <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/5 dark:ring-white/10 rounded-3xl" />
           </div>
 
-          {/* Mobile Metrics Row: Clean horizontal 3-column row below portrait with icons */}
-          <div className="show-metric mt-6 grid grid-cols-3 gap-2 sm:gap-3 w-full pt-4 border-t border-slate-200/80 dark:border-slate-800/80 md:hidden">
+          {/* Mobile Metrics Row (Clean row underneath photo on mobile) */}
+          <div className="show-metric mt-8 grid grid-cols-3 gap-2 sm:gap-3 w-full max-w-[380px] pt-5 border-t border-slate-200/80 dark:border-slate-800/80 lg:hidden">
             {metrics.map(({ label, icon: Icon }, index) => (
               <div
                 key={`mobile-${label}`}
@@ -396,55 +417,6 @@ export default function Hero() {
               </div>
             ))}
           </div>
-
-          {/* Desktop Metrics Row */}
-          <div className="relative z-30 mt-auto hidden md:grid grid-cols-3 gap-4 lg:gap-6 w-full max-w-md pt-16 md:pt-20">
-            {metrics.map(({ label, icon: Icon }, index) => (
-              <div className="show-metric min-w-0 text-left will-change-transform will-change-opacity" key={label}>
-                <div className="mb-2 flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
-                  <Icon size={15} />
-                </div>
-                <p className="font-serif text-2xl lg:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-                  <span
-                    ref={(element) => {
-                      counterRefs.current[index] = element;
-                    }}
-                  >
-                    0
-                  </span>
-                </p>
-                <p className="mt-1 block text-xs leading-tight text-slate-600 dark:text-slate-400">
-                  {label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Desktop Portrait */}
-        <div
-          className="show-photo absolute bottom-0 right-4 z-0 hidden md:flex h-[85%] w-[380px] items-end justify-center bg-[#f0f2f5] pointer-events-none will-change-transform will-change-opacity md:right-8 lg:h-[92%] lg:w-[460px] dark:bg-[#141824]"
-          style={{
-            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
-            maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
-          }}
-        >
-          <Image
-            src="/images/profile-light.png"
-            fill
-            alt="Borshon Kabir"
-            className="block object-contain object-bottom dark:hidden"
-            priority
-          />
-          <Image
-            src="/images/profile-dark.jpeg"
-            fill
-            alt=""
-            aria-hidden="true"
-            className="hidden object-contain object-bottom dark:block"
-            priority
-          />
-          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#f0f2f5] to-transparent dark:from-[#141824]" />
         </div>
       </div>
 
