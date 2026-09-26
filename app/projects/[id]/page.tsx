@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import {
   ArrowLeft,
+  ArrowRight,
   ArrowUpRight,
   BadgeCheck,
   CalendarDays,
@@ -195,20 +196,16 @@ function MediaViewport({ project, mode, notes }: { project: Project; mode: 'fina
       whileTap={{ scale: 0.995 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="flex h-full w-full flex-col justify-center overflow-hidden rounded-3xl border border-black/10 bg-white/75 p-3.5 sm:p-4 backdrop-blur-xl shadow-[0_16px_46px_rgba(20,20,25,0.07)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(20,20,25,0.12)]"
+      className={`relative w-full overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-[#0b0c10] shadow-2xl shadow-black/20 dark:shadow-black/50 ${
+        isVertical ? 'aspect-[9/16] max-w-[360px] mx-auto' : 'aspect-video'
+      }`}
     >
-      <div
-        className={`relative w-full aspect-video overflow-hidden rounded-xl bg-[#111115] ${
-          isVertical ? 'aspect-[9/16] max-w-[360px] mx-auto' : ''
-        }`}
-      >
-        <ProjectVideoPlayer sourceUrl={sourceUrl} title={mediaTitle} poster={project.thumbnail} />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25" />
-        <span className="absolute left-4 top-4 z-10 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3.5 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-md backdrop-blur-md select-none">
-          {isBlueprint ? <Layers size={13} /> : <Film size={13} />}
-          {isBlueprint ? 'After Effects Timeline & Layers' : 'Final Render Output'}
-        </span>
-      </div>
+      <ProjectVideoPlayer sourceUrl={sourceUrl} title={mediaTitle} poster={project.thumbnail} />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25" />
+      <span className="absolute left-3.5 top-3.5 z-10 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/75 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-md backdrop-blur-md select-none">
+        {isBlueprint ? <Layers size={12} className="text-purple-400" /> : <Film size={12} className="text-blue-400" />}
+        {isBlueprint ? 'AE Timeline & Blueprint' : 'Final Render'}
+      </span>
     </motion.article>
   );
 }
@@ -247,63 +244,55 @@ export default function ProjectBreakdownPage() {
   const visibleViews = view === 'split' ? (['final', 'blueprint'] as const) : [view];
 
   return (
-    <main className="min-h-screen bg-[#f4f4f6] bg-[var(--bg)] text-[#15151a] text-[var(--text)] px-5 py-8 sm:px-8 sm:py-12 selection:bg-[#17171d] selection:text-white">
+    <main className="relative min-h-screen bg-[#f4f4f6] text-[#15151a] transition-colors duration-300 dark:bg-[#07080c] dark:text-[#f8fafc] px-5 py-8 sm:px-8 sm:py-12 selection:bg-[#17171d] selection:text-white dark:selection:bg-blue-600 overflow-x-hidden">
       <div className="grain" />
-      <div className="mx-auto max-w-[1160px]">
-        <header className="flex flex-col gap-5 border-b border-black/10 pb-6 sm:flex-row sm:items-center sm:justify-between">
+
+      {/* Subtle radial ambient lighting glow from top-center */}
+      <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-[550px] w-full max-w-5xl rounded-full bg-gradient-to-b from-blue-600/15 via-indigo-500/8 to-transparent blur-[130px] opacity-40 dark:opacity-80" />
+
+      <div className="relative mx-auto max-w-[1160px]">
+        {/* Top Header */}
+        <header className="flex flex-col gap-4 border-b border-black/10 dark:border-white/10 pb-6 sm:flex-row sm:items-center sm:justify-between">
           <Link
             href="/"
-            className="inline-flex w-fit items-center gap-2 text-sm font-medium text-[#53545d] transition-colors duration-200 hover:text-[#15151a]"
+            className="inline-flex w-fit items-center gap-2 text-sm font-medium text-[#53545d] dark:text-slate-400 transition-colors duration-200 hover:text-[#15151a] dark:hover:text-white"
           >
             <ArrowLeft size={16} /> Back to Portfolio
           </Link>
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3.5 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-[#53545d] shadow-sm backdrop-blur-md">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/[0.04] px-3.5 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-[#53545d] dark:text-slate-300 shadow-sm backdrop-blur-md">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500/70" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
             Proof of Work Verified
-            <BadgeCheck size={14} className="text-[#15151a]" />
+            <BadgeCheck size={14} className="text-[#15151a] dark:text-emerald-400" />
           </span>
         </header>
 
-        <section className="relative overflow-hidden py-12 sm:py-16">
-          <div
-            className="pointer-events-none absolute right-0 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full opacity-20 blur-[110px]"
-            style={{ backgroundColor: project.themeColor }}
-          />
-          <div className="relative max-w-4xl">
-            <span
-              className="inline-flex items-center rounded-full border px-3.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.13em] shadow-sm"
-              style={{
-                backgroundColor: project.themeColor,
-                borderColor: project.accentText,
-                color: project.accentText,
-              }}
-            >
-              {project.category} · {project.year}
+        {/* Clean Minimalist Hero Header */}
+        <section className="py-12 sm:py-16 md:py-20">
+          <div className="max-w-3xl">
+            <span className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-600 dark:text-blue-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              {project.category} • {project.year}
             </span>
-            <h1 className="mt-5 font-serif text-[clamp(2.75rem,7vw,5.5rem)] font-semibold leading-[0.96] tracking-[-0.05em] text-[#15151a]">
+
+            <h1 className="mt-4 font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.04]">
               {project.title}
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[#53545d] sm:text-xl">
-              {project.tagline}
+
+            <p className="mt-5 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-600 dark:text-slate-400 font-normal">
+              {project.tagline || project.description}
             </p>
           </div>
         </section>
 
-        <section aria-label="Proof view" className="border-t border-black/10 pt-6 sm:pt-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7b83]">
-                Project proof
-              </p>
-              <h2 className="mt-2 font-serif text-3xl font-semibold tracking-[-0.04em] text-[#15151a]">
-                See the craft from every angle.
-              </h2>
-            </div>
+        {/* Minimalist Video Showcase */}
+        <section aria-label="Proof view" className="pt-2 sm:pt-4">
+          {/* Centered Segmented Glass Pill Toggles */}
+          <div className="flex justify-center mb-6 sm:mb-8">
             <div
-              className="flex w-full flex-wrap gap-1 rounded-2xl border border-black/10 bg-white/70 p-1.5 backdrop-blur-md shadow-sm sm:w-auto"
+              className="inline-flex items-center p-1 rounded-full border border-black/10 dark:border-white/10 bg-slate-200/50 dark:bg-white/[0.04] backdrop-blur-xl shadow-sm gap-1"
               role="tablist"
               aria-label="Project proof views"
             >
@@ -317,30 +306,36 @@ export default function ProjectBreakdownPage() {
                     role="tab"
                     aria-selected={active}
                     onClick={() => setView(option.id)}
-                    className="relative flex flex-1 items-center justify-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold text-[#53545d] transition-colors duration-200 sm:flex-none sm:text-sm"
+                    className={`relative flex items-center justify-center gap-2 rounded-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-medium transition-all duration-200 ${
+                      active
+                        ? 'text-white'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    }`}
                   >
                     {active && (
                       <motion.span
-                        layoutId="proof-view-active"
-                        viewport={{ once: true, amount: 0.1 }}
-                        className="absolute inset-0 rounded-xl bg-[#17171d] shadow-[0_4px_14px_rgba(20,20,25,0.2)]"
-                        transition={{ type: 'spring', stiffness: 440, damping: 34 }}
+                        layoutId="proof-view-active-pill"
+                        className="absolute inset-0 rounded-full bg-slate-900 dark:bg-blue-600 shadow-md"
+                        transition={{ type: 'spring', stiffness: 450, damping: 35 }}
                       />
                     )}
-                    <Icon size={15} className={`relative z-10 ${active ? 'text-white' : ''}`} />
-                    <span className={`relative z-10 ${active ? 'text-white' : ''}`}>{option.label}</span>
+                    <Icon size={14} className="relative z-10" />
+                    <span className="relative z-10">{option.label}</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
+          {/* Videos Grid - directly side by side */}
           <motion.div
             layout
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.1 }}
-            className={`mt-8 grid gap-6 items-stretch ${view === 'split' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}
+            className={`grid gap-6 items-stretch ${
+              view === 'split' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 max-w-4xl mx-auto'
+            }`}
           >
             <AnimatePresence mode="popLayout" initial={false}>
               {visibleViews.map((mediaView) => (
@@ -353,17 +348,32 @@ export default function ProjectBreakdownPage() {
               ))}
             </AnimatePresence>
           </motion.div>
+
+          {/* Request Similar Version CTA Button */}
+          <div className="mt-8 sm:mt-10 flex justify-center">
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@borshonkabir.online&su=Requesting%20Similar%20Version%20-%20Project%20Inquiry"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2.5 rounded-full border border-blue-500/30 bg-slate-950/90 dark:bg-white/[0.05] px-7 py-3 text-xs sm:text-sm font-semibold text-white shadow-lg backdrop-blur-xl transition-all duration-300 hover:scale-[1.02] hover:border-blue-400/60 hover:shadow-[0_0_25px_rgba(59,130,246,0.35)] active:scale-[0.98]"
+            >
+              <Sparkles size={15} className="text-blue-400 transition-transform duration-300 group-hover:scale-110" />
+              <span>Request Similar Version</span>
+              <ArrowRight size={15} className="text-blue-300 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white" />
+            </a>
+          </div>
         </section>
 
-        <section className="mt-14 grid gap-8 border-t border-black/10 py-12 sm:mt-16 sm:py-16 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
+        {/* Project Overview Section */}
+        <section className="mt-8 sm:mt-12 grid gap-8 border-t border-black/10 dark:border-white/10 py-12 sm:py-16 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
           <div>
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7b83]">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7b83] dark:text-slate-400">
               Project overview
             </p>
-            <h2 className="mt-3 font-serif text-3xl font-semibold tracking-[-0.04em] text-[#15151a] sm:text-4xl">
+            <h2 className="mt-3 font-serif text-3xl font-semibold tracking-[-0.04em] text-[#15151a] dark:text-white sm:text-4xl">
               Built for clarity, rhythm, and response.
             </h2>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#53545d] sm:text-lg">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#53545d] dark:text-slate-300 sm:text-lg">
               {breakdown.overview}
             </p>
 
@@ -375,42 +385,60 @@ export default function ProjectBreakdownPage() {
               ].map(({ icon: Icon, label, value }) => (
                 <div
                   key={label}
-                  className="rounded-2xl border border-black/10 bg-white/70 p-4 shadow-sm backdrop-blur-md"
+                  className="rounded-2xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/[0.04] p-4 shadow-sm backdrop-blur-md"
                 >
-                  <Icon size={16} className="text-[#53545d]" />
-                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-[#7a7b83]">
+                  <Icon size={16} className="text-[#53545d] dark:text-slate-400" />
+                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-[#7a7b83] dark:text-slate-400">
                     {label}
                   </p>
-                  <p className="mt-1 text-sm font-semibold text-[#15151a]">{value}</p>
+                  <p className="mt-1 text-sm font-semibold text-[#15151a] dark:text-white">{value}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-black/10 bg-white/75 p-6 backdrop-blur-xl shadow-[0_16px_46px_rgba(20,20,25,0.05)] sm:p-7 self-start">
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7b83]">
+          <div className="rounded-[28px] border border-black/10 dark:border-white/10 bg-white/75 dark:bg-white/[0.04] p-6 backdrop-blur-xl shadow-lg sm:p-7 self-start">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7b83] dark:text-slate-400">
               Software used
             </p>
             <div className="mt-4 flex flex-wrap gap-2.5">
               {breakdown.software.map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-[#f4f4f6] px-3.5 py-1.5 text-xs font-medium text-[#15151a] shadow-sm transition-transform duration-200 hover:scale-[1.02]"
+                  className="inline-flex items-center gap-2 rounded-full border border-black/10 dark:border-white/10 bg-[#f4f4f6] dark:bg-slate-900/60 px-3.5 py-1.5 text-xs font-medium text-[#15151a] dark:text-slate-200 shadow-sm transition-transform duration-200 hover:scale-[1.02]"
                 >
                   <SoftwareBadge name={item} />
                   <span>{item}</span>
                 </span>
               ))}
             </div>
+            {breakdown.plugins && breakdown.plugins.length > 0 && (
+              <>
+                <p className="mt-6 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7b83] dark:text-slate-400">
+                  Plugins & Tools
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {breakdown.plugins.map((plugin) => (
+                    <span
+                      key={plugin}
+                      className="inline-flex items-center rounded-lg border border-black/5 dark:border-white/5 bg-black/[0.03] dark:bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-[#53545d] dark:text-slate-300"
+                    >
+                      {plugin}
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </section>
 
-        <section className="relative mb-8 overflow-hidden rounded-[32px] border border-black/10 bg-[#17171d] p-8 text-white shadow-[0_20px_60px_rgba(20,20,25,0.2)] sm:p-12">
-          <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+        {/* Next Project / Booking Banner */}
+        <section className="relative mb-8 overflow-hidden rounded-[32px] border border-black/10 dark:border-white/10 bg-[#17171d] dark:bg-gradient-to-br dark:from-[#11131c] dark:to-[#0c0e14] p-8 text-white shadow-2xl sm:p-12">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl" />
           <div className="relative flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between">
             <div className="max-w-xl">
               <span className="inline-flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">
-                <Sparkles size={13} /> Your next project
+                <Sparkles size={13} className="text-blue-400" /> Your next project
               </span>
               <h2 className="mt-3 font-serif text-3xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl">
                 Need an edit like this?

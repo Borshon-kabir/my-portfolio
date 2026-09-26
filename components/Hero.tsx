@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { ArrowUpRight, Menu, X, Sparkles, Clock, Film } from 'lucide-react';
+import { ArrowUpRight, Menu, X, Sparkles, Clock, Film, Mail } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import ProfileCardModal from './ProfileCardModal';
 
@@ -338,9 +338,10 @@ export default function Hero() {
             </a>
             <a
               href="mailto:hello@borshonkabir.online"
-              className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-medium text-slate-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-900 hover:shadow-sm active:scale-[0.98] dark:border-slate-700 dark:bg-transparent dark:text-white dark:hover:border-slate-500 dark:hover:bg-slate-800"
+              className="group inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-[rgba(255,255,255,0.85)] px-4 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-medium text-slate-900 shadow-sm backdrop-blur-md transition-all duration-300 hover:scale-[1.02] hover:border-slate-400 hover:bg-[rgba(255,255,255,0.98)] active:scale-[0.98] dark:border-white/10 dark:bg-[rgba(255,255,255,0.06)] dark:text-white dark:hover:border-white/20 dark:hover:bg-[rgba(255,255,255,0.1)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.08)]"
             >
-              Get in touch
+              <Mail className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110 text-slate-600 dark:text-slate-300" />
+              <span>Email Me</span>
             </a>
           </div>
 

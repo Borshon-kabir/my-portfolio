@@ -15,6 +15,7 @@ export type Project = {
   thumbnail: string; // image URL or path
   videoUrl: string;  // YouTube watch URL, YouTube short URL, or Google Drive share URL
   processVideoUrl?: string; // Google Drive share URL or direct video file for the proof-of-work view
+  previewVideo?: string; // direct video URL (e.g. mp4/webm) for hover-to-play preview
   tags: string[];
 };
 export const longProjects: Project[] = [

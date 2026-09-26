@@ -6,9 +6,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowDown, ArrowUpRight, Check, Copy, Loader2, Mail, Menu, MessageCircle, Play, X } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Check, Copy, Loader2, Mail, Menu, MessageCircle, Play, Send, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
-import { projects } from '../data/content';
+import { projects, type Project } from '../data/content';
 import Hero from './Hero';
 import WhyChooseMe from './WhyChooseMe';
 import MyStory from './MyStory';
@@ -17,6 +17,141 @@ import Pricing from './Pricing';
 import Footer from './Footer';
 
 const nav = ['Home', 'About', 'Projects', 'Services', 'Process', 'Pricing', 'Contact'];
+
+function ProjectCard({ project, isVertical }: { project: Project; isVertical: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const playPromiseRef = useRef<Promise<void> | null>(null);
+
+  const previewSource = project.previewVideo;
+
+  const handleMouseEnter = () => {
+    // Graceful touch fallback: ignore touch devices with no pointer hover
+    if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
+      return;
+    }
+    if (!previewSource || !videoRef.current) return;
+
+    setIsHovered(true);
+    try {
+      const promise = videoRef.current.play();
+      if (promise !== undefined) {
+        playPromiseRef.current = promise;
+        promise.catch((err) => {
+          if (err.name !== 'AbortError') {
+            console.debug('Video preview play error:', err);
+          }
+        });
+      }
+    } catch {
+      // Ignore synchronous playback errors
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!previewSource || !videoRef.current) return;
+
+    setIsHovered(false);
+    const video = videoRef.current;
+
+    if (playPromiseRef.current) {
+      playPromiseRef.current
+        .then(() => {
+          video.pause();
+          video.currentTime = 0;
+        })
+        .catch(() => {
+          video.pause();
+          video.currentTime = 0;
+        });
+    } else {
+      video.pause();
+      video.currentTime = 0;
+    }
+  };
+
+  return (
+    <Link
+      href={`/projects/${project.id}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="project-card-anim group block cursor-pointer text-left will-change-transform will-change-opacity"
+    >
+      <div
+        className={`relative w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#17171d] shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.18)] ${
+          isVertical ? 'aspect-[9/16]' : 'aspect-video'
+        }`}
+        style={{ backgroundColor: project.themeColor }}
+      >
+        <Image
+          src={project.thumbnail}
+          alt={`${project.title} project thumbnail`}
+          fill
+          sizes="(max-width: 767px) 100vw, 50vw"
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+
+        {previewSource && (
+          <video
+            ref={videoRef}
+            src={previewSource}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className={`absolute inset-0 h-full w-full object-cover pointer-events-none transition-opacity duration-300 ${
+              isHovered ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        )}
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5 pointer-events-none" />
+        <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-black/45 px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-white/90 backdrop-blur-sm pointer-events-none">
+          {project.category}
+        </span>
+        <div
+          className={`absolute inset-0 grid place-items-center transition-opacity duration-300 pointer-events-none ${
+            isHovered && previewSource ? 'opacity-0' : 'opacity-0 group-hover:opacity-100'
+          }`}
+        >
+          <span className="grid h-14 w-14 place-items-center rounded-full border border-white/40 bg-black/50 text-white backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+            <Play size={20} className="translate-x-0.5 fill-current" />
+          </span>
+        </div>
+        <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
+          <p className="text-[9px] font-mono uppercase tracking-widest text-white/60">{project.client} · {project.year}</p>
+          <h3 className="mt-1 font-serif text-xl font-semibold leading-tight text-white sm:text-2xl">{project.title}</h3>
+        </div>
+      </div>
+      {!isVertical ? (
+        <div className="mt-4 flex items-start justify-between gap-4 px-1">
+          <div>
+            <h3 className="font-serif text-2xl font-semibold tracking-tight text-[#15151a] transition-colors group-hover:text-black">
+              {project.title}
+            </h3>
+            <p className="mt-0.5 text-xs text-[#7a7b83]">
+              {project.category} · {project.year}
+            </p>
+          </div>
+          <span className="mt-0.5 text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+            <ArrowUpRight size={22} />
+          </span>
+        </div>
+      ) : (
+        <div className="mt-4 flex items-start justify-between gap-3 px-1">
+          <div>
+            <p className="text-xs text-[#7a7b83]">{project.tagline}</p>
+            <p className="mt-1 text-sm font-medium text-[#15151a]">Short-form video</p>
+          </div>
+          <span className="mt-0.5 text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
+            <ArrowUpRight size={21} />
+          </span>
+        </div>
+      )}
+    </Link>
+  );
+}
 
 export default function Portfolio() {
   const [menu, setMenu] = useState(false);
@@ -569,76 +704,39 @@ export default function Portfolio() {
                 </div>
               </div>
             )}
-            {visibleProjects.map((project) => {
-              const isVertical = activeProjectTab === 'shorts';
-
-              return (
-                <Link
-                  key={project.id}
-                  href={`/projects/${project.id}`}
-                  className="project-card-anim group block cursor-pointer text-left will-change-transform will-change-opacity"
-                >
-                  <div
-                    className={`relative w-full overflow-hidden rounded-[28px] border border-black/5 bg-[#17171d] shadow-sm transition-all duration-500 group-hover:scale-[1.015] group-hover:shadow-[0_24px_50px_rgba(20,20,25,0.18)] ${
-                      isVertical ? 'aspect-[9/16]' : 'aspect-video'
-                    }`}
-                    style={{ backgroundColor: project.themeColor }}
-                  >
-                    <Image
-                      src={project.thumbnail}
-                      alt={`${project.title} project thumbnail`}
-                      fill
-                      sizes="(max-width: 767px) 100vw, 50vw"
-                      loading="lazy"
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5" />
-                    <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-black/45 px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-white/90 backdrop-blur-sm">
-                      {project.category}
-                    </span>
-                    <div className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <span className="grid h-14 w-14 place-items-center rounded-full border border-white/40 bg-black/50 text-white backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
-                        <Play size={20} className="translate-x-0.5 fill-current" />
-                      </span>
-                    </div>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <p className="text-[9px] font-mono uppercase tracking-widest text-white/60">{project.client} · {project.year}</p>
-                      <h3 className="mt-1 font-serif text-xl font-semibold leading-tight text-white sm:text-2xl">{project.title}</h3>
-                    </div>
-                  </div>
-                  {activeProjectTab === 'long' ? (
-                    <div className="mt-4 flex items-start justify-between gap-4 px-1">
-                      <div>
-                        <h3 className="font-serif text-2xl font-semibold tracking-tight text-[#15151a] transition-colors group-hover:text-black">
-                          {project.title}
-                        </h3>
-                        <p className="mt-0.5 text-xs text-[#7a7b83]">
-                          {project.category} · {project.year}
-                        </p>
-                      </div>
-                      <span className="mt-0.5 text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
-                        <ArrowUpRight size={22} />
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="mt-4 flex items-start justify-between gap-3 px-1">
-                      <div>
-                        <p className="text-xs text-[#7a7b83]">{project.tagline}</p>
-                        <p className="mt-1 text-sm font-medium text-[#15151a]">Short-form video</p>
-                      </div>
-                      <span className="mt-0.5 text-[#7a7b83] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#15151a]">
-                        <ArrowUpRight size={21} />
-                      </span>
-                    </div>
-                  )}
-                </Link>
-              );
-            })}
+            {visibleProjects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                isVertical={activeProjectTab === 'shorts'}
+              />
+            ))}
           </div>
           <p className="mt-12 flex items-center justify-center gap-2.5 text-xs font-medium tracking-wide text-zinc-500 md:text-sm">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             More projects coming soon.
           </p>
+
+          {/* Contextual CTA for Projects Section */}
+          <div className="mt-10 sm:mt-12 flex flex-col items-center justify-center text-center">
+            <p className="text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-3.5 tracking-wide">
+              Have an exciting project or idea in mind?
+            </p>
+            <div className="relative group inline-flex items-center justify-center">
+              {/* Ambient neon/gradient glow layer */}
+              <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 opacity-40 blur-md transition duration-500 group-hover:opacity-80 will-change-transform" />
+
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@borshonkabir.online&su=New%20Project%20Enquiry"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative inline-flex min-h-[44px] items-center justify-center gap-2.5 rounded-full border border-blue-500/30 bg-slate-950/90 px-7 py-3 text-xs sm:text-sm font-medium text-slate-100 backdrop-blur-md transition-all duration-300 hover:scale-[1.02] hover:border-blue-400/60 hover:text-white hover:shadow-[0_0_25px_rgba(59,130,246,0.35)] active:scale-[0.98]"
+              >
+                <span className="tracking-wide">Send a Message</span>
+                <Send size={14} className="shrink-0 text-blue-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-blue-300" />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
       {/* My Story Section */}
