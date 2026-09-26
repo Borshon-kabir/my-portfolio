@@ -77,7 +77,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem('borshon-theme');if(t==='dark'){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}}catch(e){}try{if(sessionStorage.getItem('hasSeenPreloader')==='true'){document.documentElement.classList.add('has-seen-preloader');}}catch(e){}`,
+            __html: `try{var t=localStorage.getItem('borshon-theme');if(t==='dark'){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}}catch(e){}try{var isReload=false;try{var p=performance.getEntriesByType('navigation');if(p.length>0&&p[0].type==='reload')isReload=true;}catch(e){}var q=window.location.search;var force=q.indexOf('preloader=')!==-1||q.indexOf('preview=')!==-1;if(isReload||force){sessionStorage.removeItem('hasSeenPreloader');}else if(sessionStorage.getItem('hasSeenPreloader')==='true'){document.documentElement.classList.add('has-seen-preloader');}}catch(e){}`,
           }}
         />
         <script
