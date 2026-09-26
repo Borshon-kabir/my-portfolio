@@ -27,8 +27,8 @@ const END_INDEX = START_INDEX + words.length - 1; // Index 17 ("Hello" in middle
 export default function Preloader() {
   const pathname = usePathname();
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasChecked, setHasChecked] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [checkedStorage, setCheckedStorage] = useState(false);
   const itemRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
   useEffect(() => {
@@ -43,10 +43,9 @@ export default function Preloader() {
       hasSeen = false;
     }
 
-    // If user has already seen it in this session (or refreshed the page), or not on root
     if ((hasSeen || !isRoot) && !forcePreview) {
-      setIsLoading(false);
-      setHasChecked(true);
+      setLoading(false);
+      setCheckedStorage(true);
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
       return;
@@ -57,8 +56,8 @@ export default function Preloader() {
       width: window.innerWidth,
       height: window.innerHeight,
     });
-    setIsLoading(true);
-    setHasChecked(true);
+    setLoading(true);
+    setCheckedStorage(true);
 
     const handleResize = () => {
       setDimension({
@@ -73,7 +72,7 @@ export default function Preloader() {
 
   // Lock scroll while preloader is active
   useEffect(() => {
-    if (!isLoading) return;
+    if (!loading) return;
 
     const originalBodyOverflow = document.body.style.overflow;
     const originalHtmlOverflow = document.documentElement.style.overflow;
@@ -100,7 +99,7 @@ export default function Preloader() {
         lenis.start();
       }
     };
-  }, [isLoading]);
+  }, [loading]);
 
   // Update drum reel items on each animation frame
   const updateReel = (progress: number) => {
@@ -148,7 +147,6 @@ export default function Preloader() {
       el.style.filter = blur > 0.05 ? `blur(${blur.toFixed(1)}px)` : 'none';
 
       // Minimalist, crisp typography matching greatingloader.framer.website:
-      // No heavy glow, no text-shadow, clean font-medium weight
       if (a < 0.3) {
         el.style.fontWeight = '500';
         el.style.color = '#ffffff';
@@ -163,7 +161,7 @@ export default function Preloader() {
 
   // Continuous fluid reel scroll animation with Framer's signature physics
   useEffect(() => {
-    if (!isLoading) return;
+    if (!loading || !checkedStorage) return;
 
     // Immediately render initial frame at START_INDEX
     updateReel(START_INDEX);
@@ -180,9 +178,10 @@ export default function Preloader() {
       onComplete: () => {
         // Pause briefly (~400ms) on "Hello" before triggering the signature curved SVG curtain reveal
         exitTimeoutId = setTimeout(() => {
-          setIsLoading(false);
+          setLoading(false);
           try {
             sessionStorage.setItem(STORAGE_KEY, 'true');
+            document.documentElement.classList.add('has-seen-preloader');
           } catch {
             // ignore private browsing quota errors
           }
@@ -194,7 +193,7 @@ export default function Preloader() {
       controls.stop();
       if (exitTimeoutId) clearTimeout(exitTimeoutId);
     };
-  }, [isLoading]);
+  }, [loading, checkedStorage]);
 
   const curveHeight = useMemo(() => {
     if (dimension.width === 0) return 200;
@@ -209,13 +208,19 @@ export default function Preloader() {
     return `M0 0 L${dimension.width} 0 Q${dimension.width / 2} 0 0 0 Z`;
   }, [dimension.width]);
 
-  // Fast-path: If in browser and already seen in sessionStorage before hydration completes, render nothing
-  if (!hasChecked && typeof window !== 'undefined') {
+  // Fast Exit: If in browser and already seen or not on root, return null immediately
+  if (typeof window !== 'undefined') {
     try {
-      if (sessionStorage.getItem(STORAGE_KEY) === 'true') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const forcePreview = urlParams.has('preloader') || urlParams.has('preview');
+      if (!forcePreview && (sessionStorage.getItem(STORAGE_KEY) === 'true' || window.location.pathname !== '/')) {
         return null;
       }
     } catch {}
+  }
+
+  if (checkedStorage && !loading) {
+    return null;
   }
 
   return (
@@ -231,7 +236,7 @@ export default function Preloader() {
         }
       }}
     >
-      {isLoading && (
+      {loading && (
         <motion.div
           key="framer-clone-preloader"
           initial={{ y: 0 }}
@@ -239,7 +244,7 @@ export default function Preloader() {
             y: `calc(-100% - ${curveHeight}px)`,
             transition: { duration: 0.75, ease: [0.76, 0, 0.24, 1], delay: 0.05 },
           }}
-          className="fixed inset-0 z-[999] w-screen h-screen flex flex-col items-center justify-center overflow-hidden bg-[#030718] select-none pointer-events-auto"
+          className="preloader-root fixed inset-0 z-[9999] w-screen h-screen flex flex-col items-center justify-center overflow-hidden bg-[#02071a] select-none pointer-events-auto"
         >
           {/* Subtle cinematic navy ambient glow */}
           <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1)_0%,transparent_65%)]" />
@@ -283,7 +288,7 @@ export default function Preloader() {
           {/* Fluid Curved Bottom SVG Curtain */}
           {dimension.width > 0 && (
             <svg
-              className="absolute top-[calc(100%-2px)] left-0 w-full pointer-events-none fill-[#030718]"
+              className="absolute top-[calc(100%-2px)] left-0 w-full pointer-events-none fill-[#02071a]"
               style={{ height: `${curveHeight}px` }}
               viewBox={`0 0 ${dimension.width} ${curveHeight}`}
               preserveAspectRatio="none"
