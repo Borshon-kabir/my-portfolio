@@ -6,9 +6,11 @@ import { X } from "lucide-react";
 interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onContactClick?: () => void;
+  [key: string]: any;
 }
 
-export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
+export default function ProfileModal({ isOpen, onClose, onContactClick }: ProfileModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -85,7 +87,14 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
           {/* Prominent Action Button sitting in white zone */}
           <button
-            onClick={() => window.location.href = "mailto:hello@borshonkabir.online"}
+            onClick={() => {
+              if (onContactClick) {
+                onContactClick();
+                onClose();
+              } else {
+                window.location.href = "mailto:hello@borshonkabir.online";
+              }
+            }}
             style={{ backgroundColor: "#000000", color: "#ffffff" }}
             className="mt-3.5 px-7 h-[42px] rounded-full text-sm font-semibold tracking-normal hover:bg-neutral-800 transition-all shadow-md active:scale-95 cursor-pointer"
           >

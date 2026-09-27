@@ -7,6 +7,7 @@ interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
   onContactClick?: () => void;
+  [key: string]: any;
 }
 
 export default function ProfileModal({ isOpen, onClose, onContactClick }: ProfileModalProps) {
