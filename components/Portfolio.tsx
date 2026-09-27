@@ -818,9 +818,9 @@ export default function Portfolio() {
                   key={label}
                   href={href}
                   {...(href.startsWith('https') ? { target: '_blank', rel: 'noreferrer' } : {})}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-[#e5e5e7] text-[#15151a] transition-all duration-300 hover:bg-[#17171d] hover:text-white hover:scale-110 hover:-translate-y-1 hover:shadow-md"
+                  className="grid w-14 h-14 place-items-center rounded-full border border-black/10 bg-[#e5e5e7] text-[#15151a] transition-all duration-300 hover:bg-[#17171d] hover:text-white hover:scale-110 hover:-translate-y-1 hover:shadow-md"
                 >
-                  <Icon size={16} />
+                  <Icon size={26} className="w-7 h-7" />
                 </a>
               ))}
             </div>
