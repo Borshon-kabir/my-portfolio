@@ -3,13 +3,13 @@
 import React from "react";
 import { X } from "lucide-react";
 
-export interface ProfileModalProps {
+interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
   onContactClick?: () => void;
 }
 
-export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
+export default function ProfileModal({ isOpen, onClose, onContactClick }: ProfileModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -71,23 +71,33 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           </div>
         </div>
 
-        {/* 2. Middle Seam Row: Big Avatar + Wide Follow Pill Button */}
+        {/* 2. Middle Seam Row: Big Avatar + Wide Pill Button */}
         <div className="relative px-7 flex items-start justify-between z-20">
           {/* Big Avatar Badge on Seam */}
           <div 
             style={{ borderColor: "#ffffff", backgroundColor: "#000000" }}
             className="-mt-12 w-[96px] h-[96px] rounded-full border-[6px] flex items-center justify-center shadow-md shrink-0 overflow-hidden"
           >
-            <img src="/profile.jpg" alt="Borshon Kabir" className="w-full h-full object-cover" />
+            {/* Monogram Stylized Logo matching reference */}
+            <span className="text-white text-4xl font-black tracking-tighter select-none font-sans">
+              B
+            </span>
           </div>
 
-          {/* Prominent Follow Button sitting in white zone */}
+          {/* Action Button: "Email me" */}
           <button
-            onClick={() => window.location.href = "mailto:hello@borshonkabir.online"}
+            onClick={() => {
+              if (onContactClick) {
+                onContactClick();
+                onClose();
+              } else {
+                window.location.href = "mailto:hello@borshonkabir.online";
+              }
+            }}
             style={{ backgroundColor: "#000000", color: "#ffffff" }}
-            className="mt-3.5 px-8 h-[42px] rounded-full text-sm font-semibold tracking-normal hover:bg-neutral-800 transition-all shadow-md active:scale-95 cursor-pointer"
+            className="mt-3.5 px-7 h-[42px] rounded-full text-sm font-semibold tracking-normal hover:bg-neutral-800 transition-all shadow-md active:scale-95 cursor-pointer"
           >
-            Follow
+            Email me
           </button>
         </div>
 
