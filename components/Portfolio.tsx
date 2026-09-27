@@ -727,9 +727,7 @@ export default function Portfolio() {
               <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 opacity-40 blur-md transition duration-500 group-hover:opacity-80 will-change-transform" />
 
               <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@borshonkabir.online&su=New%20Project%20Enquiry"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:hello@borshonkabir.online?subject=New%20Project%20Enquiry"
                 className="relative inline-flex min-h-[44px] items-center justify-center gap-2.5 rounded-full border border-blue-500/30 bg-slate-950/90 px-7 py-3 text-xs sm:text-sm font-medium text-slate-100 backdrop-blur-md transition-all duration-300 hover:scale-[1.02] hover:border-blue-400/60 hover:text-white hover:shadow-[0_0_25px_rgba(59,130,246,0.35)] active:scale-[0.98]"
               >
                 <span className="tracking-wide">Send a Message</span>

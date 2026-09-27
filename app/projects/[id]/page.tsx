@@ -352,9 +352,7 @@ export default function ProjectBreakdownPage() {
           {/* Request Similar Version CTA Button */}
           <div className="mt-8 sm:mt-10 flex justify-center">
             <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@borshonkabir.online&su=Requesting%20Similar%20Version%20-%20Project%20Inquiry"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:hello@borshonkabir.online?subject=Requesting%20Similar%20Version%20-%20Project%20Inquiry"
               className="group inline-flex items-center gap-2.5 rounded-full border border-blue-500/30 bg-slate-950/90 dark:bg-white/[0.05] px-7 py-3 text-xs sm:text-sm font-semibold text-white shadow-lg backdrop-blur-xl transition-all duration-300 hover:scale-[1.02] hover:border-blue-400/60 hover:shadow-[0_0_25px_rgba(59,130,246,0.35)] active:scale-[0.98]"
             >
               <Sparkles size={15} className="text-blue-400 transition-transform duration-300 group-hover:scale-110" />

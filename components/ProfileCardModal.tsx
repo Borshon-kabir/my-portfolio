@@ -44,9 +44,9 @@ export default function ProfileModal({ isOpen, onClose, onContactClick }: Profil
         {/* 1. Top Cover Photo Section (Dark Image with Socials) */}
         <div className="relative w-full h-[260px] bg-neutral-900 overflow-hidden">
           <img
-            src="/profile.jpg"
+            src="/image_8.png"
             alt="Cover"
-            className="w-full h-full object-cover object-top filter brightness-95 contrast-105"
+            className="w-full h-full object-cover object-top"
           />
 
           {/* Social Icons at Bottom-Right of Cover Photo */}
