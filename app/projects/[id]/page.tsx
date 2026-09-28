@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -15,6 +15,8 @@ import {
   Film,
   Layers,
   MonitorPlay,
+  Pause,
+  Play,
   Sparkles,
 } from 'lucide-react';
 import { projects, type Project } from '../../../data/content';
@@ -104,7 +106,10 @@ function isImageUrl(url: string) {
   return /\.(jpg|jpeg|png|webp|gif|svg)(?:[?#]|$)/i.test(url);
 }
 
-function ProjectVideoPlayer({ sourceUrl, title, poster }: { sourceUrl: string; title: string; poster: string }) {
+function ProjectVideoPlayer({ sourceUrl, title }: { sourceUrl: string; title: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
   if (isImageUrl(sourceUrl)) {
     return (
       <img
@@ -115,7 +120,6 @@ function ProjectVideoPlayer({ sourceUrl, title, poster }: { sourceUrl: string; t
     );
   }
 
-  // Handle YouTube embeds if any
   const youtubeMatch = sourceUrl.match(/(?:youtu\.be\/|[?&]v=)([^&]+)/);
   if (youtubeMatch) {
     return (
@@ -129,19 +133,48 @@ function ProjectVideoPlayer({ sourceUrl, title, poster }: { sourceUrl: string; t
     );
   }
 
-  // Default to native HTML5 video player for all hosted videos (Supabase / direct mp4)
+  const togglePlay = () => {
+    const el = videoRef.current || (document.getElementById(sourceUrl) as HTMLVideoElement | null);
+    if (!el) return;
+    if (el.paused) {
+      el.play();
+    } else {
+      el.pause();
+    }
+  };
+
   return (
-    <video
-      key={sourceUrl}
-      className="w-full h-full object-contain bg-black"
-      controls
-      playsInline
-      preload="metadata"
-      poster={poster}
-    >
-      <source src={sourceUrl} type="video/mp4" />
-      Your browser does not support video playback.
-    </video>
+    <div className="relative w-full h-full group flex items-center justify-center">
+      <video
+        ref={videoRef}
+        id={sourceUrl}
+        className="w-full h-full object-contain bg-black"
+        controls
+        playsInline
+        preload="metadata"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      >
+        <source src={sourceUrl} type="video/mp4" />
+        Your browser does not support video playback.
+      </video>
+
+      {/* Center Play/Pause Glassmorphic Button */}
+      <button
+        type="button"
+        onClick={togglePlay}
+        aria-label={isPlaying ? 'Pause video' : 'Play video'}
+        className={`absolute z-20 flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-black/80 active:scale-95 ${
+          isPlaying ? 'opacity-0 group-hover:opacity-100 pointer-events-auto' : 'opacity-100 scale-100'
+        }`}
+      >
+        {isPlaying ? (
+          <Pause className="fill-white" size={26} />
+        ) : (
+          <Play className="fill-white translate-x-0.5" size={26} />
+        )}
+      </button>
+    </div>
   );
 }
 
@@ -207,7 +240,7 @@ function MediaViewport({ project, mode, notes }: { project: Project; mode: 'fina
         isVertical ? 'aspect-[9/16] max-w-[360px] mx-auto' : 'aspect-video'
       }`}
     >
-      <ProjectVideoPlayer sourceUrl={sourceUrl} title={mediaTitle} poster={project.thumbnail} />
+      <ProjectVideoPlayer sourceUrl={sourceUrl} title={mediaTitle} />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25" />
       <span className="absolute left-3.5 top-3.5 z-10 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/75 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-md backdrop-blur-md select-none">
         {isBlueprint ? <Layers size={12} className="text-purple-400" /> : <Film size={12} className="text-blue-400" />}

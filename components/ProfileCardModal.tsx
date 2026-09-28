@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 
 interface ProfileModalProps {
@@ -11,28 +12,43 @@ interface ProfileModalProps {
 }
 
 export default function ProfileModal({ isOpen, onClose, onContactClick }: ProfileModalProps) {
-  if (!isOpen) return null;
-
   return (
-    <div 
-      className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm select-none"
-      onClick={onClose}
-    >
-      {/* 
-        Main Card: Exact 1:1 Dimensions from Reference 
-        Forced pure white background (#ffffff) with 42px corner curves
-      */}
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          backgroundColor: "#ffffff",
-          color: "#000000",
-          maxWidth: "380px",
-          width: "100%",
-          borderRadius: "42px",
-        }}
-        className="overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.6)] relative border border-black/5 animate-in fade-in zoom-in-95 duration-200"
-      >
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div 
+          key="profile-modal-backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm select-none"
+          onClick={onClose}
+        >
+          {/* 
+            Main Card: Exact 1:1 Dimensions from Reference 
+            Forced pure white background (#ffffff) with 42px corner curves
+          */}
+          <motion.div
+            key="profile-card-modal"
+            initial={{ opacity: 0, scale: 0.94, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -8 }}
+            transition={{ 
+              type: "spring", 
+              stiffness: 400, 
+              damping: 30,
+              opacity: { duration: 0.2 } 
+            }}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: "#ffffff",
+              color: "#000000",
+              maxWidth: "380px",
+              width: "100%",
+              borderRadius: "42px",
+            }}
+            className="overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.6)] relative border border-black/5"
+          >
         {/* Top Minimal Close Button */}
         <button
           onClick={onClose}
@@ -144,7 +160,9 @@ export default function ProfileModal({ isOpen, onClose, onContactClick }: Profil
             </div>
           </div>
         </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
