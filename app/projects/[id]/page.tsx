@@ -100,41 +100,48 @@ const viewOptions: Array<{ id: ViewMode; label: string; icon: typeof Columns2 }>
   { id: 'blueprint', label: 'AE Blueprint Only', icon: Layers },
 ];
 
-function getEmbedUrl(url: string) {
-  const driveMatch = url.match(/\/file\/d\/([^/]+)\//);
-  if (driveMatch) return `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
-
-  const youtubeMatch = url.match(/[?&]v=([^&]+)/);
-  if (youtubeMatch) return `https://www.youtube.com/embed/${youtubeMatch[1]}?rel=0`;
-
-  const shortMatch = url.match(/youtu\.be\/([^?]+)/);
-  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}?rel=0`;
-
-  return url;
-}
-
-function isDirectVideoUrl(url: string) {
-  return /\.(mp4|webm|ogg|mov)(?:[?#]|$)/i.test(url);
+function isImageUrl(url: string) {
+  return /\.(jpg|jpeg|png|webp|gif|svg)(?:[?#]|$)/i.test(url);
 }
 
 function ProjectVideoPlayer({ sourceUrl, title, poster }: { sourceUrl: string; title: string; poster: string }) {
-  if (isDirectVideoUrl(sourceUrl)) {
+  if (isImageUrl(sourceUrl)) {
     return (
-      <video className="absolute inset-0 h-full w-full object-cover border-0" controls playsInline preload="metadata" poster={poster}>
-        <source src={sourceUrl} />
-        Your browser does not support video playback.
-      </video>
+      <img
+        src={sourceUrl}
+        alt={title}
+        className="w-full h-full object-contain"
+      />
     );
   }
 
+  // Handle YouTube embeds if any
+  const youtubeMatch = sourceUrl.match(/(?:youtu\.be\/|[?&]v=)([^&]+)/);
+  if (youtubeMatch) {
+    return (
+      <iframe
+        src={`https://www.youtube.com/embed/${youtubeMatch[1]}?rel=0`}
+        title={title}
+        className="w-full h-full border-0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+      />
+    );
+  }
+
+  // Default to native HTML5 video player for all hosted videos (Supabase / direct mp4)
   return (
-    <iframe
-      src={getEmbedUrl(sourceUrl)}
-      title={title}
-      className="absolute inset-0 h-full w-full object-cover border-0"
-      allow="autoplay; fullscreen; picture-in-picture"
-      allowFullScreen
-    />
+    <video
+      key={sourceUrl}
+      className="w-full h-full object-contain bg-black"
+      controls
+      playsInline
+      preload="metadata"
+      poster={poster}
+    >
+      <source src={sourceUrl} type="video/mp4" />
+      Your browser does not support video playback.
+    </video>
   );
 }
 

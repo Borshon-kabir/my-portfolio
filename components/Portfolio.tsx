@@ -10,7 +10,6 @@ import { ArrowDown, ArrowUpRight, Check, Copy, Loader2, Mail, Menu, MessageCircl
 import ThemeToggle from './ThemeToggle';
 import { projects, type Project } from '../data/content';
 import Hero from './Hero';
-import WhyChooseMe from './WhyChooseMe';
 import MyStory from './MyStory';
 import Process from './Process';
 import Pricing from './Pricing';
@@ -21,52 +20,17 @@ const nav = ['Home', 'About', 'Projects', 'Services', 'Process', 'Pricing', 'Con
 function ProjectCard({ project, isVertical }: { project: Project; isVertical: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const playPromiseRef = useRef<Promise<void> | null>(null);
-
-  const previewSource = project.previewVideo;
 
   const handleMouseEnter = () => {
-    // Graceful touch fallback: ignore touch devices with no pointer hover
-    if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
-      return;
-    }
-    if (!previewSource || !videoRef.current) return;
-
     setIsHovered(true);
-    try {
-      const promise = videoRef.current.play();
-      if (promise !== undefined) {
-        playPromiseRef.current = promise;
-        promise.catch((err) => {
-          if (err.name !== 'AbortError') {
-            console.debug('Video preview play error:', err);
-          }
-        });
-      }
-    } catch {
-      // Ignore synchronous playback errors
-    }
+    videoRef.current?.play().catch(() => {});
   };
 
   const handleMouseLeave = () => {
-    if (!previewSource || !videoRef.current) return;
-
     setIsHovered(false);
-    const video = videoRef.current;
-
-    if (playPromiseRef.current) {
-      playPromiseRef.current
-        .then(() => {
-          video.pause();
-          video.currentTime = 0;
-        })
-        .catch(() => {
-          video.pause();
-          video.currentTime = 0;
-        });
-    } else {
-      video.pause();
-      video.currentTime = 0;
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
     }
   };
 
@@ -92,19 +56,18 @@ function ProjectCard({ project, isVertical }: { project: Project; isVertical: bo
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
 
-        {previewSource && (
-          <video
-            ref={videoRef}
-            src={previewSource}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className={`absolute inset-0 h-full w-full object-cover pointer-events-none transition-opacity duration-300 ${
-              isHovered ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
-        )}
+        <video
+          ref={videoRef}
+          src={project.previewVideo}
+          poster={project.thumbnail}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className={`absolute inset-0 w-full h-full object-cover rounded-2xl pointer-events-none transition-opacity duration-300 ${
+            isHovered ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5 pointer-events-none" />
         <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-black/45 px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-white/90 backdrop-blur-sm pointer-events-none">
@@ -112,7 +75,7 @@ function ProjectCard({ project, isVertical }: { project: Project; isVertical: bo
         </span>
         <div
           className={`absolute inset-0 grid place-items-center transition-opacity duration-300 pointer-events-none ${
-            isHovered && previewSource ? 'opacity-0' : 'opacity-0 group-hover:opacity-100'
+            isHovered ? 'opacity-0' : 'opacity-100'
           }`}
         >
           <span className="grid h-14 w-14 place-items-center rounded-full border border-white/40 bg-black/50 text-white backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
@@ -739,9 +702,6 @@ export default function Portfolio() {
       </section>
       {/* My Story Section */}
       <MyStory />
-
-      {/* Why Choose Me / Design built around lasting clarity (Replaces 'The craft, considered.') */}
-      <WhyChooseMe />
 
       {/* Structured 6-Step Process */}
       <Process />

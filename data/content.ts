@@ -32,8 +32,8 @@ export const longProjects: Project[] = [
     tagline: 'Real Stories. Real Impact.',
     description: 'A cinematic documentary-style map animation video crafted with dynamic motion graphics, archival visuals, and compelling storytelling.',
     thumbnail: '/thumbnails/map-animation.jpg',
-    videoUrl: 'https://drive.google.com/file/d/1J2pzygfxyluF_Lk2_8yYdK1Hmi-NRNZy/view?usp=sharing',
-    processVideoUrl: 'https://drive.google.com/file/d/1ct8vFduSVZC1oB85t1pWYr3sn3wZI3-q/view?usp=sharing',
+    videoUrl: 'https://kdjwsympztvvnkmyyfjc.supabase.co/storage/v1/object/public/portfolio-videos/MAIN.mp4',
+    processVideoUrl: 'https://kdjwsympztvvnkmyyfjc.supabase.co/storage/v1/object/public/portfolio-videos/AE%20Map%20Animation%20PRoject.mp4',
     tags: ['Documentary', 'Map Animation', 'Motion Graphics'],
   },
 ];

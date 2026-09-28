@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { ArrowUpRight, Menu, X, Sparkles, Clock, Film, Mail } from 'lucide-react';
+import { ArrowUpRight, Menu, X, Sparkles, Clock, Film, Mail, User } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import ProfileCardModal from './ProfileCardModal';
 
@@ -214,13 +214,11 @@ export default function Hero() {
               type="button"
               onClick={() => setIsProfileOpen(true)}
               className="flex items-center gap-2 font-semibold tracking-[-.04em] text-[#15151a] dark:text-[#f8fafc] cursor-pointer group hover:opacity-90 transition-all text-left"
-              aria-label="View Borshon Kabir profile card"
+              aria-label="View profile card"
             >
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-[#15151a] font-serif text-xl text-[#f5f5f4] dark:bg-white dark:text-[#15151a] transition-transform duration-200 group-hover:scale-105">
-                B
-              </span>
+              <User size={18} className="transition-transform duration-200 group-hover:scale-105" />
               <span className="transition-colors duration-200 group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                Borshon.
+                Profile
               </span>
             </button>
           </div>
