@@ -164,7 +164,7 @@ function ProjectVideoPlayer({ sourceUrl, title }: { sourceUrl: string; title: st
         type="button"
         onClick={togglePlay}
         aria-label={isPlaying ? 'Pause video' : 'Play video'}
-        className={`absolute z-20 flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-black/80 active:scale-95 ${
+        className={`absolute z-20 hidden md:flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-black/80 active:scale-95 ${
           isPlaying ? 'opacity-0 group-hover:opacity-100 pointer-events-auto' : 'opacity-100 scale-100'
         }`}
       >
